@@ -21,46 +21,37 @@
         .nav-links a { color: white; text-decoration: none; margin: 0 15px; font-weight: bold; font-size: 14px; transition: 0.3s; cursor: pointer; }
         .nav-links a:hover { color: var(--red); }
 
+        /* --- USER PROFILE NAV --- */
+        .user-nav { display: flex; align-items: center; gap: 10px; }
+        .user-img { width: 35px; height: 35px; border-radius: 50%; border: 1px solid var(--red); }
+        .logout-btn { color: #666; font-size: 12px; cursor: pointer; text-decoration: underline; }
+
         /* --- HERO & WELCOME --- */
         .hero { text-align: center; padding: 140px 20px 40px; }
         #welcome-msg { font-size: 2.5rem; color: var(--red); text-shadow: 0 0 15px var(--red); height: 60px; font-weight: 800; }
-
-        /* --- SMART SEARCH --- */
-        .search-area { max-width: 600px; margin: 20px auto; position: relative; }
-        #smart-search { width: 100%; padding: 15px 25px; background: #111; border: 2px solid var(--red); color: white; border-radius: 30px; outline: none; }
-        #search-suggestions { position: absolute; width: 100%; background: #111; border-radius: 10px; margin-top: 5px; border: 1px solid #333; display: none; z-index: 100; }
 
         /* --- SECTIONS --- */
         .section { display: none; padding: 100px 20px; min-height: 100vh; }
         .active { display: block; animation: fadeIn 0.5s; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* --- PREMIUM LINK STYLE (UBA KIWWA VIDIHAMA) --- */
+        /* --- LINK CARDS --- */
         .link-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; max-width: 1200px; margin: auto; }
         .link-card { background: var(--dark); border: 1px solid #222; padding: 25px; border-radius: 20px; text-align: center; transition: 0.3s; }
-        .link-card:hover { border-color: var(--red); transform: translateY(-5px); box-shadow: 0 5px 20px rgba(255,0,0,0.2); }
-        .link-dp { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--red); margin: 0 auto 15px; object-fit: cover; }
-        .link-desc { color: #aaa; font-size: 14px; margin-bottom: 20px; height: 40px; overflow: hidden; }
+        .link-card:hover { border-color: var(--red); transform: translateY(-5px); }
+        .link-dp { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--red); margin: 0 auto 15px; }
 
-        /* --- ABOUT SECTION (ADMIN PROFILE) --- */
-        .about-card { max-width: 800px; margin: auto; background: var(--dark); border: 2px solid #222; border-radius: 25px; padding: 40px; position: relative; overflow: hidden; }
+        /* --- ABOUT CARD --- */
+        .about-card { max-width: 800px; margin: auto; background: var(--dark); border: 2px solid #222; border-radius: 25px; padding: 40px; text-align: center; }
         .admin-dp { width: 150px; height: 150px; border-radius: 50%; border: 4px solid var(--red); margin-bottom: 20px; box-shadow: 0 0 20px var(--red); }
-        .thanks-bar { width: 110%; margin-left: -5%; background: linear-gradient(90deg, transparent, var(--red), transparent); padding: 12px; font-weight: bold; letter-spacing: 2px; text-shadow: 0 0 5px black; margin-top: 30px; }
+        .thanks-bar { background: linear-gradient(90deg, transparent, var(--red), transparent); padding: 12px; font-weight: bold; margin-top: 30px; }
 
-        /* --- VISITOR COUNTER --- */
-        .counter-box { font-size: 1.5rem; color: var(--red); font-weight: bold; margin-top: 10px; text-shadow: 0 0 10px var(--red); }
-
-        /* --- AI BOT BUTTON --- */
+        /* --- AI BOT & FOOTER --- */
         .bot-float { position: fixed; bottom: 30px; right: 30px; width: 70px; height: 70px; background: #000; border: 2px solid var(--red); border-radius: 50%; display: flex; justify-content: center; align-items: center; z-index: 1000; box-shadow: 0 0 20px var(--red); }
         .bot-float img { width: 50px; border-radius: 50%; }
-
-        /* --- COMMENT SECTION --- */
-        .comment-area { max-width: 800px; margin: 50px auto; background: #080808; padding: 25px; border-radius: 15px; border: 1px solid #222; }
-        .comment-input { width: 100%; padding: 12px; background: #151515; border: 1px solid #333; color: white; border-radius: 10px; margin-bottom: 10px; }
-
         .btn { padding: 10px 25px; border: 2px solid var(--red); background: transparent; color: var(--red); font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; }
-        .btn:hover { background: var(--red); color: white; box-shadow: 0 0 15px var(--red); }
-        footer { text-align: center; padding: 50px; border-top: 1px solid #222; background: #050505; }
+        .btn:hover { background: var(--red); color: white; }
+        footer { text-align: center; padding: 50px; border-top: 1px solid #222; }
     </style>
 </head>
 <body>
@@ -75,65 +66,58 @@
             <a onclick="showPage('category')">CATEGORY</a>
             <a onclick="showPage('about')">ABOUT</a>
         </div>
-        <button class="btn" id="nav-login" onclick="openLogin()">LOGIN</button>
+        <div id="auth-area">
+            <div id="g_id_onload"
+                data-client_id="180586817754-crv0p90dvrml6ojlgo9a6uvqccbjdn44.apps.googleusercontent.com"
+                data-callback="handleCredentialResponse">
+            </div>
+            <div class="g_id_signin" data-type="standard"></div>
+        </div>
+        <div id="user-profile" class="user-nav" style="display: none;">
+            <span id="user-name" style="font-size: 13px;"></span>
+            <img id="user-pfp" class="user-img" src="">
+            <span class="logout-btn" onclick="logout()">LOGOUT</span>
+        </div>
     </nav>
 
     <div id="home" class="section active">
         <div class="hero">
             <img src="dragon.png" alt="Dragon" style="width: 180px; filter: drop-shadow(0 0 20px red);">
             <div id="welcome-msg">ආයුබෝවන්</div>
-            <div class="search-area">
-                <input type="text" id="smart-search" placeholder="Search 3000+ Premium Links..." onkeyup="doSearch()">
-                <div id="search-suggestions"></div>
-            </div>
-            <div class="counter-box">VISITORS: <span id="count-num">15,402</span></div>
+            <p>VISITORS: <span id="count-num" style="color:red">15,402</span></p>
         </div>
     </div>
 
     <div id="category" class="section">
-        <h1 style="text-align: center; color: var(--red); margin-bottom: 40px;">PREMIUM LINKS</h1>
-        <div class="link-grid">
-            <div class="link-card">
-                <img src="https://via.placeholder.com/100" class="link-dp" alt="DP">
-                <h3>WHATSAPP HUB</h3>
-                <p class="link-desc">Sri Lanka's #1 WhatsApp group collection for movies and apps.</p>
-                <button class="btn">DIRECT JOIN</button>
-            </div>
-            <div class="link-card">
-                <img src="https://via.placeholder.com/100" class="link-dp" alt="DP">
-                <h3>TELEGRAM FORCE</h3>
-                <p class="link-desc">Direct access to private channels and high-speed downloads.</p>
-                <button class="btn">DIRECT JOIN</button>
+        <div id="cat-locked" style="text-align: center; margin-top: 50px;">
+            <h2 style="color: var(--red);">[ LOCKED ]</h2>
+            <p>PLEASE LOGIN TO UNLOCK PREMIUM LINKS</p>
+        </div>
+        <div id="cat-unlocked" style="display: none;">
+            <h1 style="text-align: center; color: var(--red); margin-bottom: 40px;">PREMIUM LINKS</h1>
+            <div class="link-grid">
+                <div class="link-card">
+                    <img src="https://via.placeholder.com/100" class="link-dp" alt="DP">
+                    <h3>WHATSAPP HUB</h3>
+                    <button class="btn">DIRECT JOIN</button>
+                </div>
             </div>
         </div>
     </div>
 
     <div id="about" class="section">
         <div class="about-card">
-            <div style="text-align: center;">
-                <img src="your-dp.jpg" alt="Akindu" class="admin-dp">
-                <h2 style="color: var(--red); margin: 10px 0;">M.A. AKINDU DEWSHAN MANCHANAYAKE</h2>
-                <p style="color: #ffd700; font-weight: bold;">Age: 17 Years Old</p>
-                <p><b>Education:</b> CH/MEDAGAMA ABAYA ADARSHA NATIONAL SCHOOL</p>
-            </div>
-            <div style="margin-top: 30px; border-top: 1px solid #333; padding-top: 20px;">
-                <h3>WEB TECHNOLOGY INFO</h3>
-                <p>Built with High-End Fire Sparks Engine, Real-time JS Search, and Secure Google Authentication. 𝐀𝐊𝐈𝐘𝐀 龍 Project is optimized for 3000+ link capacity.</p>
-                <p><b>Private Feedback:</b> Admin email is hidden for security.</p>
-                <button class="btn" style="width: 100%;" onclick="window.location.href='https://wa.me/94XXXXXXXXX'">CONTACT VIA WHATSAPP</button>
-            </div>
+            <img src="your-dp.jpg" alt="Akindu" class="admin-dp">
+            <h2 style="color: var(--red);">M.A. AKINDU DEWSHAN MANCHANAYAKE</h2>
+            <p><b>Age:</b> 17 Years Old</p>
+            <p><b>Education:</b> CH/MEDAGAMA ABAYA ADARSHA NATIONAL SCHOOL</p>
+            <button class="btn" style="width: 100%; margin-top: 20px;" onclick="window.location.href='https://wa.me/94755751816'">CONTACT VIA WHATSAPP</button>
             <div class="thanks-bar">THANKS FOR VISITING MY SITE</div>
-        </div>
-
-        <div class="comment-area">
-            <h3 style="color: var(--red);">COMMUNITY COMMENTS</h3>
-            <textarea class="comment-input" rows="3" placeholder="Leave a comment..."></textarea>
-            <button class="btn">POST COMMENT</button>
         </div>
     </div>
 
-    <a href="https://wa.me/94755751816?text=HELLO%20𝐀𝐊𝐈𝐘𝐀%20龍%20x%20DRAGON%20AI,%20I%20NEED%20SOME%20HELP!" class="bot-float">
-        <img src="whitedragon.png" alt="Bot">
+    <a href="https://wa.me/94755751816?text=HELLO%20𝐀𝐊𝐈𝐘𝐀%20龍%20x%20DRAGON%20AI" class="bot-float">
+        <img src="whitedragon.jpg" alt="Bot">
     </a>
 
     <footer>
@@ -142,26 +126,58 @@
     </footer>
 
     <script>
-        // 1. PAGE ENGINE
         function showPage(id) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            window.scrollTo(0,0);
         }
 
-        // 2. FIRE & CURSOR (GINI PUPURU)
+        // --- GOOGLE LOGIN LOGIC ---
+        function parseJwt(token) {
+            var base64Url = token.split('.')[1];
+            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            return JSON.parse(window.atob(base64));
+        }
+
+        function handleCredentialResponse(response) {
+            const userData = parseJwt(response.credential);
+            localStorage.setItem('user_name', userData.name);
+            localStorage.setItem('user_img', userData.picture);
+            localStorage.setItem('is_logged', 'true');
+            updateUI();
+        }
+
+        function updateUI() {
+            const isLogged = localStorage.getItem('is_logged');
+            if (isLogged === 'true') {
+                document.getElementById('auth-area').style.display = 'none';
+                document.getElementById('user-profile').style.display = 'flex';
+                document.getElementById('user-name').innerText = localStorage.getItem('user_name');
+                document.getElementById('user-pfp').src = localStorage.getItem('user_img');
+                document.getElementById('cat-locked').style.display = 'none';
+                document.getElementById('cat-unlocked').style.display = 'block';
+            } else {
+                document.getElementById('auth-area').style.display = 'block';
+                document.getElementById('user-profile').style.display = 'none';
+                document.getElementById('cat-locked').style.display = 'block';
+                document.getElementById('cat-unlocked').style.display = 'none';
+            }
+        }
+
+        function logout() {
+            localStorage.clear();
+            location.reload();
+        }
+
+        // --- FIRE EFFECTS ---
         const canvas = document.getElementById('fire-canvas');
         const ctx = canvas.getContext('2d');
         const cursor = document.getElementById('cursor-fire');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
         let particles = [];
-
         window.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
+            cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px';
             for(let i=0; i<3; i++) particles.push({x: e.clientX, y: e.clientY, vx: Math.random()*2-1, vy: Math.random()*2-1, a: 1});
         });
-
         function animate() {
             ctx.clearRect(0,0,canvas.width, canvas.height);
             particles.forEach((p, i) => {
@@ -174,32 +190,7 @@
         }
         animate();
 
-        // 3. SMART SEARCH SUGGESTIONS
-        const links = ["WhatsApp Movies", "Telegram Apps", "Facebook Groups", "Pro Software"];
-        function doSearch() {
-            let input = document.getElementById('smart-search').value.toLowerCase();
-            let sug = document.getElementById('search-suggestions');
-            if(input.length > 0) {
-                sug.style.display = "block";
-                sug.innerHTML = links.filter(l => l.toLowerCase().includes(input)).map(l => `<div style="padding:12px; border-bottom:1px solid #222; cursor:pointer;">${l}</div>`).join('');
-            } else { sug.style.display = "none"; }
-        }
-
-        // 4. WELCOME MSG (3 LANG)
-        const msgs = ["ආයුබෝවන්", "WELCOME", "வரவேற்பு"];
-        let mIdx = 0;
-        setInterval(() => {
-            document.getElementById('welcome-msg').innerText = msgs[mIdx];
-            mIdx = (mIdx + 1) % msgs.length;
-        }, 2000);
-
-        // 5. LOGIN
-        function openLogin() { 
-            alert("Google Login Integrated Successfully!"); 
-            localStorage.setItem('logged', 'true');
-            document.getElementById('nav-login').innerText = "LOGGED IN";
-        }
-        if(localStorage.getItem('logged')) document.getElementById('nav-login').innerText = "LOGGED IN";
+        window.onload = updateUI;
     </script>
 </body>
 </html>
