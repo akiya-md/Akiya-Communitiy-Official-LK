@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="si">
 <head>
@@ -11,16 +10,14 @@
         * { box-sizing: border-box; cursor: none; }
         body, html { margin: 0; padding: 0; background: var(--black); color: white; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
 
-        /* --- FIRE EFFECTS --- */
+        /* --- FIRE & CURSOR --- */
         #fire-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         #cursor-fire { position: fixed; width: 12px; height: 12px; background: var(--red); border-radius: 50%; pointer-events: none; z-index: 10000; box-shadow: 0 0 15px var(--red); }
 
         /* --- NAV BAR --- */
         nav { position: fixed; top: 0; width: 100%; background: rgba(0,0,0,0.95); display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; z-index: 1000; border-bottom: 2px solid var(--red); }
         .nav-logo { color: var(--red); font-weight: bold; font-size: 22px; text-shadow: 0 0 10px var(--red); }
-        .nav-links a { color: white; text-decoration: none; margin: 0 15px; font-weight: bold; font-size: 14px; transition: 0.3s; cursor: pointer; }
-        .nav-links a:hover { color: var(--red); }
-
+        .nav-links a { color: white; text-decoration: none; margin: 0 15px; font-weight: bold; font-size: 14px; cursor: pointer; }
         .user-nav { display: flex; align-items: center; gap: 10px; }
         .user-img { width: 35px; height: 35px; border-radius: 50%; border: 1px solid var(--red); }
         .logout-btn { color: #666; font-size: 11px; cursor: pointer; text-decoration: underline; }
@@ -30,21 +27,28 @@
         .active { display: block; animation: fadeIn 0.5s; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
+        /* --- COMMENT SECTION STYLE --- */
+        .comment-box { max-width: 800px; margin: 40px auto; background: #080808; border: 1px solid #222; border-radius: 15px; padding: 25px; }
+        .comment-input-area { display: flex; gap: 10px; margin-bottom: 20px; }
+        .comment-input { flex: 1; padding: 12px; background: #151515; border: 1px solid #333; color: white; border-radius: 8px; outline: none; }
+        .comment-list { list-style: none; padding: 0; }
+        .comment-item { background: #111; padding: 15px; border-radius: 10px; margin-bottom: 10px; border-left: 3px solid var(--red); display: flex; gap: 12px; }
+        .com-pfp { width: 40px; height: 40px; border-radius: 50%; }
+        .com-name { font-weight: bold; color: var(--gold); font-size: 14px; }
+        .com-text { font-size: 14px; color: #ccc; margin-top: 5px; }
+
+        /* --- DATABASE CARDS --- */
+        .link-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 1200px; margin: auto; }
+        .link-card { background: var(--dark); border: 1px solid #222; padding: 20px; border-radius: 20px; text-align: center; position: relative; }
+        .cat-tag { position: absolute; top: 10px; right: 10px; background: var(--red); font-size: 10px; padding: 3px 8px; border-radius: 5px; }
+        
         /* --- ADMIN PANEL --- */
         #admin-panel { background: #111; border: 2px dashed var(--red); padding: 20px; border-radius: 15px; max-width: 600px; margin: 20px auto; display: none; }
         .admin-input { width: 100%; padding: 10px; background: #222; border: 1px solid #444; color: white; margin-bottom: 10px; border-radius: 5px; }
 
-        /* --- LINK CARDS --- */
-        .link-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 1200px; margin: auto; }
-        .link-card { background: var(--dark); border: 1px solid #222; padding: 20px; border-radius: 20px; text-align: center; position: relative; }
-        .link-card .category-tag { position: absolute; top: 10px; right: 10px; font-size: 10px; background: var(--red); padding: 3px 8px; border-radius: 5px; }
-        .link-dp { width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--red); margin-bottom: 15px; }
-
-        /* --- UTILS --- */
-        .btn { padding: 10px 25px; border: 2px solid var(--red); background: transparent; color: var(--red); font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; }
+        .btn { padding: 10px 25px; border: 2px solid var(--red); background: transparent; color: var(--red); font-weight: bold; border-radius: 8px; cursor: pointer; }
         .btn:hover { background: var(--red); color: white; }
-        .hero { text-align: center; }
-        footer { text-align: center; padding: 40px; border-top: 1px solid #222; margin-top: 50px; }
+        footer { text-align: center; padding: 40px; border-top: 1px solid #222; }
     </style>
 </head>
 <body>
@@ -60,138 +64,144 @@
             <a onclick="showPage('about')">ABOUT</a>
         </div>
         <div id="auth-area">
-            <div id="g_id_onload"
-                data-client_id="180586817754-crv0p90dvrml6ojlgo9a6uvqccbjdn44.apps.googleusercontent.com"
-                data-callback="handleCredentialResponse">
-            </div>
+            <div id="g_id_onload" data-client_id="180586817754-crv0p90dvrml6ojlgo9a6uvqccbjdn44.apps.googleusercontent.com" data-callback="handleCredentialResponse"></div>
             <div class="g_id_signin" data-type="standard"></div>
         </div>
         <div id="user-profile" class="user-nav" style="display: none;">
             <span id="user-name" style="font-size: 13px;"></span>
-            <img id="user-pfp" class="user-img" src="">
+            <img id="user-pfp" class="user-img">
             <span class="logout-btn" onclick="logout()">LOGOUT</span>
         </div>
     </nav>
 
     <div id="home" class="section active">
-        <div class="hero">
-            <img src="dragon.png" alt="Dragon" style="width: 180px; filter: drop-shadow(0 0 20px red);">
+        <div style="text-align: center;">
+            <img src="dragon.png" style="width: 150px; filter: drop-shadow(0 0 20px red);">
             <h1 id="welcome-msg">ආයුබෝවන්</h1>
             
             <div id="admin-panel">
-                <h3 style="color: var(--gold);">MASTER ADMIN PANEL</h3>
-                <input type="text" id="link-title" class="admin-input" placeholder="Link Title (e.g. My Telegram)">
-                <input type="text" id="link-url" class="admin-input" placeholder="URL (https://...)">
-                <select id="link-cat" class="admin-input">
-                    <option value="WhatsApp">WhatsApp</option>
-                    <option value="Telegram">Telegram</option>
-                    <option value="Facebook">Facebook</option>
-                    <option value="YouTube">YouTube</option>
-                </select>
-                <button class="btn" onclick="addNewLink()">ADD NEW LINK</button>
+                <h3 style="color: var(--gold);">🐲 MASTER ADMIN PANEL</h3>
+                <input type="text" id="t" class="admin-input" placeholder="Title">
+                <input type="text" id="u" class="admin-input" placeholder="URL">
+                <select id="c" class="admin-input"><option value="WhatsApp">WhatsApp</option><option value="Telegram">Telegram</option></select>
+                <button class="btn" onclick="saveLink()">ADD LINK</button>
             </div>
+        </div>
+
+        <div class="comment-box">
+            <h3 style="color: var(--red); border-bottom: 1px solid #222; padding-bottom: 10px;">COMMUNITY CHAT</h3>
+            <div id="com-locked" style="color: gray; font-size: 13px;">Please Login to Comment.</div>
+            <div id="com-unlocked" style="display: none;">
+                <div class="comment-input-area">
+                    <input type="text" id="com-text" class="comment-input" placeholder="ඔයාගේ අදහස කියන්න...">
+                    <button class="btn" onclick="addComment()">POST</button>
+                </div>
+            </div>
+            <div class="comment-list" id="comment-display">
+                </div>
         </div>
     </div>
 
     <div id="category" class="section">
-        <div id="cat-locked" style="text-align:center;">
-            <h2>[ ACCESS DENIED ]</h2>
-            <p>Please login to see premium links.</p>
-        </div>
         <div id="cat-unlocked" style="display:none;">
-            <h2 style="text-align: center; color: var(--red);">DATABASE LINKS</h2>
-            <div class="link-grid" id="main-link-grid">
-                </div>
+            <div class="link-grid" id="grid"></div>
         </div>
     </div>
 
     <div id="about" class="section">
-        <div style="max-width: 600px; margin: auto; background: #0a0a0a; padding: 30px; border-radius: 20px; border: 1px solid #222; text-align: center;">
-            <h2 style="color: var(--red);">M.A. AKINDU DEWSHAN MANCHANAYAKE</h2>
-            <p>Age: 17 | CH/MEDAGAMA ABAYA ADARSHA NATIONAL SCHOOL</p>
+        <div style="max-width: 600px; margin: auto; background: #0a0a0a; padding: 40px; border-radius: 20px; border: 1px solid #222; text-align:center;">
+            <h2 style="color: var(--red);">AKINDU DEWSHAN</h2>
+            <p>CH/MEDAGAMA ABAYA ADARSHA NATIONAL SCHOOL</p>
             <button class="btn" onclick="window.location.href='https://wa.me/94755751816'">WHATSAPP ME</button>
         </div>
     </div>
 
-    <footer>
-        <p>© 2026 ALL RIGHTS RESERVED | POWERED BY 𝐀𝐊𝐈𝐘𝐀 龍</p>
-    </footer>
-
     <script>
-        const ADMIN_EMAIL = "kaviakiya@gmail.com";
-        let localLinks = JSON.parse(localStorage.getItem('saved_links')) || [];
+        const ADMIN = "kaviakiya@gmail.com";
+        let links = JSON.parse(localStorage.getItem('aki_links')) || [];
+        let comments = JSON.parse(localStorage.getItem('aki_coms')) || [];
 
-        function showPage(id) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            if(id === 'category') renderLinks();
-        }
-
-        function handleCredentialResponse(response) {
-            const data = JSON.parse(atob(response.credential.split('.')[1]));
-            localStorage.setItem('user_name', data.name);
-            localStorage.setItem('user_img', data.picture);
-            localStorage.setItem('user_email', data.email);
-            localStorage.setItem('is_logged', 'true');
-            updateUI();
+        function handleCredentialResponse(r) {
+            const d = JSON.parse(atob(r.credential.split('.')[1]));
+            localStorage.setItem('u_name', d.name);
+            localStorage.setItem('u_img', d.picture);
+            localStorage.setItem('u_email', d.email);
+            localStorage.setItem('is_l', 'true');
+            location.reload();
         }
 
         function updateUI() {
-            const isLogged = localStorage.getItem('is_logged');
-            const email = localStorage.getItem('user_email');
-
-            if (isLogged === 'true') {
+            if(localStorage.getItem('is_l')) {
                 document.getElementById('auth-area').style.display = 'none';
                 document.getElementById('user-profile').style.display = 'flex';
-                document.getElementById('user-name').innerText = localStorage.getItem('user_name');
-                document.getElementById('user-pfp').src = localStorage.getItem('user_img');
-                document.getElementById('cat-locked').style.display = 'none';
+                document.getElementById('user-name').innerText = localStorage.getItem('u_name');
+                document.getElementById('user-pfp').src = localStorage.getItem('u_img');
                 document.getElementById('cat-unlocked').style.display = 'block';
+                document.getElementById('com-locked').style.display = 'none';
+                document.getElementById('com-unlocked').style.display = 'block';
+                if(localStorage.getItem('u_email') === ADMIN) document.getElementById('admin-panel').style.display = 'block';
+            }
+            renderComments();
+        }
 
-                // CHECK IF ADMIN
-                if (email === ADMIN_EMAIL) {
-                    document.getElementById('admin-panel').style.display = 'block';
-                }
+        function saveLink() {
+            const title = document.getElementById('t').value, url = document.getElementById('u').value, cat = document.getElementById('c').value;
+            links.push({title, url, cat});
+            localStorage.setItem('aki_links', JSON.stringify(links));
+            alert("Saved!"); location.reload();
+        }
+
+        function addComment() {
+            const txt = document.getElementById('com-text').value;
+            if(txt) {
+                comments.push({
+                    name: localStorage.getItem('u_name'),
+                    img: localStorage.getItem('u_img'),
+                    text: txt,
+                    email: localStorage.getItem('u_email')
+                });
+                localStorage.setItem('aki_coms', JSON.stringify(comments));
+                document.getElementById('com-text').value = '';
+                renderComments();
             }
         }
 
-        function addNewLink() {
-            const title = document.getElementById('link-title').value;
-            const url = document.getElementById('link-url').value;
-            const cat = document.getElementById('link-cat').value;
-
-            if(title && url) {
-                const newLink = { title, url, cat };
-                localLinks.push(newLink);
-                localStorage.setItem('saved_links', JSON.stringify(localLinks));
-                alert("Link Added Successfully!");
-                document.getElementById('link-title').value = '';
-                document.getElementById('link-url').value = '';
-            }
+        function renderComments() {
+            const display = document.getElementById('comment-display');
+            const currentUser = localStorage.getItem('u_email');
+            display.innerHTML = comments.map((c, i) => `
+                <div class="comment-item">
+                    <img src="${c.img}" class="com-pfp">
+                    <div style="flex:1;">
+                        <div class="com-name">${c.name} ${c.email === ADMIN ? '⭐' : ''}</div>
+                        <div class="com-text">${c.text}</div>
+                    </div>
+                    ${currentUser === ADMIN ? `<span style="color:red; cursor:pointer; font-size:10px;" onclick="delCom(${i})">Delete</span>` : ''}
+                </div>
+            `).reverse().join('');
         }
 
-        function renderLinks() {
-            const grid = document.getElementById('main-link-grid');
-            grid.innerHTML = localLinks.map((l, index) => `
+        function delCom(i) { comments.splice(i, 1); localStorage.setItem('aki_coms', JSON.stringify(comments)); renderComments(); }
+        function showPage(p) { 
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(p).classList.add('active');
+            if(p === 'category') renderGrid();
+        }
+
+        function renderGrid() {
+            document.getElementById('grid').innerHTML = links.map(l => `
                 <div class="link-card">
-                    <span class="category-tag">${l.cat}</span>
-                    <img src="https://via.placeholder.com/80/ff0000/ffffff?text=LINK" class="link-dp">
+                    <span class="cat-tag">${l.cat}</span>
                     <h3>${l.title}</h3>
-                    <button class="btn" onclick="window.open('${l.url}')">DIRECT JOIN</button>
-                    ${localStorage.getItem('user_email') === ADMIN_EMAIL ? `<br><small onclick="deleteLink(${index})" style="color:gray; cursor:pointer;">Delete</small>` : ''}
+                    <button class="btn" onclick="window.open('${l.url}')">JOIN</button>
+                    <small style="display:block; margin-top:10px; color:var(--gold);">Post by Akindu</small>
                 </div>
             `).join('');
         }
 
-        function deleteLink(index) {
-            localLinks.splice(index, 1);
-            localStorage.setItem('saved_links', JSON.stringify(localLinks));
-            renderLinks();
-        }
-
         function logout() { localStorage.clear(); location.reload(); }
 
-        // FIRE EFFECTS (Shortened for brevity)
+        // FIRE ENGINE
         const canvas = document.getElementById('fire-canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
@@ -211,8 +221,7 @@
             });
             requestAnimationFrame(animate);
         }
-        animate();
-        window.onload = updateUI;
+        animate(); window.onload = updateUI;
     </script>
 </body>
 </html>
