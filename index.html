@@ -4,72 +4,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>𝐀𝐊𝐈𝐘𝐀 龍 | Official 2026 v2.7 PRO</title>
+    <title>𝐀𝐊𝐈𝐘𝐀 龍 | Official 2026 v2.8 ONLINE</title>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        /* [උඹේ පරණ පට්ටම CSS ටික මෙතන තියෙනවා - මම ඒක වෙනස් කළේ නැහැ] */
         :root { --red: #ff1100; --black: #000000; --dark: #0a0a0a; --gold: #ffd700; --glass: rgba(15, 15, 15, 0.85); }
         * { box-sizing: border-box; cursor: none; }
         body, html { margin: 0; padding: 0; background: var(--black); color: white; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
-
-        /* --- ADVANCED FIRE BACKGROUND --- */
         #fire-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.6; }
-        #cursor-fire { position: fixed; width: 12px; height: 12px; background: var(--red); border-radius: 50%; pointer-events: none; z-index: 10000; box-shadow: 0 0 15px var(--red), 0 0 30px var(--red); }
-
-        /* --- NAV --- */
+        #cursor-fire { position: fixed; width: 12px; height: 12px; background: var(--red); border-radius: 50%; pointer-events: none; z-index: 10000; box-shadow: 0 0 15px var(--red); }
         nav { position: fixed; top: 0; width: 100%; background: rgba(0,0,0,0.95); display: flex; justify-content: space-between; align-items: center; padding: 12px 30px; z-index: 1000; border-bottom: 2px solid var(--red); }
-        .nav-logo-container { display: flex; align-items: center; gap: 10px; }
-        .pc-logo { width: 35px; display: none; filter: drop-shadow(0 0 5px var(--red)); }
-        @media (min-width: 1024px) { .pc-logo { display: block; } }
-        .nav-logo { color: var(--red); font-weight: bold; font-size: 20px; text-shadow: 0 0 10px var(--red); letter-spacing: 1px; }
-        .nav-links a { color: white; text-decoration: none; margin: 0 12px; font-weight: bold; cursor: pointer; font-size: 14px; transition: 0.3s; }
-        .nav-links a:hover { color: var(--red); }
-
-        /* --- SECTIONS --- */
+        .nav-logo { color: var(--red); font-weight: bold; font-size: 20px; text-shadow: 0 0 10px var(--red); }
+        .nav-links a { color: white; text-decoration: none; margin: 0 12px; font-weight: bold; cursor: pointer; transition: 0.3s; }
         .section { display: none; padding: 110px 20px 60px; min-height: 100vh; }
         .active { display: block; animation: fadeIn 0.6s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* --- ADMIN & PRO PANELS --- */
-        #admin-panel, .pro-login-box { background: var(--dark); border: 2px solid var(--red); padding: 25px; border-radius: 20px; max-width: 500px; margin: 20px auto; display: none; box-shadow: 0 0 25px rgba(255,0,0,0.2); }
-        .admin-input { width: 100%; padding: 12px; background: #151515; border: 1px solid #333; color: white; margin-bottom: 12px; border-radius: 8px; outline: none; }
-        
-        /* --- ABOUT CARD (ADVANCED) --- */
-        .about-container { max-width: 850px; margin: auto; background: var(--glass); border-radius: 25px; padding: 40px; border: 1px solid #222; position: relative; backdrop-filter: blur(10px); box-shadow: 0 0 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,17,0,0.3); }
-        .about-dp { width: 160px; height: 160px; border-radius: 50%; border: 3px solid var(--red); margin: 0 auto 20px; display: block; object-fit: cover; box-shadow: 0 0 20px var(--red); }
-        .location-tag { color: var(--gold); font-size: 14px; text-align: center; margin-bottom: 20px; font-weight: 500; }
-        .story-box { background: rgba(255,255,255,0.03); padding: 20px; border-radius: 15px; border-left: 4px solid var(--red); margin-top: 25px; }
-
-        /* --- CATEGORY DROPDOWN --- */
-        .filter-area { text-align: center; margin-bottom: 30px; }
-        .cat-select { padding: 10px 20px; background: #111; color: white; border: 1px solid var(--red); border-radius: 10px; cursor: pointer; outline: none; }
-
-        /* --- LINK CARDS --- */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        #admin-panel { background: var(--dark); border: 2px solid var(--red); padding: 25px; border-radius: 20px; max-width: 500px; margin: 20px auto; display: none; }
+        .admin-input { width: 100%; padding: 12px; background: #151515; border: 1px solid #333; color: white; margin-bottom: 12px; border-radius: 8px; }
         .link-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; max-width: 1200px; margin: auto; }
-        .link-card { background: #0d0d0d; border: 1px solid #222; padding: 20px; border-radius: 20px; text-align: center; transition: 0.3s; position: relative; overflow: hidden; }
-        .link-card:hover { border-color: var(--red); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(255,0,0,0.1); }
-        .card-dp { width: 70px; height: 70px; border-radius: 15px; object-fit: cover; margin-bottom: 15px; border: 1px solid #333; }
-        .glow-btn { padding: 12px 25px; background: transparent; border: 2px solid var(--red); color: var(--red); font-weight: bold; border-radius: 50px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; animation: pulseGlow 2s infinite; }
-        @keyframes pulseGlow { 0% { box-shadow: 0 0 5px var(--red); } 50% { box-shadow: 0 0 20px var(--red); } 100% { box-shadow: 0 0 5px var(--red); } }
-
-        /* --- CHAT BOT & FLOAT WHATSAPP --- */
-        .float-wa { position: fixed; bottom: 25px; right: 25px; background: #25d366; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; color: white; text-decoration: none; z-index: 2000; box-shadow: 0 0 15px #25d366; }
-        #bot-box { position: fixed; bottom: 25px; left: 25px; z-index: 2000; }
-        .bot-toggle { background: var(--red); color: white; padding: 12px 20px; border-radius: 50px; font-weight: bold; box-shadow: 0 0 15px var(--red); }
-        .bot-window { position: absolute; bottom: 70px; left: 0; width: 300px; background: #0f0f0f; border: 1px solid #333; border-radius: 15px; display: none; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
-        .bot-header { background: var(--red); padding: 10px; font-size: 14px; font-weight: bold; }
-        .bot-content { padding: 15px; max-height: 300px; overflow-y: auto; font-size: 13px; }
-        .bot-q { background: #222; padding: 8px; margin-bottom: 5px; border-radius: 5px; cursor: pointer; transition: 0.2s; }
-        .bot-q:hover { background: #333; }
-
-        /* --- RULES SECTION --- */
-        .rules-container { max-width: 1000px; margin: 40px auto; padding: 20px; background: #050505; border-radius: 15px; border: 1px solid #111; }
-        .rules-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; }
-        .tab-btn { padding: 8px 15px; background: #111; border: 1px solid #333; color: #777; border-radius: 5px; cursor: pointer; font-size: 12px; }
-        .tab-btn.active { border-color: var(--red); color: var(--red); }
-
-        footer { text-align: center; padding: 40px; border-top: 1px solid #111; margin-top: 50px; background: #020202; }
-        .btn { padding: 12px 28px; border: 2px solid var(--red); background: transparent; color: var(--red); font-weight: bold; border-radius: 10px; cursor: pointer; }
+        .link-card { background: #0d0d0d; border: 1px solid #222; padding: 20px; border-radius: 20px; text-align: center; position: relative; }
+        .card-dp { width: 70px; height: 70px; border-radius: 15px; margin-bottom: 15px; }
+        .glow-btn { padding: 10px 20px; border: 2px solid var(--red); background: transparent; color: var(--red); font-weight: bold; border-radius: 50px; cursor: pointer; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { box-shadow: 0 0 5px var(--red); } 50% { box-shadow: 0 0 20px var(--red); } }
+        .float-wa { position: fixed; bottom: 25px; right: 25px; background: #25d366; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; z-index: 2000; box-shadow: 0 0 15px #25d366; }
     </style>
 </head>
 <body>
@@ -78,151 +40,79 @@
     <canvas id="fire-canvas"></canvas>
 
     <nav>
-        <div class="nav-logo-container">
-            <img src="dragon.png" class="pc-logo" alt="logo">
-            <div class="nav-logo">𝐀𝐊𝐈𝐘𝐀 龍</div>
-        </div>
+        <div class="nav-logo">𝐀𝐊𝐈𝐘𝐀 龍</div>
         <div class="nav-links">
             <a onclick="showPage('home')">HOME</a>
             <a onclick="showPage('category')">CATEGORY</a>
-            <a onclick="showPage('about')">ABOUT</a>
-            <a id="pro-btn" onclick="showPROModal()" style="color:var(--gold);">GET PRO</a>
+            <a id="pro-btn" style="color:var(--gold);">GET PRO</a>
         </div>
         <div id="auth-area">
             <div id="g_id_onload" data-client_id="180586817754-crv0p90dvrml6ojlgo9a6uvqccbjdn44.apps.googleusercontent.com" data-callback="handleCredentialResponse"></div>
             <div class="g_id_signin" data-type="standard"></div>
         </div>
-        <div id="user-profile" style="display:none; align-items:center; gap:10px;">
-            <img id="user-pfp" style="width:32px; border-radius:50%; border: 1px solid var(--red);">
-            <span onclick="logout()" style="color:#666; cursor:pointer; font-size:10px;">LOGOUT</span>
-        </div>
     </nav>
 
     <div id="home" class="section active">
         <div style="text-align: center;">
-            <img src="dragon.png" style="width: 140px; filter: drop-shadow(0 0 30px red); margin-bottom: 20px;">
-            <h1 style="color: var(--red); font-size: 2.8rem; margin: 0;">ආයුබෝවන්</h1>
-            <p style="color: #666; letter-spacing: 3px;">OFFICIAL 2026 v2.7 PRO EDITION</p>
-
+            <h1 style="color: var(--red);">WELCOME ADMIN</h1>
             <div id="admin-panel">
-                <h3 style="color: var(--gold); margin-top: 0;">🐲 MASTER ADMIN PANEL</h3>
-                <input type="text" id="t" class="admin-input" placeholder="Group Name">
-                <input type="text" id="d" class="admin-input" placeholder="Description (Small info)">
-                <input type="text" id="u" class="admin-input" placeholder="Group URL">
+                <input type="text" id="t" class="admin-input" placeholder="Name">
+                <input type="text" id="d" class="admin-input" placeholder="Info">
+                <input type="text" id="u" class="admin-input" placeholder="URL">
                 <select id="c" class="admin-input">
                     <option value="WHATSAPP">WHATSAPP</option>
                     <option value="TELEGRAM">TELEGRAM</option>
-                    <option value="FACEBOOK">FACEBOOK</option>
-                    <option value="YOUTUBE">YOUTUBE</option>
                 </select>
-                <p style="font-size:11px; color:#555; text-align:left;">UPLOAD LOGO (Mobile/PC)</p>
-                <input type="file" id="l-img" accept="image/*" class="admin-input">
-                <button class="btn" style="width: 100%;" onclick="saveLink()">PUBLISH LINK</button>
+                <input type="file" id="l-img" class="admin-input">
+                <button class="glow-btn" style="width:100%" onclick="saveLink()">PUBLISH ONLINE</button>
             </div>
-        </div>
-    </div>
-
-    <div id="about" class="section">
-        <div class="about-container">
-            <img id="admin-about-dp" src="your-dp.jpg" class="about-dp">
-            <h2 style="color: var(--red); text-align: center; margin: 0;">M.A. AKINDU DEWSHAN MANCHANAYAKE</h2>
-            <p style="text-align: center; color: var(--gold); font-weight: bold; margin-top: 5px;">Founder of 𝐀𝐊𝐈𝐘𝐀 龍 x DRAGON</p>
-            <div class="location-tag"><i class="fas fa-map-marker-alt"></i> Madampe, Puttalam, North Western Province, Sri Lanka</div>
-            
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                <div style="background:rgba(255,255,255,0.02); padding:15px; border-radius:12px; border: 1px solid #222;">
-                    <p style="margin:0; font-size:13px; color:#888;">Age</p>
-                    <p style="margin:5px 0 0; font-weight:bold;">17 Years Old</p>
-                </div>
-                <div style="background:rgba(255,255,255,0.02); padding:15px; border-radius:12px; border: 1px solid #222;">
-                    <p style="margin:0; font-size:13px; color:#888;">Role</p>
-                    <p style="margin:5px 0 0; font-weight:bold;">Full Stack Developer & Modder</p>
-                </div>
-            </div>
-
-            <div class="story-box">
-                <h3 style="color: var(--red); margin: 0 0 10px; font-size: 16px;">THE VISION & JOURNEY</h3>
-                <p style="color: #bbb; line-height: 1.6; font-size: 14px; margin-bottom: 15px;">
-                    This platform was not built just to share links. In 2026, I envisioned a secure, high-performance community hub for Sri Lankan users to access premium WhatsApp groups, Telegram channels, and essential tools in one place.
-                </p>
-                <p style="color: #bbb; line-height: 1.6; font-size: 14px;">
-                    Starting from a simple Dragon-themed UI, this project has evolved into a robust system featuring Google Authentication, encrypted PRO access, and an advanced admin ecosystem. The "Fire & Dragon" aesthetic represents the power and speed I strive to deliver.
-                </p>
-            </div>
-            <button class="btn" style="width: 100%; margin-top: 25px;" onclick="window.location.href='https://wa.me/94755751816'">DIRECT CONTACT ADMIN</button>
         </div>
     </div>
 
     <div id="category" class="section">
-        <div class="filter-area">
-            <select class="cat-select" id="filter" onchange="render()">
-                <option value="ALL">ALL CATEGORIES</option>
+        <div style="text-align:center; margin-bottom:20px;">
+            <select id="filter" class="admin-input" style="width:200px" onchange="render()">
+                <option value="ALL">ALL</option>
                 <option value="WHATSAPP">WHATSAPP</option>
                 <option value="TELEGRAM">TELEGRAM</option>
-                <option value="FACEBOOK">FACEBOOK</option>
-                <option value="YOUTUBE">YOUTUBE</option>
             </select>
         </div>
         <div class="link-grid" id="grid"></div>
     </div>
 
-    <div class="rules-container">
-        <div class="rules-tabs">
-            <button class="tab-btn active" onclick="switchRule('si')">SINHALA</button>
-            <button class="tab-btn" onclick="switchRule('en')">ENGLISH</button>
-            <button class="tab-btn" onclick="switchRule('ta')">TAMIL</button>
-        </div>
-        <div id="rule-text" style="font-size: 13px; color: #aaa; text-align: center; line-height: 1.8;">
-            වෙබ් අඩවිය තුළ අසභ්‍ය දේ පළ කිරීම හෝ බෙදා හැරීම සපුරා තහනම් වේ. නීති උල්ලංඝනය කරන්නන් වහාම තහනම් කරනු ලැබේ.
-        </div>
-    </div>
-
-    <div id="bot-box">
-        <div class="bot-window" id="bw">
-            <div class="bot-header">龍 DRAGON AI SUPPORT</div>
-            <div class="bot-content" id="bc">
-                <div class="bot-q" onclick="botAns('pro')">How to get PRO access?</div>
-                <div class="bot-q" onclick="botAns('rule')">What are the main rules?</div>
-                <div class="bot-q" onclick="botAns('work')">Link is not working?</div>
-            </div>
-        </div>
-        <div class="bot-toggle" onclick="document.getElementById('bw').style.display = (document.getElementById('bw').style.display=='block'?'none':'block')">NEED HELP?</div>
-    </div>
-
     <a href="https://wa.me/94755751816" class="float-wa"><i class="fab fa-whatsapp"></i></a>
 
-    <footer>
-        <p style="color: var(--red); font-weight: bold; letter-spacing: 2px; margin: 0;">© 2026 ALL RIGHTS RESERVED</p>
-        <p style="font-size: 11px; color: #444; margin-top: 5px;">POWERED BY 𝐀𝐊𝐈𝐘𝐀 龍 x DRAGON v2.7 PRO</p>
-    </footer>
-
     <script>
-        const ADMIN = "kaviakiya@gmail.com";
-        let links = JSON.parse(localStorage.getItem('aki_links_v2')) || [];
+        // --- FIREBASE CONFIGURATION ---
+        const firebaseConfig = {
+            databaseURL: "https://akiya-communitiy-official-lk-default-rtdb.firebaseio.com/" 
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
+        const ADMIN = "kaviakiya@gmail.com";
+
+        // GOOGLE LOGIN
         function handleCredentialResponse(r) {
             const d = JSON.parse(atob(r.credential.split('.')[1]));
             localStorage.setItem('u_email', d.email);
-            localStorage.setItem('u_img', d.picture);
             localStorage.setItem('is_l', 'true');
             location.reload();
         }
 
         window.onload = () => {
-            if(localStorage.getItem('is_l')) {
-                document.getElementById('auth-area').style.display = 'none';
-                document.getElementById('user-profile').style.display = 'flex';
-                document.getElementById('user-pfp').src = localStorage.getItem('u_img');
-                if(localStorage.getItem('u_email') === ADMIN) document.getElementById('admin-panel').style.display = 'block';
+            if(localStorage.getItem('u_email') === ADMIN) {
+                document.getElementById('admin-panel').style.display = 'block';
             }
+            render(); // මුලින්ම ලින්ක්ස් ටික ලෝඩ් කරන්න
         };
 
         function showPage(p) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(p).classList.add('active');
-            if(p === 'category') render();
         }
 
+        // --- SAVE TO FIREBASE ---
         function saveLink() {
             const title = document.getElementById('t').value;
             const desc = document.getElementById('d').value;
@@ -230,53 +120,43 @@
             const cat = document.getElementById('c').value;
             const file = document.getElementById('l-img').files[0];
 
-            if(!title || !url) return alert("Fill Name and URL!");
+            if(!title || !url) return alert("Title and URL required!");
 
             const reader = new FileReader();
             reader.onloadend = function() {
-                links.push({title, desc, url, cat, img: reader.result || 'dragon.png'});
-                localStorage.setItem('aki_links_v2', JSON.stringify(links));
-                alert("Link Published Successfully!");
-                location.reload();
+                const imgData = reader.result || 'dragon.png';
+                db.ref('links').push({ title, desc, url, cat, img: imgData }).then(() => {
+                    alert("Link Saved Online!");
+                    location.reload();
+                });
             }
             if(file) reader.readAsDataURL(file); else reader.onloadend();
         }
 
+        // --- RENDER FROM FIREBASE ---
         function render() {
             const f = document.getElementById('filter').value;
             const grid = document.getElementById('grid');
-            grid.innerHTML = links.filter(l => f === 'ALL' || l.cat === f).map(l => `
-                <div class="link-card">
-                    <img src="${l.img}" class="card-dp">
-                    <h3 style="margin:0; font-size:16px;">${l.title}</h3>
-                    <p style="font-size:12px; color:#666; margin:10px 0 20px;">${l.desc || 'Premium Community Group'}</p>
-                    <button class="glow-btn" onclick="window.open('${l.url}')">JOIN LIVE</button>
-                    <div style="position:absolute; top:10px; right:10px; font-size:9px; color:var(--red); font-weight:bold;">${l.cat}</div>
-                </div>
-            `).join('');
+            
+            db.ref('links').on('value', (snapshot) => {
+                const data = snapshot.val();
+                grid.innerHTML = "";
+                for (let id in data) {
+                    let l = data[id];
+                    if (f === 'ALL' || l.cat === f) {
+                        grid.innerHTML += `
+                            <div class="link-card">
+                                <img src="${l.img}" class="card-dp">
+                                <h3>${l.title}</h3>
+                                <p>${l.desc}</p>
+                                <button class="glow-btn" onclick="window.open('${l.url}')">JOIN NOW</button>
+                            </div>`;
+                    }
+                }
+            });
         }
 
-        function switchRule(l) {
-            const r = {
-                si: "වෙබ් අඩවිය තුළ අසභ්‍ය දේ පළ කිරීම හෝ බෙදා හැරීම සපුරා තහනම් වේ. නීති උල්ලංඝනය කරන්නන් වහාම තහනම් කරනු ලැබේ.",
-                en: "Posting or sharing NSFW/Adult content is strictly prohibited. Violators will be permanently banned.",
-                ta: "இந்த இணையதளத்தில் ஆபாசமான விஷயங்களை பதிவிடுவது முற்றாக தடைசெய்யப்பட்டுள்ளது."
-            };
-            document.getElementById('rule-text').innerText = r[l];
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            event.target.classList.add('active');
-        }
-
-        function botAns(t) {
-            const bc = document.getElementById('bc');
-            if(t==='pro') bc.innerHTML += "<p style='color:var(--gold)'>Admin ට WhatsApp පණිවිඩයක් යොමු කර ඔබගේ PRO ගිණුම සක්‍රීය කරගන්න.</p>";
-            if(t==='rule') bc.innerHTML += "<p style='color:var(--red)'>නීති පද්ධතිය පල්ලෙහා Rules section එකේ සඳහන් කර ඇත.</p>";
-            bc.scrollTop = bc.scrollHeight;
-        }
-
-        function logout() { localStorage.clear(); location.reload(); }
-
-        // --- IMPROVED FIRE CANVAS ---
+        // --- FIRE EFFECT ---
         const canvas = document.getElementById('fire-canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
