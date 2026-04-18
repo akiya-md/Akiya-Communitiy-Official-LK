@@ -16,17 +16,31 @@
             color: white; 
             overflow-x: hidden; 
             scroll-behavior: smooth;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(20,0,0,0.9)), url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(20,0,0,1)), url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
         }
-        .fire-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; opacity: 0.4; background: url('https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJndW95ZzRyeG13eGZ4Z3R4Z3R4Z3R4Z3R4Z3R4Z3R4Z3R4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/yr7n0u3qzJC8mJLIL7/giphy.gif') center/cover; }
 
-        .cursor-fire { position: fixed; width: 8px; height: 8px; background: orange; border-radius: 50%; pointer-events: none; box-shadow: 0 0 10px red, 0 0 20px yellow; z-index: 9999; animation: fireTrail 0.7s ease-out forwards; }
-        @keyframes fireTrail { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(0) translateY(-20px); opacity: 0; } }
+        /* 🔥 Gini Pupuru Style */
+        .cursor-fire { 
+            position: fixed; 
+            width: 10px; 
+            height: 10px; 
+            background: orange; 
+            border-radius: 50%; 
+            pointer-events: none; 
+            box-shadow: 0 0 10px red, 0 0 20px yellow; 
+            z-index: 9999; 
+            animation: fireTrail 0.6s ease-out forwards; 
+        }
+        @keyframes fireTrail { 
+            0% { transform: scale(1.2) translateY(0); opacity: 1; } 
+            100% { transform: scale(0) translateY(-30px); opacity: 0; } 
+        }
 
-        /* 🐲 Navbar with Logo & Name */
+        .fire-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; opacity: 0.2; background: url('https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJndW95ZzRyeG13eGZ4Z3R4Z3R4Z3R4Z3R4Z3R4Z3R4Z3R4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/yr7n0u3qzJC8mJLIL7/giphy.gif') center/cover; }
+
         nav { 
             background: rgba(0,0,0,0.95); 
-            padding: 8px 5%; 
+            padding: 10px 5%; 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
@@ -34,27 +48,23 @@
             top: 0; 
             z-index: 2000; 
             border-bottom: 2px solid var(--red);
-            box-shadow: 0 4px 15px rgba(255,0,0,0.3);
         }
         .nav-brand { display: flex; align-items: center; gap: 10px; }
         .nav-logo-img { width: 35px; height: 35px; filter: drop-shadow(0 0 5px var(--red)); }
-        .nav-title { font-weight: 900; color: white; font-size: 16px; letter-spacing: 1px; }
-        .nav-title span { color: var(--red); }
+        .nav-title { font-weight: 900; color: white; font-size: 16px; }
         .nav-links a { color: white; text-decoration: none; margin-left: 15px; font-weight: bold; font-size: 13px; }
 
-        header { text-align: center; padding: 30px 20px; }
-        .main-logo { width: 110px; height: 110px; filter: drop-shadow(0 0 15px var(--red)); }
+        header { text-align: center; padding: 40px 20px; }
+        .main-logo { width: 115px; height: 115px; filter: drop-shadow(0 0 20px var(--red)); }
 
         .group-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; padding: 20px; }
         .group-card { background: #111; border: 1px solid #222; padding: 15px; border-radius: 15px; width: 150px; text-align: center; transition: 0.3s; }
         .group-card img { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--red); margin-bottom: 10px; object-fit: cover; }
-        .group-card h4 { font-size: 12px; margin-bottom: 5px; }
         .group-card:hover { transform: scale(1.05); border-color: var(--red); box-shadow: var(--glow); }
 
-        .about-card { max-width: 600px; margin: 20px auto; background: #111; padding: 25px; border-radius: 15px; border: 1px solid #222; text-align: center; border-left: 5px solid var(--red); }
-        .about-card h2 { color: var(--red); margin-bottom: 10px; font-size: 20px; }
+        .about-card { max-width: 600px; margin: 20px auto; background: #111; padding: 25px; border-radius: 15px; border-left: 5px solid var(--red); text-align: center; }
 
-        .search-bar { width: 85%; max-width: 500px; padding: 12px; border-radius: 50px; border: 1px solid #333; background: #111; color: white; outline: none; text-align: center; display: block; margin: 20px auto; }
+        .search-bar { width: 85%; max-width: 500px; padding: 12px; border-radius: 50px; border: 1px solid #333; background: #111; color: white; text-align: center; display: block; margin: 20px auto; outline: none; }
 
         .link-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding: 20px; max-width: 1200px; margin: 0 auto; }
         .link-card { background: var(--card); border-radius: 15px; padding: 20px; text-align: center; border-top: 3px solid var(--red); transition: 0.3s; }
@@ -64,11 +74,12 @@
         .comment-input-box { display: flex; gap: 10px; margin-bottom: 20px; }
         .comment-input-box input { flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #000; color: white; }
         .comment-input-box button { background: var(--red); border: none; padding: 10px 20px; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; }
+
         .comment-list { max-height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
         .comment-item { background: #181818; padding: 12px; border-radius: 10px; border-left: 3px solid var(--red); font-size: 13px; }
         .comment-item span { color: var(--red); font-weight: bold; font-size: 11px; display: block; margin-bottom: 4px; }
 
-        .wa-float { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; color: white; box-shadow: 0 5px 15px rgba(0,0,0,0.5); z-index: 3000; text-decoration: none; animation: pulse 2s infinite; }
+        .wa-float { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; color: white; z-index: 3000; text-decoration: none; animation: pulse 2s infinite; }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 
         #login-overlay { position: fixed; inset: 0; z-index: 2500; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #000; }
@@ -90,7 +101,7 @@
         <nav>
             <div class="nav-brand">
                 <img src="dragon.png" class="nav-logo-img" alt="Logo">
-                <div class="nav-title">𝐀𝐊𝐈𝐘𝐀 <span>龍</span> HUB</div>
+                <div class="nav-title">𝐀𝐊𝐈𝐘𝐀 <span style="color:red;">龍</span> HUB</div>
             </div>
             <div class="nav-links">
                 <a href="#">Home</a>
@@ -124,7 +135,7 @@
 
         <div class="about-card" id="about">
             <h2>👤 THE MONSTER DEVELOPER</h2>
-            <p>Welcome to <b>Akiya Dragon Community</b>. Best promotional scripts and tools in one place. 🔥🐲</p>
+            <p>Welcome to <b>Akiya Dragon Community</b>. Best scripts and tools in one place. 🔥🐲</p>
         </div>
 
         <input type="text" class="search-bar" placeholder="Search Promo Links...">
@@ -220,10 +231,14 @@
             });
         });
 
+        // 🔥 Gini Pupuru Logic
         window.spawnFire = (e) => {
-            const f = document.createElement('div'); f.className = 'cursor-fire';
-            f.style.left = e.clientX + 'px'; f.style.top = e.clientY + 'px';
-            document.body.appendChild(f); setTimeout(() => f.remove(), 700);
+            const f = document.createElement('div');
+            f.className = 'cursor-fire';
+            f.style.left = e.clientX + 'px';
+            f.style.top = e.clientY + 'px';
+            document.body.appendChild(f);
+            setTimeout(() => f.remove(), 600);
         };
 
         let v = localStorage.getItem('vCount') || 1240;
