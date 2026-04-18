@@ -21,46 +21,50 @@
         #cursor-fire { position: fixed; width: 12px; height: 12px; background: var(--red); border-radius: 50%; pointer-events: none; z-index: 10000; box-shadow: 0 0 15px var(--red); }
 
         /* --- NAV --- */
-        nav { position: fixed; top: 0; width: 100%; background: rgba(0,0,0,0.95); display: flex; justify-content: space-between; align-items: center; padding: 12px 30px; z-index: 1000; border-bottom: 2px solid var(--red); }
+        nav { position: fixed; top: 0; width: 100%; background: rgba(0,0,0,0.95); display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; z-index: 1000; border-bottom: 2px solid var(--red); }
         .nav-logo-container { display: flex; align-items: center; gap: 10px; }
-        .pc-logo { width: 35px; filter: drop-shadow(0 0 5px var(--red)); }
-        .nav-logo { color: var(--red); font-weight: bold; font-size: 20px; text-shadow: 0 0 10px var(--red); letter-spacing: 1px; }
-        .nav-links a { color: white; text-decoration: none; margin: 0 12px; font-weight: bold; cursor: pointer; font-size: 14px; transition: 0.3s; }
+        .pc-logo { width: 30px; filter: drop-shadow(0 0 5px var(--red)); }
+        .nav-logo { color: var(--red); font-weight: bold; font-size: 18px; text-shadow: 0 0 10px var(--red); letter-spacing: 1px; }
+        .nav-links a { color: white; text-decoration: none; margin: 0 8px; font-weight: bold; cursor: pointer; font-size: 12px; transition: 0.3s; }
         .nav-links a:hover { color: var(--red); }
 
         /* --- SECTIONS --- */
-        .section { display: none; padding: 110px 20px 60px; min-height: 100vh; }
+        .section { display: none; padding: 90px 15px 60px; min-height: 100vh; }
         .active { display: block; animation: fadeIn 0.6s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* --- ADMIN PANEL --- */
-        #admin-panel { background: var(--dark); border: 2px solid var(--red); padding: 25px; border-radius: 20px; max-width: 500px; margin: 20px auto; display: none; box-shadow: 0 0 25px rgba(255,0,0,0.2); }
-        .admin-input { width: 100%; padding: 12px; background: #151515; border: 1px solid #333; color: white; margin-bottom: 12px; border-radius: 8px; outline: none; }
+        #admin-panel { background: var(--dark); border: 2px solid var(--red); padding: 20px; border-radius: 20px; max-width: 500px; margin: 20px auto; display: none; box-shadow: 0 0 25px rgba(255,0,0,0.2); }
+        .admin-input { width: 100%; padding: 10px; background: #151515; border: 1px solid #333; color: white; margin-bottom: 10px; border-radius: 8px; outline: none; font-size: 13px; }
 
-        /* --- LINK CARDS --- */
-        .link-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; max-width: 1200px; margin: auto; }
-        .link-card { background: #0d0d0d; border: 1px solid #222; padding: 20px; border-radius: 20px; text-align: center; transition: 0.3s; position: relative; overflow: hidden; }
-        .link-card:hover { border-color: var(--red); transform: translateY(-5px); }
-        .card-dp { width: 70px; height: 70px; border-radius: 15px; object-fit: cover; margin-bottom: 15px; border: 1px solid #333; }
-        .glow-btn { padding: 12px 25px; background: transparent; border: 2px solid var(--red); color: var(--red); font-weight: bold; border-radius: 50px; cursor: pointer; text-transform: uppercase; animation: pulseGlow 2s infinite; }
-        @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 5px var(--red); } 50% { box-shadow: 0 0 20px var(--red); } }
+        /* --- LINK CARDS (MOBILE OPTIMIZED) --- */
+        .link-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; max-width: 1200px; margin: 20px auto; }
+        @media (min-width: 768px) { .link-grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; } }
+        
+        .link-card { background: #0d0d0d; border: 1px solid #222; padding: 15px; border-radius: 15px; text-align: center; transition: 0.3s; position: relative; overflow: hidden; }
+        .link-card:hover { border-color: var(--red); transform: translateY(-3px); }
+        .card-dp { width: 55px; height: 55px; border-radius: 12px; object-fit: cover; margin-bottom: 10px; border: 1px solid #333; }
+        .link-card h3 { font-size: 14px; margin: 5px 0; }
+        .link-card p { font-size: 10px; color: #777; margin-bottom: 12px; }
 
-        /* --- CHAT BOT --- */
+        .glow-btn { padding: 10px 18px; background: transparent; border: 2px solid var(--red); color: var(--red); font-weight: bold; border-radius: 50px; cursor: pointer; text-transform: uppercase; font-size: 11px; animation: pulseGlow 2s infinite; }
+        @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 5px var(--red); } 50% { box-shadow: 0 0 15px var(--red); } }
+
+        /* --- ABOUT DP --- */
+        .about-dp-container { position: relative; width: 120px; margin: 0 auto 15px; }
+        .about-dp { width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--red); object-fit: cover; box-shadow: 0 0 15px var(--red); }
+        #change-dp-btn { display: none; position: absolute; bottom: 0; right: 0; background: var(--red); color: white; border: none; padding: 8px; border-radius: 50%; cursor: pointer; font-size: 12px; }
+
+        /* --- BOT & RULES --- */
         #bot-box { position: fixed; bottom: 25px; left: 25px; z-index: 2000; }
-        .bot-toggle { background: var(--red); color: white; padding: 12px 20px; border-radius: 50px; font-weight: bold; cursor: pointer; box-shadow: 0 0 15px var(--red); }
-        .bot-window { position: absolute; bottom: 70px; left: 0; width: 300px; background: #0f0f0f; border: 1px solid #333; border-radius: 15px; display: none; overflow: hidden; }
-        .bot-header { background: var(--red); padding: 10px; font-size: 14px; font-weight: bold; }
-        .bot-content { padding: 15px; max-height: 300px; overflow-y: auto; font-size: 13px; }
-        .bot-q { background: #222; padding: 8px; margin-bottom: 5px; border-radius: 5px; cursor: pointer; }
+        .bot-toggle { background: var(--red); color: white; padding: 10px 15px; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 12px; }
+        .bot-window { position: absolute; bottom: 60px; left: 0; width: 260px; background: #0f0f0f; border: 1px solid #333; border-radius: 15px; display: none; overflow: hidden; }
+        
+        .rules-container { max-width: 1000px; margin: 20px auto; padding: 15px; background: #050505; border-radius: 15px; border: 1px solid #111; }
+        .tab-btn { padding: 6px 12px; background: #111; border: 1px solid #333; color: #777; border-radius: 5px; cursor: pointer; font-size: 11px; }
 
-        /* --- RULES SECTION --- */
-        .rules-container { max-width: 1000px; margin: 40px auto; padding: 20px; background: #050505; border-radius: 15px; border: 1px solid #111; }
-        .rules-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; }
-        .tab-btn { padding: 8px 15px; background: #111; border: 1px solid #333; color: #777; border-radius: 5px; cursor: pointer; }
-        .tab-btn.active { border-color: var(--red); color: var(--red); }
-
-        footer { text-align: center; padding: 40px; border-top: 1px solid #111; margin-top: 50px; }
-        .float-wa { position: fixed; bottom: 25px; right: 25px; background: #25d366; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; color: white; z-index: 2000; box-shadow: 0 0 15px #25d366; }
+        footer { text-align: center; padding: 30px; border-top: 1px solid #111; }
+        .float-wa { position: fixed; bottom: 25px; right: 25px; background: #25d366; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; color: white; z-index: 2000; }
     </style>
 </head>
 <body>
@@ -77,26 +81,25 @@
             <a onclick="showPage('home')">HOME</a>
             <a onclick="showPage('category')">CATEGORY</a>
             <a onclick="showPage('about')">ABOUT</a>
-            <a style="color:var(--gold);">GET PRO</a>
         </div>
         <div id="auth-area">
             <div id="g_id_onload" data-client_id="180586817754-crv0p90dvrml6ojlgo9a6uvqccbjdn44.apps.googleusercontent.com" data-callback="handleCredentialResponse"></div>
-            <div class="g_id_signin" data-type="standard"></div>
+            <div class="g_id_signin" data-type="standard" data-size="small"></div>
         </div>
-        <div id="user-profile" style="display:none; align-items:center; gap:10px;">
-            <img id="user-pfp" style="width:32px; border-radius:50%; border: 1px solid var(--red);">
-            <span onclick="logout()" style="color:#666; cursor:pointer; font-size:10px;">LOGOUT</span>
+        <div id="user-profile" style="display:none; align-items:center; gap:8px;">
+            <img id="user-pfp" style="width:28px; border-radius:50%; border: 1px solid var(--red);">
+            <span onclick="logout()" style="color:#666; cursor:pointer; font-size:9px;">EXIT</span>
         </div>
     </nav>
 
     <div id="home" class="section active">
         <div style="text-align: center;">
-            <img src="dragon.png" style="width: 140px; filter: drop-shadow(0 0 30px red); margin-bottom: 20px;" onerror="this.style.display='none'">
-            <h1 style="color: var(--red); font-size: 2.8rem; margin: 0;">ආයුබෝවන්</h1>
-            <p style="color: #666; letter-spacing: 3px;">OFFICIAL 2026 ONLINE PRO EDITION</p>
+            <img src="dragon.png" style="width: 100px; filter: drop-shadow(0 0 20px red); margin-bottom: 10px;" onerror="this.style.display='none'">
+            <h1 style="color: var(--red); font-size: 2rem; margin: 0;">ආයුබෝවන්</h1>
+            <p style="color: #666; letter-spacing: 2px; font-size: 10px;">OFFICIAL 2026 ONLINE PRO EDITION</p>
 
             <div id="admin-panel">
-                <h3 style="color: var(--gold); margin-top: 0;">🐲 MASTER ADMIN PANEL</h3>
+                <h3 style="color: var(--gold); margin-top: 0; font-size: 14px;">🐲 MASTER ADMIN PANEL</h3>
                 <input type="text" id="t" class="admin-input" placeholder="Group Name">
                 <input type="text" id="d" class="admin-input" placeholder="Small Info">
                 <input type="text" id="u" class="admin-input" placeholder="Link URL">
@@ -104,17 +107,19 @@
                     <option value="WHATSAPP">WHATSAPP</option>
                     <option value="TELEGRAM">TELEGRAM</option>
                     <option value="FACEBOOK">FACEBOOK</option>
-                    <option value="YOUTUBE">YOUTUBE</option>
                 </select>
                 <input type="file" id="l-img" accept="image/*" class="admin-input">
-                <button class="glow-btn" style="width: 100%; background:var(--red); color:white;" onclick="saveLink()">PUBLISH ONLINE</button>
+                <button class="glow-btn" style="width: 100%; background:var(--red); color:white;" onclick="saveLink()">PUBLISH NOW</button>
             </div>
+
+            <h2 style="color:var(--gold); font-size: 16px; margin-top: 40px; border-bottom: 1px solid #222; padding-bottom: 10px;">LATEST UPDATES</h2>
+            <div class="link-grid" id="home-grid"></div>
         </div>
     </div>
 
     <div id="category" class="section">
-        <div style="text-align: center; margin-bottom: 30px;">
-            <select class="admin-input" id="filter" style="width:200px" onchange="render()">
+        <div style="text-align: center; margin-bottom: 20px;">
+            <select class="admin-input" id="filter" style="width:180px" onchange="render()">
                 <option value="ALL">ALL CATEGORIES</option>
                 <option value="WHATSAPP">WHATSAPP</option>
                 <option value="TELEGRAM">TELEGRAM</option>
@@ -124,11 +129,15 @@
     </div>
 
     <div id="about" class="section">
-        <div class="rules-container" style="max-width: 600px; text-align: center;">
-            <img src="your-dp.jpg" style="width:120px; border-radius:50%; border:3px solid var(--red); margin-bottom:15px;" onerror="this.src='dragon.png'">
-            <h2 style="color:var(--red);">M.A. AKINDU DEWSHAN</h2>
-            <p style="color:#888;">Full Stack Developer | 17 Years Old</p>
-            <button class="glow-btn" style="width:100%; margin-top:15px;" onclick="window.location.href='https://wa.me/94755751816'">CONTACT ME</button>
+        <div class="rules-container" style="max-width: 500px; text-align: center; background: var(--glass);">
+            <div class="about-dp-container">
+                <img id="about-img-display" src="dragon.png" class="about-dp">
+                <button id="change-dp-btn" onclick="document.getElementById('about-dp-input').click()"><i class="fas fa-camera"></i></button>
+                <input type="file" id="about-dp-input" style="display:none" accept="image/*" onchange="updateAboutDP(this)">
+            </div>
+            <h2 style="color:var(--red); font-size: 18px; margin: 5px 0;">M.A. AKINDU DEWSHAN</h2>
+            <p style="color:#888; font-size: 12px;">Full Stack Developer | 17 Years Old</p>
+            <button class="glow-btn" style="width:100%; margin-top:15px;" onclick="window.location.href='https://wa.me/94755751816'">DIRECT MESSAGE</button>
         </div>
     </div>
 
@@ -137,7 +146,7 @@
             <button class="tab-btn active" onclick="switchRule('si')">SINHALA</button>
             <button class="tab-btn" onclick="switchRule('en')">ENGLISH</button>
         </div>
-        <div id="rule-text" style="font-size: 13px; color: #aaa; text-align: center; line-height: 1.8;">
+        <div id="rule-text" style="font-size: 11px; color: #777; text-align: center; line-height: 1.6;">
             වෙබ් අඩවිය තුළ අසභ්‍ය දේ පළ කිරීම හෝ බෙදා හැරීම සපුරා තහනම් වේ.
         </div>
     </div>
@@ -146,28 +155,23 @@
         <div class="bot-window" id="bw">
             <div class="bot-header">龍 DRAGON AI SUPPORT</div>
             <div class="bot-content" id="bc">
-                <div class="bot-q" onclick="botAns('pro')">How to get PRO access?</div>
-                <div class="bot-q" onclick="botAns('rule')">What are the main rules?</div>
+                <div class="bot-q" onclick="botAns('pro')">How to get PRO?</div>
+                <div class="bot-q" onclick="botAns('rule')">Rules?</div>
             </div>
         </div>
-        <div class="bot-toggle" onclick="toggleBot()">NEED HELP?</div>
+        <div class="bot-toggle" onclick="toggleBot()">HELP?</div>
     </div>
 
     <a href="https://wa.me/94755751816" class="float-wa"><i class="fab fa-whatsapp"></i></a>
 
     <footer>
-        <p style="color: var(--red); font-weight: bold; letter-spacing: 2px;">© 2026 ALL RIGHTS RESERVED</p>
-        <p style="font-size: 11px; color: #444;">POWERED BY 𝐀𝐊𝐈𝐘𝐀 龍 x DRAGON</p>
+        <p style="color: var(--red); font-weight: bold; letter-spacing: 2px; font-size: 12px;">© 2026 𝐀𝐊𝐈𝐘𝐀 龍</p>
     </footer>
 
     <script>
-        // --- FIREBASE CONFIG ---
-        const firebaseConfig = {
-            databaseURL: "https://akiya-communitiy-official-lk-default-rtdb.firebaseio.com/" 
-        };
+        const firebaseConfig = { databaseURL: "https://akiya-communitiy-official-lk-default-rtdb.firebaseio.com/" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
-
         const ADMIN = "kaviakiya@gmail.com";
 
         function handleCredentialResponse(r) {
@@ -183,10 +187,26 @@
                 document.getElementById('auth-area').style.display = 'none';
                 document.getElementById('user-profile').style.display = 'flex';
                 document.getElementById('user-pfp').src = localStorage.getItem('u_img');
-                if(email === ADMIN) document.getElementById('admin-panel').style.display = 'block';
+                if(email === ADMIN) {
+                    document.getElementById('admin-panel').style.display = 'block';
+                    document.getElementById('change-dp-btn').style.display = 'block';
+                }
             }
+            // Load About DP from Database
+            db.ref('about_dp').on('value', s => { if(s.val()) document.getElementById('about-img-display').src = s.val(); });
             render();
         };
+
+        function updateAboutDP(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    db.ref('about_dp').set(e.target.result);
+                    alert("About Photo Updated!");
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
 
         function showPage(p) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -194,52 +214,42 @@
         }
 
         function saveLink() {
-            const title = document.getElementById('t').value;
-            const desc = document.getElementById('d').value;
-            const url = document.getElementById('u').value;
-            const cat = document.getElementById('c').value;
-            const file = document.getElementById('l-img').files[0];
-
-            if(!title || !url) return alert("Title and URL required!");
-
+            const title = document.getElementById('t').value, desc = document.getElementById('d').value,
+                  url = document.getElementById('u').value, cat = document.getElementById('c').value,
+                  file = document.getElementById('l-img').files[0];
+            if(!title || !url) return alert("Required fields missing!");
             const reader = new FileReader();
-            reader.onloadend = function() {
-                const imgData = reader.result || 'dragon.png';
-                db.ref('links').push({ title, desc, url, cat, img: imgData }).then(() => {
-                    alert("Link Published Online!");
-                    location.reload();
-                });
-            }
+            reader.onloadend = () => {
+                db.ref('links').push({ title, desc, url, cat, img: reader.result || 'dragon.png' }).then(() => location.reload());
+            };
             if(file) reader.readAsDataURL(file); else reader.onloadend();
         }
 
         function render() {
             const f = document.getElementById('filter').value;
-            const grid = document.getElementById('grid');
-            db.ref('links').on('value', (snapshot) => {
-                const data = snapshot.val();
-                grid.innerHTML = "";
+            db.ref('links').on('value', (s) => {
+                const data = s.val();
+                const grid = document.getElementById('grid'), hGrid = document.getElementById('home-grid');
+                grid.innerHTML = ""; hGrid.innerHTML = "";
+                let count = 0;
                 for (let id in data) {
                     let l = data[id];
-                    if (f === 'ALL' || l.cat === f) {
-                        grid.innerHTML += `
-                            <div class="link-card">
+                    let card = `<div class="link-card">
                                 <img src="${l.img}" class="card-dp" onerror="this.src='dragon.png'">
                                 <h3>${l.title}</h3>
-                                <p style="font-size:12px; color:#666;">${l.desc}</p>
-                                <button class="glow-btn" onclick="window.open('${l.url}')">JOIN LIVE</button>
-                                <div style="position:absolute; top:10px; right:10px; font-size:9px; color:var(--red); font-weight:bold;">${l.cat}</div>
+                                <p>${l.desc}</p>
+                                <button class="glow-btn" onclick="window.open('${l.url}')">JOIN</button>
+                                <div style="position:absolute; top:8px; right:8px; font-size:7px; color:var(--red); font-weight:bold;">${l.cat}</div>
                             </div>`;
-                    }
+                    if (f === 'ALL' || l.cat === f) grid.innerHTML += card;
+                    if (count < 6) hGrid.innerHTML += card; // Home එකේ අන්තිම ලින්ක් 6ක් විතරක් පෙන්නන්න
+                    count++;
                 }
             });
         }
 
         function switchRule(l) {
-            const r = {
-                si: "වෙබ් අඩවිය තුළ අසභ්‍ය දේ පළ කිරීම හෝ බෙදා හැරීම සපුරා තහනම් වේ. නීති උල්ලංඝනය කරන්නන් වහාම තහනම් කරනු ලැබේ.",
-                en: "Posting or sharing NSFW/Adult content is strictly prohibited. Violators will be banned."
-            };
+            const r = { si: "වෙබ් අඩවිය තුළ අසභ්‍ය දේ පළ කිරීම තහනම්.", en: "No NSFW content allowed." };
             document.getElementById('rule-text').innerText = r[l];
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             event.target.classList.add('active');
@@ -247,36 +257,25 @@
 
         function botAns(t) {
             const bc = document.getElementById('bc');
-            if(t==='pro') bc.innerHTML += "<p style='color:var(--gold)'>Admin ට WhatsApp කර PRO ගිණුම සක්‍රීය කරගන්න.</p>";
-            if(t==='rule') bc.innerHTML += "<p style='color:var(--red)'>නීති පද්ධතිය පල්ලෙහා Rules section එකේ ඇත.</p>";
+            bc.innerHTML += `<p style="color:var(--gold)">${t === 'pro' ? 'WhatsApp Admin for PRO' : 'Check rules below'}</p>`;
             bc.scrollTop = bc.scrollHeight;
         }
 
-        function toggleBot() { 
-            let b = document.getElementById('bw');
-            b.style.display = (b.style.display === 'block' ? 'none' : 'block');
-        }
-
+        function toggleBot() { let b = document.getElementById('bw'); b.style.display = (b.style.display==='block'?'none':'block'); }
         function logout() { localStorage.clear(); location.reload(); }
 
         // Fire Effect
-        const canvas = document.getElementById('fire-canvas');
-        const ctx = canvas.getContext('2d');
+        const canvas = document.getElementById('fire-canvas'), ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
         let p = [];
         window.onmousemove = (e) => {
             document.getElementById('cursor-fire').style.left = e.clientX+'px';
             document.getElementById('cursor-fire').style.top = e.clientY+'px';
-            for(let i=0; i<2; i++) p.push({x: e.clientX, y: e.clientY, s: Math.random()*3+1, vy: -Math.random()*2, a: 1});
+            for(let i=0; i<2; i++) p.push({x: e.clientX, y: e.clientY, s: Math.random()*2+1, vy: -Math.random()*2, a: 1});
         };
         function anim() {
             ctx.clearRect(0,0,canvas.width, canvas.height);
-            p.forEach((m, i) => {
-                m.y += m.vy; m.a -= 0.015;
-                ctx.fillStyle = `rgba(255, 50, 0, ${m.a})`;
-                ctx.beginPath(); ctx.arc(m.x, m.y, m.s, 0, Math.PI*2); ctx.fill();
-                if(m.a <= 0) p.splice(i, 1);
-            });
+            p.forEach((m, i) => { m.y += m.vy; m.a -= 0.02; ctx.fillStyle = `rgba(255, 50, 0, ${m.a})`; ctx.beginPath(); ctx.arc(m.x, m.y, m.s, 0, Math.PI*2); ctx.fill(); if(m.a <= 0) p.splice(i, 1); });
             requestAnimationFrame(anim);
         }
         anim();
