@@ -3,247 +3,187 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>𝐀𝐊𝐈𝐘𝐀 龍 Community | Monster Hub 2026</title>
-    <link rel="icon" type="image/png" href="dragon.png?v=1">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>𝐀𝐊𝐈𝐘𝐀 龍 Community | Official 2026</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <style>
-        :root { --red: #ff0000; --bg: #050505; --card: #111; --glow: 0 0 20px rgba(255, 0, 0, 0.8); }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; cursor: default; }
-        
-        body { 
-            background-color: var(--bg); 
-            color: white; 
-            overflow-x: hidden; 
-            scroll-behavior: smooth;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(20,0,0,1)), url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+        /* CSS - Theme & Layout */
+        :root {
+            --primary: #ff0000; /* Red */
+            --secondary: #ffcc00; /* Yellow */
+            --bg: #000000; /* Black */
         }
 
-        /* 🔴 Old Style Particles (Gini Pupuru) */
-        .particle {
+        body {
+            background-color: var(--bg);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* Gini Pupuru Background Effect */
+        #particles-js {
             position: fixed;
-            pointer-events: none;
-            border-radius: 50%;
-            z-index: 9999;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
         }
 
-        .fire-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; opacity: 0.2; background: url('https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJndW95ZzRyeG13eGZ4Z3R4Z3R4Z3R4Z3R4Z3R4Z3R4Z3R4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/yr7n0u3qzJC8mJLIL7/giphy.gif') center/cover; }
+        /* Nav Bar */
+        nav {
+            background: rgba(0,0,0,0.8);
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            border-bottom: 2px solid var(--primary);
+            z-index: 1000;
+        }
 
-        nav { background: rgba(0,0,0,0.95); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 2000; border-bottom: 2px solid var(--red); }
-        .nav-brand { display: flex; align-items: center; gap: 10px; }
-        .nav-logo-img { width: 35px; height: 35px; filter: drop-shadow(0 0 5px var(--red)); }
-        .nav-title { font-weight: 900; color: white; font-size: 16px; }
-        .nav-links a { color: white; text-decoration: none; margin-left: 15px; font-weight: bold; font-size: 13px; }
+        .gold-btn {
+            background: linear-gradient(45deg, #ffd700, #ffcc00);
+            color: black;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            text-decoration: none;
+            box-shadow: 0 0 10px var(--secondary);
+            animation: glow 1.5s infinite alternate;
+        }
 
-        header { text-align: center; padding: 40px 20px; }
-        .main-logo { width: 115px; height: 115px; filter: drop-shadow(0 0 20px var(--red)); }
+        @keyframes glow {
+            from { box-shadow: 0 0 5px #ffd700; }
+            to { box-shadow: 0 0 20px #ffcc00; }
+        }
 
-        .group-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; padding: 20px; }
-        .group-card { background: #111; border: 1px solid #222; padding: 15px; border-radius: 15px; width: 150px; text-align: center; transition: 0.3s; }
-        .group-card img { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--red); margin-bottom: 10px; object-fit: cover; }
+        /* About Section */
+        #about-section {
+            display: none;
+            padding: 50px 20px;
+            text-align: center;
+        }
 
-        .about-card { max-width: 600px; margin: 20px auto; background: #111; padding: 25px; border-radius: 15px; border-left: 5px solid var(--red); text-align: center; }
-        .search-bar { width: 85%; max-width: 500px; padding: 12px; border-radius: 50px; border: 1px solid #333; background: #111; color: white; text-align: center; display: block; margin: 20px auto; outline: none; }
-        
-        .link-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding: 20px; max-width: 1200px; margin: 0 auto; }
-        .link-card { background: var(--card); border-radius: 15px; padding: 20px; text-align: center; border-top: 3px solid var(--red); transition: 0.3s; }
-        .link-card:hover { transform: translateY(-5px); box-shadow: var(--glow); }
+        .owner-dp {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 3px solid var(--secondary);
+            margin-bottom: 20px;
+            object-fit: cover;
+        }
 
-        .comment-section { max-width: 800px; margin: 40px auto; padding: 20px; background: rgba(15,15,15,0.8); border-radius: 15px; border: 1px solid #222; }
-        .comment-input-box { display: flex; gap: 10px; margin-bottom: 20px; }
-        .comment-input-box input { flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #000; color: white; }
-        .comment-input-box button { background: var(--red); border: none; padding: 10px 20px; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; }
+        .thanks-bar {
+            background: var(--secondary);
+            color: black;
+            padding: 10px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
 
-        .comment-list { max-height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
-        .comment-item { background: #181818; padding: 12px; border-radius: 10px; border-left: 3px solid var(--red); font-size: 13px; }
-        .comment-item span { color: var(--red); font-weight: bold; font-size: 11px; display: block; margin-bottom: 4px; }
-
-        #login-overlay { position: fixed; inset: 0; z-index: 2500; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #000; }
-        #content-wrapper { filter: blur(25px); pointer-events: none; opacity: 0; transition: 1s; }
-        body.unlocked #content-wrapper { filter: blur(0); pointer-events: all; opacity: 1; }
-        footer { text-align: center; padding: 40px; color: #444; font-size: 11px; border-top: 1px solid #222; }
-        
-        .wa-float { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; color: white; z-index: 3000; text-decoration: none; }
+        /* Bot Container */
+        #bot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            background: #111;
+            border: 1px solid var(--primary);
+            border-radius: 10px;
+            display: none;
+        }
     </style>
 </head>
 <body>
 
-    <div class="fire-bg"></div>
+<div id="particles-js"></div>
 
-    <div id="login-overlay">
-        <img src="dragon.png" width="80" style="margin-bottom:20px;">
-        <button onclick="login()" style="background:white; color:black; padding:15px 30px; border-radius:50px; font-weight:bold; border:none; cursor:pointer;">UNLOCK MONSTER HUB</button>
+<nav>
+    <img src="dragon_logo_url" alt="AKIYA Logo" height="50">
+    <div>
+        <button onclick="showSection('home')">HOME</button>
+        <button onclick="showSection('category')">CATEGORY</button>
+        <button onclick="showSection('about')">ABOUT</button>
     </div>
+    <a href="https://wa.me/94755751816?text=PRO%20USER%20IN%20SUBSCRIBE%20IN%20TO%20ME" class="gold-btn">PRO SUBSCRIBE - LKR 2250</a>
+</nav>
 
-    <div id="content-wrapper">
-        <nav>
-            <div class="nav-brand">
-                <img src="dragon.png" class="nav-logo-img">
-                <div class="nav-title">𝐀𝐊𝐈𝐘𝐀 <span style="color:red;">龍</span> HUB</div>
-            </div>
-            <div class="nav-links">
-                <a href="#">Home</a>
-                <a href="#about">About</a>
-                <a href="#comments">Feed</a>
-            </div>
-        </nav>
+<div id="welcome-msg" style="text-align: center; padding: 100px;">
+    <h1 id="welcome-text"></h1>
+    <h2>𝐀𝐊𝐈𝐘𝐀 龍 Community | Official 2026</h2>
+</div>
 
-        <header>
-            <img src="dragon.png" class="main-logo">
-            <h1 style="margin-top:10px; letter-spacing:2px;">𝐀𝐊𝐈𝐘𝐀 龍 COMMUNITY</h1>
-        </header>
-
-        <div class="group-container">
-            <div class="group-card">
-                <img src="dragon.png">
-                <h4>Dragon FB</h4>
-                <a href="#" style="color:var(--red); font-size:10px; text-decoration:none;">JOIN NOW</a>
-            </div>
-            <div class="group-card">
-                <img src="dragon.png">
-                <h4>Dragon YT</h4>
-                <a href="#" style="color:var(--red); font-size:10px; text-decoration:none;">SUBSCRIBE</a>
-            </div>
-        </div>
-
-        <div class="about-card" id="about">
-            <h2>👤 THE MONSTER DEVELOPER</h2>
-            <p>Welcome to <b>Akiya Dragon Community</b>. Best scripts and tools in one place. 🔥🐲</p>
-        </div>
-
-        <div id="admin-panel" style="display:none; background:rgba(30,0,0,0.5); padding:20px; border-radius:10px; margin: 20px auto; max-width: 600px; border:1px dashed red;">
-            <input type="text" id="title" style="width:100%; padding:10px; margin-bottom:10px; background:black; color:white; border:1px solid #333;" placeholder="Title">
-            <input type="text" id="url" style="width:100%; padding:10px; margin-bottom:10px; background:black; color:white; border:1px solid #333;" placeholder="URL">
-            <button onclick="publish()" style="width:100%; padding:10px; background:red; color:white; border:none; font-weight:bold;">PUBLISH NEW LINK</button>
-        </div>
-
-        <div class="link-grid" id="linkGrid"></div>
-
-        <div class="comment-section" id="comments">
-            <h3 style="margin-bottom:15px; color:var(--red);"><i class="fas fa-comments"></i> FEEDBACK</h3>
-            <div class="comment-input-box">
-                <input type="text" id="commentText" placeholder="Write a comment...">
-                <button onclick="postComment()">POST</button>
-            </div>
-            <div class="comment-list" id="commentList"></div>
-        </div>
-
-        <footer>
-            <p>&copy; 2026 𝐀𝐊𝐈𝐘𝐀 龍 COMMUNITY</p>
-            <p>Visitors: <span id="count">0</span></p>
-        </footer>
+<div id="home-section">
+    <div style="text-align: center; margin: 20px;">
+        <input type="text" id="searchBar" placeholder="Search 3000+ Links..." onkeyup="searchLinks()">
+        <div id="suggestions"></div>
     </div>
+    <div id="link-container">
+        </div>
+</div>
 
-    <a href="https://wa.me/94755751816" class="wa-float" target="_blank">
-        <i class="fab fa-whatsapp"></i>
-    </a>
+<div id="about-section">
+    <img id="admin-dp" src="default_avatar.jpg" class="owner-dp">
+    <h1 style="color: var(--secondary);">M.A. AKINDU DEWSHAN MANCHANAYAKE</h1>
+    <p><b>Age:</b> 17 Years Old</p>
+    <p><b>Education:</b> CH/MEDAGAMA ABAYA ADARSHA NATIONAL SCHOOL</p>
+    
+    <div class="thanks-bar">THANKS FOR VISITING MY SITE!</div>
+    
+    <div style="margin-top: 30px;">
+        <h3>WEB INFORMATION</h3>
+        <p>This is a high-security community platform for digital links.</p>
+        <a href="https://wa.me/94755751816" style="color: var(--secondary);">Contact via WhatsApp</a>
+    </div>
+</div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithRedirect, getRedirectResult, GoogleAuthProvider, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getDatabase, ref, push, onValue, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+<footer>
+    <hr border="1" color="red">
+    <p align="center">POWERED BY 𝐀𝐊𝐈𝐘𝐀 龍 x DRAGON | ALL RIGHTS RESERVED OWNER 𝐀𝐊𝐈𝐘𝐀 龍</p>
+</footer>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyDEmPDHu3jybcYu-nKl5cCHyyWNnerex-w",
-            authDomain: "akiya-communitiy-official-lk.firebaseapp.com",
-            databaseURL: "https://akiya-communitiy-official-lk-default-rtdb.firebaseio.com/",
-            projectId: "akiya-communitiy-official-lk",
-            storageBucket: "akiya-communitiy-official-lk.firebasestorage.app",
-            messagingSenderId: "180586817754",
-            appId: "1:180586817754:web:c505feb010c7c67c15dde3"
-        };
+<script>
+    // 1. Language Welcome Message
+    const messages = ["ආයුබෝවන්", "Welcome", "வணக்கம்"];
+    let i = 0;
+    setInterval(() => {
+        document.getElementById('welcome-text').innerText = messages[i];
+        i = (i + 1) % messages.length;
+    }, 2000);
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getDatabase(app);
-        const provider = new GoogleAuthProvider();
-        let currentUser = null;
+    // 2. Section Control
+    function showSection(section) {
+        document.getElementById('home-section').style.display = 'none';
+        document.getElementById('about-section').style.display = 'none';
+        
+        if(section === 'home') document.getElementById('home-section').style.display = 'block';
+        if(section === 'about') document.getElementById('about-section').style.display = 'block';
+    }
 
-        getRedirectResult(auth).catch((error) => console.error(error));
+    // 3. Admin Login & Alert (Logic)
+    function onLogin(user) {
+        // Here we send user details to kaviakiya@gmail.com via Firebase Functions
+        console.log("Security Alert Sent to Admin for: " + user.email);
+    }
 
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                currentUser = user;
-                document.body.classList.add('unlocked');
-                document.getElementById('login-overlay').style.display = 'none';
-                if(["kaviakiya@gmail.com", "dewshanakiya@gmail.com"].includes(user.email)) {
-                    document.getElementById('admin-panel').style.display = 'block';
-                }
-            }
-        });
-
-        window.login = () => {
-            setPersistence(auth, browserLocalPersistence).then(() => {
-                return signInWithRedirect(auth, provider);
-            });
-        };
-
-        // 🟢 OLD STYLE BOLA GINI PUPURU LOGIC
-        document.addEventListener('mousemove', function(e) {
-            for (let i = 0; i < 3; i++) { // එක පාර පුපුරු 3ක් හදනවා
-                createParticle(e.clientX, e.clientY);
-            }
-        });
-
-        function createParticle(x, y) {
-            const p = document.createElement('div');
-            p.className = 'particle';
-            document.body.appendChild(p);
-
-            const size = Math.random() * 8 + 2;
-            p.style.width = `${size}px`;
-            p.style.height = `${size}px`;
-            
-            // පාටවල් මාරු වෙන්න (ගින්දර වගේ)
-            const colors = ['#ff0000', '#ff8c00', '#ffff00', '#ffffff'];
-            p.style.background = colors[Math.floor(Math.random() * colors.length)];
-            p.style.boxShadow = `0 0 10px ${p.style.background}`;
-
-            let posX = x;
-            let posY = y;
-            
-            // පැත්තට විසිවෙන වේගය (Physics)
-            let velX = (Math.random() - 0.5) * 8;
-            let velY = (Math.random() - 0.5) * 8;
-            let opacity = 1;
-
-            function update() {
-                posX += velX;
-                posY += velY;
-                velY += 0.1; // ගුරුත්වාකර්ෂණය (පහළට වැටෙන්න)
-                opacity -= 0.02;
-
-                p.style.left = `${posX}px`;
-                p.style.top = `${posY}px`;
-                p.style.opacity = opacity;
-
-                if (opacity > 0) {
-                    requestAnimationFrame(update);
-                } else {
-                    p.remove();
-                }
-            }
-            update();
+    // 4. Auto-Block System
+    const forbiddenWords = ["sex", "porn", "kunu"];
+    function checkComment(text) {
+        if(forbiddenWords.some(word => text.toLowerCase().includes(word))) {
+            alert("Your account is blocked for 14 days due to policy violation.");
+            // Logic to disable user account
         }
+    }
+</script>
 
-        // Firebase Other Functions (Links/Comments)
-        window.publish = () => {
-            const t = document.getElementById('title').value;
-            const u = document.getElementById('url').value;
-            if(t && u) push(ref(db, 'links'), { name: t, url: u });
-        };
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script>
+    particlesJS.load('particles-js', 'particles.json', function() {
+        console.log('Particles loaded');
+    });
+</script>
 
-        onValue(ref(db, 'links'), (snap) => {
-            const grid = document.getElementById('linkGrid'); grid.innerHTML = "";
-            if(snap.val()) Object.values(snap.val()).reverse().forEach(l => {
-                grid.innerHTML += `<div class="link-card"><h3>${l.name}</h3><a href="${l.url}" target="_blank" style="color:red; text-decoration:none; font-weight:bold;">ACCESS 🔥</a></div>`;
-            });
-        });
-
-        let v = localStorage.getItem('vCount') || 1240;
-        localStorage.setItem('vCount', ++v);
-        document.getElementById('count').innerText = v.toLocaleString();
-    </script>
 </body>
 </html>
