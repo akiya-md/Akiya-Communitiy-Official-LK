@@ -11,7 +11,7 @@
         * { box-sizing: border-box; cursor: none; }
         body, html { margin: 0; padding: 0; background: var(--black); color: white; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
 
-        /* --- FIRE BACKGROUND --- */
+        /* --- FIRE EFFECTS --- */
         #fire-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         #cursor-fire { position: fixed; width: 12px; height: 12px; background: var(--red); border-radius: 50%; pointer-events: none; z-index: 10000; box-shadow: 0 0 15px var(--red); }
 
@@ -21,37 +21,30 @@
         .nav-links a { color: white; text-decoration: none; margin: 0 15px; font-weight: bold; font-size: 14px; transition: 0.3s; cursor: pointer; }
         .nav-links a:hover { color: var(--red); }
 
-        /* --- USER PROFILE NAV --- */
         .user-nav { display: flex; align-items: center; gap: 10px; }
         .user-img { width: 35px; height: 35px; border-radius: 50%; border: 1px solid var(--red); }
-        .logout-btn { color: #666; font-size: 12px; cursor: pointer; text-decoration: underline; }
-
-        /* --- HERO & WELCOME --- */
-        .hero { text-align: center; padding: 140px 20px 40px; }
-        #welcome-msg { font-size: 2.5rem; color: var(--red); text-shadow: 0 0 15px var(--red); height: 60px; font-weight: 800; }
+        .logout-btn { color: #666; font-size: 11px; cursor: pointer; text-decoration: underline; }
 
         /* --- SECTIONS --- */
-        .section { display: none; padding: 100px 20px; min-height: 100vh; }
+        .section { display: none; padding: 120px 20px 60px; min-height: 100vh; }
         .active { display: block; animation: fadeIn 0.5s; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
+        /* --- ADMIN PANEL --- */
+        #admin-panel { background: #111; border: 2px dashed var(--red); padding: 20px; border-radius: 15px; max-width: 600px; margin: 20px auto; display: none; }
+        .admin-input { width: 100%; padding: 10px; background: #222; border: 1px solid #444; color: white; margin-bottom: 10px; border-radius: 5px; }
+
         /* --- LINK CARDS --- */
-        .link-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; max-width: 1200px; margin: auto; }
-        .link-card { background: var(--dark); border: 1px solid #222; padding: 25px; border-radius: 20px; text-align: center; transition: 0.3s; }
-        .link-card:hover { border-color: var(--red); transform: translateY(-5px); }
-        .link-dp { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--red); margin: 0 auto 15px; }
+        .link-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 1200px; margin: auto; }
+        .link-card { background: var(--dark); border: 1px solid #222; padding: 20px; border-radius: 20px; text-align: center; position: relative; }
+        .link-card .category-tag { position: absolute; top: 10px; right: 10px; font-size: 10px; background: var(--red); padding: 3px 8px; border-radius: 5px; }
+        .link-dp { width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--red); margin-bottom: 15px; }
 
-        /* --- ABOUT CARD --- */
-        .about-card { max-width: 800px; margin: auto; background: var(--dark); border: 2px solid #222; border-radius: 25px; padding: 40px; text-align: center; }
-        .admin-dp { width: 150px; height: 150px; border-radius: 50%; border: 4px solid var(--red); margin-bottom: 20px; box-shadow: 0 0 20px var(--red); }
-        .thanks-bar { background: linear-gradient(90deg, transparent, var(--red), transparent); padding: 12px; font-weight: bold; margin-top: 30px; }
-
-        /* --- AI BOT & FOOTER --- */
-        .bot-float { position: fixed; bottom: 30px; right: 30px; width: 70px; height: 70px; background: #000; border: 2px solid var(--red); border-radius: 50%; display: flex; justify-content: center; align-items: center; z-index: 1000; box-shadow: 0 0 20px var(--red); }
-        .bot-float img { width: 50px; border-radius: 50%; }
+        /* --- UTILS --- */
         .btn { padding: 10px 25px; border: 2px solid var(--red); background: transparent; color: var(--red); font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; }
         .btn:hover { background: var(--red); color: white; }
-        footer { text-align: center; padding: 50px; border-top: 1px solid #222; }
+        .hero { text-align: center; }
+        footer { text-align: center; padding: 40px; border-top: 1px solid #222; margin-top: 50px; }
     </style>
 </head>
 <body>
@@ -83,71 +76,70 @@
     <div id="home" class="section active">
         <div class="hero">
             <img src="dragon.png" alt="Dragon" style="width: 180px; filter: drop-shadow(0 0 20px red);">
-            <div id="welcome-msg">ආයුබෝවන්</div>
-            <p>VISITORS: <span id="count-num" style="color:red">15,402</span></p>
-        </div>
-    </div>
-
-    <div id="category" class="section">
-        <div id="cat-locked" style="text-align: center; margin-top: 50px;">
-            <h2 style="color: var(--red);">[ LOCKED ]</h2>
-            <p>PLEASE LOGIN TO UNLOCK PREMIUM LINKS</p>
-        </div>
-        <div id="cat-unlocked" style="display: none;">
-            <h1 style="text-align: center; color: var(--red); margin-bottom: 40px;">PREMIUM LINKS</h1>
-            <div class="link-grid">
-                <div class="link-card">
-                    <img src="https://via.placeholder.com/100" class="link-dp" alt="DP">
-                    <h3>WHATSAPP HUB</h3>
-                    <button class="btn">DIRECT JOIN</button>
-                </div>
+            <h1 id="welcome-msg">ආයුබෝවන්</h1>
+            
+            <div id="admin-panel">
+                <h3 style="color: var(--gold);">MASTER ADMIN PANEL</h3>
+                <input type="text" id="link-title" class="admin-input" placeholder="Link Title (e.g. My Telegram)">
+                <input type="text" id="link-url" class="admin-input" placeholder="URL (https://...)">
+                <select id="link-cat" class="admin-input">
+                    <option value="WhatsApp">WhatsApp</option>
+                    <option value="Telegram">Telegram</option>
+                    <option value="Facebook">Facebook</option>
+                    <option value="YouTube">YouTube</option>
+                </select>
+                <button class="btn" onclick="addNewLink()">ADD NEW LINK</button>
             </div>
         </div>
     </div>
 
-    <div id="about" class="section">
-        <div class="about-card">
-            <img src="your-dp.jpg" alt="Akindu" class="admin-dp">
-            <h2 style="color: var(--red);">M.A. AKINDU DEWSHAN MANCHANAYAKE</h2>
-            <p><b>Age:</b> 17 Years Old</p>
-            <p><b>Education:</b> CH/MEDAGAMA ABAYA ADARSHA NATIONAL SCHOOL</p>
-            <button class="btn" style="width: 100%; margin-top: 20px;" onclick="window.location.href='https://wa.me/94755751816'">CONTACT VIA WHATSAPP</button>
-            <div class="thanks-bar">THANKS FOR VISITING MY SITE</div>
+    <div id="category" class="section">
+        <div id="cat-locked" style="text-align:center;">
+            <h2>[ ACCESS DENIED ]</h2>
+            <p>Please login to see premium links.</p>
+        </div>
+        <div id="cat-unlocked" style="display:none;">
+            <h2 style="text-align: center; color: var(--red);">DATABASE LINKS</h2>
+            <div class="link-grid" id="main-link-grid">
+                </div>
         </div>
     </div>
 
-    <a href="https://wa.me/94755751816?text=HELLO%20𝐀𝐊𝐈𝐘𝐀%20龍%20x%20DRAGON%20AI" class="bot-float">
-        <img src="whitedragon.png" alt="Bot">
-    </a>
+    <div id="about" class="section">
+        <div style="max-width: 600px; margin: auto; background: #0a0a0a; padding: 30px; border-radius: 20px; border: 1px solid #222; text-align: center;">
+            <h2 style="color: var(--red);">M.A. AKINDU DEWSHAN MANCHANAYAKE</h2>
+            <p>Age: 17 | CH/MEDAGAMA ABAYA ADARSHA NATIONAL SCHOOL</p>
+            <button class="btn" onclick="window.location.href='https://wa.me/94755751816'">WHATSAPP ME</button>
+        </div>
+    </div>
 
     <footer>
-        <p style="color: var(--red); font-weight: bold; letter-spacing: 2px;">© 2026 ALL RIGHTS RESERVED</p>
-        <p>POWERED BY 𝐀𝐊𝐈𝐘𝐀 龍 x DRAGON</p>
+        <p>© 2026 ALL RIGHTS RESERVED | POWERED BY 𝐀𝐊𝐈𝐘𝐀 龍</p>
     </footer>
 
     <script>
+        const ADMIN_EMAIL = "kaviakiya@gmail.com";
+        let localLinks = JSON.parse(localStorage.getItem('saved_links')) || [];
+
         function showPage(id) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-        }
-
-        // --- GOOGLE LOGIN LOGIC ---
-        function parseJwt(token) {
-            var base64Url = token.split('.')[1];
-            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            return JSON.parse(window.atob(base64));
+            if(id === 'category') renderLinks();
         }
 
         function handleCredentialResponse(response) {
-            const userData = parseJwt(response.credential);
-            localStorage.setItem('user_name', userData.name);
-            localStorage.setItem('user_img', userData.picture);
+            const data = JSON.parse(atob(response.credential.split('.')[1]));
+            localStorage.setItem('user_name', data.name);
+            localStorage.setItem('user_img', data.picture);
+            localStorage.setItem('user_email', data.email);
             localStorage.setItem('is_logged', 'true');
             updateUI();
         }
 
         function updateUI() {
             const isLogged = localStorage.getItem('is_logged');
+            const email = localStorage.getItem('user_email');
+
             if (isLogged === 'true') {
                 document.getElementById('auth-area').style.display = 'none';
                 document.getElementById('user-profile').style.display = 'flex';
@@ -155,41 +147,71 @@
                 document.getElementById('user-pfp').src = localStorage.getItem('user_img');
                 document.getElementById('cat-locked').style.display = 'none';
                 document.getElementById('cat-unlocked').style.display = 'block';
-            } else {
-                document.getElementById('auth-area').style.display = 'block';
-                document.getElementById('user-profile').style.display = 'none';
-                document.getElementById('cat-locked').style.display = 'block';
-                document.getElementById('cat-unlocked').style.display = 'none';
+
+                // CHECK IF ADMIN
+                if (email === ADMIN_EMAIL) {
+                    document.getElementById('admin-panel').style.display = 'block';
+                }
             }
         }
 
-        function logout() {
-            localStorage.clear();
-            location.reload();
+        function addNewLink() {
+            const title = document.getElementById('link-title').value;
+            const url = document.getElementById('link-url').value;
+            const cat = document.getElementById('link-cat').value;
+
+            if(title && url) {
+                const newLink = { title, url, cat };
+                localLinks.push(newLink);
+                localStorage.setItem('saved_links', JSON.stringify(localLinks));
+                alert("Link Added Successfully!");
+                document.getElementById('link-title').value = '';
+                document.getElementById('link-url').value = '';
+            }
         }
 
-        // --- FIRE EFFECTS ---
+        function renderLinks() {
+            const grid = document.getElementById('main-link-grid');
+            grid.innerHTML = localLinks.map((l, index) => `
+                <div class="link-card">
+                    <span class="category-tag">${l.cat}</span>
+                    <img src="https://via.placeholder.com/80/ff0000/ffffff?text=LINK" class="link-dp">
+                    <h3>${l.title}</h3>
+                    <button class="btn" onclick="window.open('${l.url}')">DIRECT JOIN</button>
+                    ${localStorage.getItem('user_email') === ADMIN_EMAIL ? `<br><small onclick="deleteLink(${index})" style="color:gray; cursor:pointer;">Delete</small>` : ''}
+                </div>
+            `).join('');
+        }
+
+        function deleteLink(index) {
+            localLinks.splice(index, 1);
+            localStorage.setItem('saved_links', JSON.stringify(localLinks));
+            renderLinks();
+        }
+
+        function logout() { localStorage.clear(); location.reload(); }
+
+        // FIRE EFFECTS (Shortened for brevity)
         const canvas = document.getElementById('fire-canvas');
         const ctx = canvas.getContext('2d');
-        const cursor = document.getElementById('cursor-fire');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
         let particles = [];
         window.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px';
-            for(let i=0; i<3; i++) particles.push({x: e.clientX, y: e.clientY, vx: Math.random()*2-1, vy: Math.random()*2-1, a: 1});
+            document.getElementById('cursor-fire').style.left = e.clientX+'px';
+            document.getElementById('cursor-fire').style.top = e.clientY+'px';
+            for(let i=0; i<2; i++) particles.push({x: e.clientX, y: e.clientY, vx: Math.random()*2-1, vy: Math.random()*2-1, a: 1});
         });
         function animate() {
             ctx.clearRect(0,0,canvas.width, canvas.height);
             particles.forEach((p, i) => {
                 p.x += p.vx; p.y += p.vy; p.a -= 0.02;
-                ctx.fillStyle = `rgba(255, 20, 0, ${p.a})`;
+                ctx.fillStyle = `rgba(255,0,0,${p.a})`;
                 ctx.beginPath(); ctx.arc(p.x, p.y, 2, 0, Math.PI*2); ctx.fill();
                 if(p.a <= 0) particles.splice(i, 1);
             });
             requestAnimationFrame(animate);
         }
         animate();
-
         window.onload = updateUI;
     </script>
 </body>
