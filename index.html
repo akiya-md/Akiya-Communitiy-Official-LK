@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -170,7 +169,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, signInWithRedirect, getRedirectResult, GoogleAuthProvider, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getDatabase, ref, push, onValue, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
         const firebaseConfig = {
@@ -189,17 +188,26 @@
         const provider = new GoogleAuthProvider();
         let currentUser = null;
 
+        // Redirect එකෙන් පස්සේ ලැබෙන ප්‍රතිඵලය පරීක්ෂා කිරීම
+        getRedirectResult(auth).catch((error) => console.error("Login Error:", error));
+
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 currentUser = user;
                 document.body.classList.add('unlocked');
                 document.getElementById('login-overlay').style.display = 'none';
-                if(["kaviakiya@gmail.com", "dewsh
-                    a@gmail.com"].includes(user.email)) document.getElementById('admin-panel').style.display = 'block';
+                // Email එක එකම පේළියේ තියෙන්න ඕනේ
+                if(["kaviakiya@gmail.com", "dewshanakiya@gmail.com"].includes(user.email)) {
+                    document.getElementById('admin-panel').style.display = 'block';
+                }
             }
         });
 
-        window.login = () => setPersistence(auth, browserLocalPersistence).then(() => signInWithPopup(auth, provider));
+        window.login = () => {
+            setPersistence(auth, browserLocalPersistence).then(() => {
+                return signInWithRedirect(auth, provider);
+            });
+        };
         
         window.publish = () => {
             const t = document.getElementById('title').value;
@@ -233,7 +241,6 @@
             });
         });
 
-        // 🔥 Gini Pupuru Logic
         window.spawnFire = (e) => {
             const f = document.createElement('div');
             f.className = 'cursor-fire';
