@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="si">
 <head>
@@ -15,11 +16,9 @@
         * { box-sizing: border-box; cursor: none; }
         body, html { margin: 0; padding: 0; background: var(--black); color: white; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
 
-        /* --- FIRE BACKGROUND --- */
         #fire-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.6; }
         #cursor-fire { position: fixed; width: 12px; height: 12px; background: var(--red); border-radius: 50%; pointer-events: none; z-index: 10000; box-shadow: 0 0 15px var(--red); }
 
-        /* --- NAV --- */
         nav { position: fixed; top: 0; width: 100%; background: rgba(0,0,0,0.95); display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; z-index: 1000; border-bottom: 2px solid var(--red); }
         .nav-logo-container { display: flex; align-items: center; gap: 10px; }
         .pc-logo { width: 30px; filter: drop-shadow(0 0 5px var(--red)); }
@@ -27,41 +26,31 @@
         .nav-links a { color: white; text-decoration: none; margin: 0 8px; font-weight: bold; cursor: pointer; font-size: 12px; transition: 0.3s; }
         .nav-links a:hover { color: var(--red); }
 
-        /* --- SECTIONS --- */
         .section { display: none; padding: 90px 15px 60px; min-height: 100vh; }
         .active { display: block; animation: fadeIn 0.6s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- ADMIN PANEL --- */
-        #admin-panel { background: var(--dark); border: 2px solid var(--red); padding: 20px; border-radius: 20px; max-width: 500px; margin: 20px auto; display: none; box-shadow: 0 0 25px rgba(255,0,0,0.2); }
+        /* --- ADMIN & LOGIN MODAL --- */
+        #admin-panel { background: var(--dark); border: 2px solid var(--red); padding: 20px; border-radius: 20px; max-width: 500px; margin: 20px auto; display: none; box-shadow: 0 0 25px rgba(255,0,0,0.5); }
         .admin-input { width: 100%; padding: 10px; background: #151515; border: 1px solid #333; color: white; margin-bottom: 10px; border-radius: 8px; outline: none; font-size: 13px; }
+        
+        .pro-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #0a0a0a; border: 2px solid var(--red); padding: 30px; border-radius: 20px; z-index: 3000; display: none; width: 90%; max-width: 350px; text-align: center; }
 
-        /* --- LINK CARDS --- */
+        /* --- LINK CARDS WITH BLUR --- */
         .link-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; max-width: 1200px; margin: 20px auto; }
         @media (min-width: 768px) { .link-grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; } }
+        
         .link-card { background: #0d0d0d; border: 1px solid #222; padding: 15px; border-radius: 15px; text-align: center; transition: 0.3s; position: relative; }
-        .link-card:hover { border-color: var(--red); transform: translateY(-3px); box-shadow: 0 0 15px rgba(255,17,0,0.2); }
+        .link-card.locked { filter: blur(8px); pointer-events: none; opacity: 0.5; }
+        .lock-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; z-index: 10; cursor: pointer; }
+        
         .card-dp { width: 55px; height: 55px; border-radius: 12px; object-fit: cover; margin-bottom: 10px; border: 1px solid #333; }
-        .del-btn { position: absolute; top: 5px; left: 5px; color: #ff1100; cursor: pointer; display: none; background: rgba(0,0,0,0.7); padding: 5px; border-radius: 5px; font-size: 10px; }
-
-        /* --- ABOUT TRACK PAIN EFFECT --- */
-        .about-card { 
-            max-width: 500px; margin: auto; padding: 30px; background: #050505; border-radius: 20px; border: 1px solid #111; 
-            transition: 0.4s; position: relative; overflow: hidden;
-        }
-        .about-card:hover { 
-            border-color: var(--red); 
-            box-shadow: 0 0 30px var(--red); 
-            transform: scale(1.02);
-            background: linear-gradient(145deg, #050505, #1a0000);
-        }
-        .about-dp { width: 110px; height: 110px; border-radius: 50%; border: 3px solid var(--red); object-fit: cover; margin-bottom: 15px; }
+        .del-btn { position: absolute; top: 5px; left: 5px; color: #ff1100; cursor: pointer; display: none; z-index: 20; }
 
         .glow-btn { padding: 10px 18px; background: transparent; border: 2px solid var(--red); color: var(--red); font-weight: bold; border-radius: 50px; cursor: pointer; text-transform: uppercase; font-size: 11px; transition: 0.3s; }
-        .glow-btn:hover { background: var(--red); color: white; }
+        .glow-btn:hover { background: var(--red); color: white; box-shadow: 0 0 15px var(--red); }
 
-        footer { text-align: center; padding: 40px; border-top: 1px solid #111; color: #444; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; }
-        .float-wa { position: fixed; bottom: 25px; right: 25px; background: #25d366; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; color: white; z-index: 2000; }
+        footer { text-align: center; padding: 40px; border-top: 1px solid #111; color: #444; font-size: 12px; letter-spacing: 2px; }
     </style>
 </head>
 <body>
@@ -71,27 +60,38 @@
 
     <nav>
         <div class="nav-logo-container">
-            <img src="dragon.png" class="pc-logo" alt="logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1040/1040232.png'">
+            <img src="dragon.png" class="pc-logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1040/1040232.png'">
             <div class="nav-logo">𝐀𝐊𝐈𝐘𝐀 龍</div>
         </div>
-        <div class="nav-links">
+        <div class="nav-links" id="main-nav-links">
             <a onclick="showPage('home')">HOME</a>
-            <a onclick="showPage('category')">CATEGORY</a>
             <a onclick="showPage('about')">ABOUT</a>
+            <a onclick="toggleProModal()" id="nav-pro-btn" style="color:var(--gold)">PRO LOGIN</a>
         </div>
         <div id="auth-area">
             <div id="g_id_onload" data-client_id="180586817754-crv0p90dvrml6ojlgo9a6uvqccbjdn44.apps.googleusercontent.com" data-callback="handleCredentialResponse"></div>
             <div class="g_id_signin" data-type="standard" data-size="small"></div>
         </div>
         <div id="user-profile" style="display:none; align-items:center; gap:8px;">
-            <img id="user-pfp" style="width:28px; border-radius:50%; border: 1px solid var(--red);">
-            <span onclick="logout()" style="color:#666; cursor:pointer; font-size:9px;">EXIT</span>
+            <img id="user-pfp" style="width:28px; border-radius:50%; border: 2px solid var(--red);">
+            <div style="display:flex; flex-direction:column;">
+                <span id="user-name-disp" style="font-size:10px; font-weight:bold; color:var(--gold);">USER</span>
+                <span onclick="logout()" style="color:#ff1100; cursor:pointer; font-size:8px; font-weight:bold;">LOGOUT</span>
+            </div>
         </div>
     </nav>
 
+    <div id="pro-modal" class="pro-modal">
+        <h3 style="color:var(--red); margin-top:0;">PRO SUBSCRIBE LOGIN</h3>
+        <input type="text" id="pro-user" class="admin-input" placeholder="Username">
+        <input type="password" id="pro-pass" class="admin-input" placeholder="Password">
+        <button class="glow-btn" style="width:100%; margin-bottom:10px;" onclick="proLogin()">LOGIN AS PRO</button>
+        <button onclick="toggleProModal()" style="background:none; border:none; color:#666; cursor:pointer; font-size:10px;">CANCEL</button>
+    </div>
+
     <div id="home" class="section active">
         <div style="text-align: center;">
-            <img src="dragon.png" style="width: 100px; filter: drop-shadow(0 0 20px red); margin-bottom: 10px;">
+            <img src="dragon.png" style="width: 100px; filter: drop-shadow(0 0 20px red);">
             <h1 style="color: var(--red); font-size: 2rem; margin: 0;">ආයුබෝවන්</h1>
             <p style="color: #666; letter-spacing: 2px; font-size: 10px;">OFFICIAL 2026 ONLINE PRO EDITION</p>
 
@@ -103,18 +103,14 @@
                 <select id="c" class="admin-input">
                     <option value="WHATSAPP">WHATSAPP</option>
                     <option value="TELEGRAM">TELEGRAM</option>
-                    <option value="FACEBOOK">FACEBOOK</option>
                 </select>
                 <input type="file" id="l-img" accept="image/*" class="admin-input">
                 <button class="glow-btn" style="width: 100%; background:var(--red); color:white;" onclick="saveLink()">PUBLISH NOW</button>
-                
-                <hr style="border:0; border-top:1px solid #222; margin: 20px 0;">
-                <p style="font-size: 11px; color:var(--gold);">Edit About Details:</p>
-                <input type="text" id="edit-name" class="admin-input" placeholder="Your Name">
-                <input type="text" id="edit-age" class="admin-input" placeholder="Age">
-                <input type="text" id="edit-school" class="admin-input" placeholder="School">
-                <textarea id="edit-siteinfo" class="admin-input" placeholder="Site Info (English)"></textarea>
-                <button class="glow-btn" style="width: 100%; border-color:var(--gold); color:var(--gold);" onclick="updateAboutData()">SAVE ABOUT INFO</button>
+            </div>
+
+            <div id="guest-msg" style="margin-top:20px;">
+                <p style="color:#777; font-size:11px;">You are browsing as a Guest. Links are locked.</p>
+                <button class="glow-btn" onclick="toggleProModal()">SUBSCRIBE / LOGIN</button>
             </div>
 
             <h2 style="color:var(--gold); font-size: 16px; margin-top: 40px; border-bottom: 1px solid #222; padding-bottom: 10px;">LATEST UPDATES</h2>
@@ -122,32 +118,12 @@
         </div>
     </div>
 
-    <div id="category" class="section">
-        <div style="text-align: center; margin-bottom: 20px;">
-            <select class="admin-input" id="filter" style="width:180px" onchange="render()">
-                <option value="ALL">ALL CATEGORIES</option>
-                <option value="WHATSAPP">WHATSAPP</option>
-                <option value="TELEGRAM">TELEGRAM</option>
-            </select>
-        </div>
-        <div class="link-grid" id="grid"></div>
-    </div>
-
     <div id="about" class="section">
-        <div class="about-card">
-            <div style="position: relative; display: inline-block;">
-                <img id="about-img-display" src="dragon.png" class="about-dp">
-                <button id="change-dp-btn" style="display:none; position:absolute; bottom:15px; right:0; background:var(--red); border:none; color:white; border-radius:50%; padding:5px; cursor:pointer;" onclick="document.getElementById('about-dp-input').click()"><i class="fas fa-camera"></i></button>
-                <input type="file" id="about-dp-input" style="display:none" onchange="updateAboutDP(this)">
-            </div>
-            <h2 id="disp-name" style="color:var(--red); font-size: 22px; margin: 10px 0;">AKIYA</h2>
-            <div style="text-align: left; font-size: 13px; color: #ccc; line-height: 1.8;">
-                <p><i class="fas fa-user-edit" style="color:var(--red)"></i> <b>Name:</b> <span id="disp-name2">Akindu Dewshan</span></p>
-                <p><i class="fas fa-birthday-cake" style="color:var(--red)"></i> <b>Age:</b> <span id="disp-age">17 Years Old</span></p>
-                <p><i class="fas fa-school" style="color:var(--red)"></i> <b>Education:</b> <span id="disp-school">High School Student</span></p>
-                <p><i class="fas fa-info-circle" style="color:var(--red)"></i> <b>About Site:</b> <span id="disp-info">This is an official link sharing platform for the community.</span></p>
-            </div>
-            <button class="glow-btn" style="width:100%; margin-top:20px;" onclick="window.location.href='https://wa.me/94755751816'">CONTACT DEVELOPER</button>
+        <div style="max-width:500px; margin:auto; text-align:center; background:#0a0a0a; padding:30px; border-radius:20px; border:1px solid #222;">
+            <img id="about-img-display" src="dragon.png" style="width:100px; height:100px; border-radius:50%; border:2px solid var(--red);">
+            <h2 id="disp-name" style="color:var(--red);">AKIYA</h2>
+            <p id="disp-info" style="font-size:12px; color:#999;">Developer of Akiya Dragon Community.</p>
+            <button class="glow-btn" onclick="window.location.href='https://wa.me/94755751816'">CONTACT</button>
         </div>
     </div>
 
@@ -159,54 +135,72 @@
         const firebaseConfig = { databaseURL: "https://akiya-communitiy-official-lk-default-rtdb.firebaseio.com/" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
-        const ADMIN = "kaviakiya@gmail.com";
+        const ADMIN_EMAIL = "kaviakiya@gmail.com";
 
+        // Login Logic
         function handleCredentialResponse(r) {
-            const d = JSON.parse(atob(r.credential.split('.')[1]));
-            localStorage.setItem('u_email', d.email);
+            const payload = JSON.parse(atob(r.credential.split('.')[1]));
+            localStorage.setItem('akiya_user', JSON.stringify({
+                email: payload.email,
+                name: payload.name,
+                img: payload.picture,
+                type: 'google'
+            }));
             location.reload();
         }
 
-        window.onload = () => {
-            const email = localStorage.getItem('u_email');
-            if(email === ADMIN) {
-                document.getElementById('admin-panel').style.display = 'block';
-                document.getElementById('change-dp-btn').style.display = 'block';
-                document.querySelectorAll('.del-btn').forEach(b => b.style.display = 'block');
+        function proLogin() {
+            const user = document.getElementById('pro-user').value;
+            const pass = document.getElementById('pro-pass').value;
+            // මෙතන Pro Username/Password එක උඹට ඕන එකක් දාගනින්
+            if(user === "admin" && pass === "akiya2026") {
+                localStorage.setItem('akiya_user', JSON.stringify({
+                    email: 'pro@akiya.com',
+                    name: 'PRO MEMBER',
+                    img: 'dragon.png',
+                    type: 'pro'
+                }));
+                location.reload();
+            } else {
+                alert("Invalid Pro Credentials!");
             }
-            // Load Data
-            db.ref('about_data').on('value', s => {
-                const d = s.val();
-                if(d){
-                    document.getElementById('disp-name').innerText = d.name;
-                    document.getElementById('disp-name2').innerText = d.name;
-                    document.getElementById('disp-age').innerText = d.age;
-                    document.getElementById('disp-school').innerText = d.school;
-                    document.getElementById('disp-info').innerText = d.info;
+        }
+
+        window.onload = () => {
+            const userData = JSON.parse(localStorage.getItem('akiya_user'));
+            if(userData) {
+                document.getElementById('auth-area').style.display = 'none';
+                document.getElementById('nav-pro-btn').style.display = 'none';
+                document.getElementById('guest-msg').style.display = 'none';
+                document.getElementById('user-profile').style.display = 'flex';
+                document.getElementById('user-pfp').src = userData.img;
+                document.getElementById('user-name-disp').innerText = userData.name;
+
+                if(userData.email === ADMIN_EMAIL) {
+                    document.getElementById('admin-panel').style.display = 'block';
                 }
-            });
-            db.ref('about_dp').on('value', s => { if(s.val()) document.getElementById('about-img-display').src = s.val(); });
-            render();
+            }
+            renderLinks();
         };
 
-        function updateAboutData() {
-            const name = document.getElementById('edit-name').value;
-            const age = document.getElementById('edit-age').value;
-            const school = document.getElementById('edit-school').value;
-            const info = document.getElementById('edit-siteinfo').value;
-            db.ref('about_data').set({ name, age, school, info }).then(() => alert("About Info Updated!"));
-        }
-
-        function updateAboutDP(input) {
-            if (input.files && input.files[0]) {
-                const r = new FileReader();
-                r.onload = (e) => db.ref('about_dp').set(e.target.result);
-                r.readAsDataURL(input.files[0]);
-            }
-        }
-
-        function deleteLink(id) {
-            if(confirm("Delete this link?")) db.ref('links/' + id).remove();
+        function renderLinks() {
+            const isLogged = localStorage.getItem('akiya_user') !== null;
+            db.ref('links').on('value', (s) => {
+                const data = s.val();
+                const hGrid = document.getElementById('home-grid');
+                hGrid.innerHTML = "";
+                for (let id in data) {
+                    let l = data[id];
+                    let cardHTML = `
+                        <div class="link-card ${!isLogged ? 'locked' : ''}">
+                            ${!isLogged ? '<div class="lock-overlay" onclick="toggleProModal()"><i class="fas fa-lock"></i></div>' : ''}
+                            <img src="${l.img}" class="card-dp">
+                            <h3>${l.title}</h3>
+                            <button class="glow-btn" onclick="window.open('${l.url}')">JOIN</button>
+                        </div>`;
+                    hGrid.innerHTML += cardHTML;
+                }
+            });
         }
 
         function saveLink() {
@@ -218,28 +212,9 @@
             if(file) r.readAsDataURL(file); else r.onloadend();
         }
 
-        function render() {
-            const f = document.getElementById('filter').value;
-            db.ref('links').on('value', (s) => {
-                const data = s.val();
-                const grid = document.getElementById('grid'), hGrid = document.getElementById('home-grid');
-                grid.innerHTML = ""; hGrid.innerHTML = "";
-                let count = 0;
-                for (let id in data) {
-                    let l = data[id];
-                    let isAdmin = localStorage.getItem('u_email') === ADMIN ? 'block' : 'none';
-                    let card = `<div class="link-card">
-                                <div class="del-btn" style="display:${isAdmin}" onclick="deleteLink('${id}')"><i class="fas fa-trash"></i></div>
-                                <img src="${l.img}" class="card-dp">
-                                <h3>${l.title}</h3>
-                                <p style="font-size:10px; color:#666;">${l.desc}</p>
-                                <button class="glow-btn" onclick="window.open('${l.url}')">JOIN</button>
-                            </div>`;
-                    if (f === 'ALL' || l.cat === f) grid.innerHTML += card;
-                    if (count < 6) hGrid.innerHTML += card;
-                    count++;
-                }
-            });
+        function toggleProModal() {
+            const m = document.getElementById('pro-modal');
+            m.style.display = (m.style.display === 'block' ? 'none' : 'block');
         }
 
         function showPage(p) {
@@ -247,7 +222,7 @@
             document.getElementById(p).classList.add('active');
         }
 
-        function logout() { localStorage.clear(); location.reload(); }
+        function logout() { localStorage.removeItem('akiya_user'); location.reload(); }
 
         // Fire Effect
         const canvas = document.getElementById('fire-canvas'), ctx = canvas.getContext('2d');
