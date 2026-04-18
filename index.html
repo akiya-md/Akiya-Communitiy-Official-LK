@@ -4,173 +4,211 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>𝐀𝐊𝐈𝐘𝐀 龍 | Official 2026</title>
+    
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
     <style>
-        /* BASE & THEME */
-        :root { --red: #ff0000; --gold: #ffd700; --black: #000000; }
-        body, html { margin: 0; padding: 0; background: var(--black); color: white; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
+        /* --- BRANDING & UI (RED & BLACK ONLY) --- */
+        :root { --red: #ff0000; --black: #000000; --gold: #ffd700; }
         
-        /* FIREBALL BACKGROUND */
-        #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; }
+        * { box-sizing: border-box; cursor: none; } /* Custom cursor එක නිසා */
+        body, html { 
+            margin: 0; padding: 0; background: var(--black); color: white; 
+            font-family: 'Segoe UI', sans-serif; overflow-x: hidden;
+        }
 
-        /* HEADER & NAVIGATION */
-        header { padding: 20px; text-align: center; }
-        #sticky-nav { position: fixed; top: 0; width: 100%; background: rgba(0,0,0,0.9); display: flex; justify-content: space-between; align-items: center; padding: 10px 30px; z-index: 1000; border-bottom: 1px solid var(--red); box-sizing: border-box; }
-        .nav-logo { font-size: 20px; font-weight: bold; color: var(--red); text-shadow: 0 0 10px var(--red); }
+        /* --- FIRE SPARKS BACKGROUND --- */
+        #fire-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
 
-        /* BUTTONS */
-        .btn { cursor: pointer; border: 2px solid var(--red); background: transparent; color: var(--red); padding: 10px 20px; font-weight: bold; transition: 0.3s; box-shadow: 0 0 10px var(--red); border-radius: 5px; text-transform: uppercase; }
+        /* --- STICKY NAV --- */
+        nav { 
+            position: fixed; top: 0; width: 100%; background: rgba(0,0,0,0.9); 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 10px 30px; z-index: 1000; border-bottom: 2px solid var(--red);
+        }
+        .nav-logo { color: var(--red); font-weight: bold; font-size: 20px; text-shadow: 0 0 10px var(--red); }
+
+        /* --- BUTTONS --- */
+        .btn { 
+            padding: 10px 20px; border: 2px solid var(--red); background: transparent; 
+            color: var(--red); font-weight: bold; transition: 0.3s; box-shadow: 0 0 10px var(--red);
+        }
         .btn:hover { background: var(--red); color: white; box-shadow: 0 0 25px var(--red); }
-        .btn-gold { border-color: var(--gold); color: var(--gold); box-shadow: 0 0 15px var(--gold); animation: goldGlow 2s infinite; }
-        @keyframes goldGlow { 0%, 100% { box-shadow: 0 0 10px var(--gold); } 50% { box-shadow: 0 0 30px var(--gold); } }
+        .btn-gold { border-color: var(--gold); color: var(--gold); box-shadow: 0 0 15px var(--gold); animation: pulse 2s infinite; }
 
-        /* MAIN UI */
-        .main-logo-container { margin-top: 100px; text-align: center; }
-        .main-logo { width: 250px; filter: drop-shadow(0 0 15px var(--red)); }
-        #welcome-msg { font-size: 2.5rem; color: var(--red); text-shadow: 0 0 20px var(--red); margin: 20px 0; }
-        
-        /* CONTENT LOCKING */
-        #content-section { filter: blur(15px); transition: 0.5s; padding: 50px; text-align: center; pointer-events: none; }
-        .locked-msg { color: var(--red); font-weight: bold; font-size: 1.2rem; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
 
-        /* LOGIN MODAL */
-        #login-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center; }
-        .modal-box { background: #111; border: 2px solid var(--red); padding: 40px; border-radius: 15px; width: 350px; text-align: center; box-shadow: 0 0 40px var(--red); }
-        input { width: 90%; padding: 10px; margin: 10px 0; background: #222; border: 1px solid var(--red); color: white; border-radius: 5px; }
+        /* --- HERO & WELCOME (3 LANGUAGES) --- */
+        .hero { text-align: center; padding: 150px 20px 50px; }
+        .dragon-logo { width: 250px; filter: drop-shadow(0 0 20px var(--red)); }
+        #welcome-text { font-size: 2rem; color: var(--red); text-shadow: 0 0 15px var(--red); height: 50px; }
 
-        /* PRO RULES SECTION */
-        #pro-rules { display: none; background: #111; border: 2px solid var(--gold); padding: 20px; margin: 20px auto; width: 80%; border-radius: 10px; }
+        /* --- CONTENT SYSTEM --- */
+        .content-section { padding: 50px 20px; max-width: 1200px; margin: auto; }
+        .link-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .link-card { 
+            background: #0a0a0a; border: 1px solid #333; padding: 20px; 
+            border-radius: 10px; text-align: center; transition: 0.3s;
+        }
+        .link-card:hover { border-color: var(--red); transform: translateY(-5px); }
 
-        /* FOOTER */
-        footer { border-top: 1px solid #333; padding: 50px 20px; text-align: center; background: #050505; }
-        .footer-rights { color: var(--red); font-size: 14px; letter-spacing: 2px; text-shadow: 0 0 5px var(--red); }
-        .powered-by { color: white; font-weight: bold; margin-top: 10px; }
+        /* --- LOGIN MODAL --- */
+        #login-overlay { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.95); z-index: 5000; justify-content: center; align-items: center; 
+        }
+        .login-box { background: #111; padding: 40px; border: 2px solid var(--red); border-radius: 20px; text-align: center; }
 
-        /* FIRE TRAIL CANVAS */
-        #trail-canvas { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; }
+        /* --- AI BOT BUTTON --- */
+        .ai-bot { 
+            position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; 
+            background: #000; border: 2px solid var(--red); border-radius: 50%; 
+            display: flex; justify-content: center; align-items: center; z-index: 999;
+            box-shadow: 0 0 20px var(--red); transition: 0.3s;
+        }
+        .ai-bot img { width: 40px; border-radius: 50%; }
+
+        /* --- FOOTER --- */
+        footer { padding: 40px; text-align: center; border-top: 1px solid #222; }
     </style>
 </head>
 <body>
 
-    <canvas id="bg-canvas"></canvas>
-    <canvas id="trail-canvas"></canvas>
-
-    <div id="sticky-nav">
+    <canvas id="fire-canvas"></canvas>
+    
+    <nav>
         <div class="nav-logo">𝐀𝐊𝐈𝐘𝐀 龍</div>
-        <button class="btn btn-gold" onclick="toggleRules()">PRO SUBSCRIBE</button>
-        <button class="btn" onclick="openLogin()">LOGIN</button>
+        <div>
+            <button class="btn btn-gold" onclick="window.location.href='https://wa.me/94755751816?text=PRO%20USER%20IN%20SUBSCRIBE%20IN%20TO%20ME'">PRO</button>
+            <button class="btn" id="login-btn" onclick="openLogin()">LOGIN</button>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <img src="dragon.png" alt="Dragon" class="dragon-logo">
+        <div id="welcome-text">Loading...</div>
     </div>
 
-    <div class="main-logo-container">
-        <img src="YOUR_LOGO_URL" alt="AKIYA DRAGON" class="main-logo">
-        <div id="welcome-msg">ආයුබෝවන්</div>
+    <div class="content-section" id="main-content" style="filter: blur(20px); pointer-events: none;">
+        <h2 style="text-align: center;">PREMIUM LINKS</h2>
+        <div class="link-grid" id="link-container">
+            </div>
     </div>
 
-    <div id="pro-rules">
-        <h2 style="color:var(--gold)">PRO SUBSCRIPTION RULES</h2>
-        <p>• මෙම සේවාව වලංගු වන්නේ මාස 3කට පමණි.</p>
-        <p>• එක ගිණුමකින් උපරිම සාමාජිකයින් 100ක් ඇතුලත් කළ හැක.</p>
-        <p style="font-size: 24px; font-weight: bold; color: white;">PRICE: LKR 2,250</p>
-        <button class="btn btn-gold" onclick="window.location.href='https://wa.me/YOUR_NUMBER?text=PRO%20USER%20IN%20SUBSCRIBE%20IN%20TO%20ME'">BUY NOW (WHATSAPP)</button>
-    </div>
-
-    <div id="content-section">
-        <p class="locked-msg">PLEASE LOGIN TO ACCESS PREMIUM LINKS</p>
-        <div style="height: 500px;"></div> </div>
+    <section class="content-section" style="border-top: 1px solid #333;">
+        <h2>ABOUT OWNER</h2>
+        <p><b>M.A. AKINDU DEWSHAN MANCHANAYAKE</b></p>
+        <p>Age: 17 | Developer of 𝐀𝐊𝐈𝐘𝐀 龍 Project</p>
+        <p>Thanks for visiting my official website.</p>
+    </section>
 
     <footer>
-        <button class="btn" style="margin-bottom: 30px;" onclick="openLogin()">LOGIN TO VIEW LINKS</button>
-        <div class="footer-rights">© 2026 ALL RIGHTS RESERVED</div>
-        <div class="powered-by">POWERED BY <span style="color: var(--red);">𝐀𝐊𝐈𝐘𝐀 龍 x DRAGON</span></div>
+        <p style="color: var(--red); font-weight: bold;">© 2026 ALL RIGHTS RESERVED</p>
+        <p>POWERED BY 𝐀𝐊𝐈𝐘𝐀 龍 x DRAGON</p>
     </footer>
 
-    <div id="login-modal">
-        <div class="modal-box">
-            <h3 style="color:var(--red)">SELECT LOGIN TYPE</h3>
-            <button class="btn" style="width:100%; margin-bottom:15px;" onclick="alert('Google Login Redirect...')">GOOGLE LOGIN</button>
-            <hr style="border:0.5px solid #333">
-            <h4 style="color:var(--gold)">PRO LOGIN</h4>
-            <input type="text" id="user" placeholder="Username">
-            <input type="password" id="pass" placeholder="Password">
-            <button class="btn btn-gold" style="width:100%" onclick="checkLogin()">LOGIN AS PRO</button>
-            <button onclick="closeLogin()" style="background:none; border:none; color:#555; margin-top:15px; cursor:pointer;">Close</button>
+    <a href="https://wa.me/94755751816text=HELLO%20𝐀𝐊𝐈𝐘𝐀%20龍%20x%20DRAGON%20AI,%20I%20NEED%20SOME%20HELP!" class="ai-bot">
+        <img src="whitedragon.png" alt="Bot">
+    </a>
+
+    <div id="login-overlay">
+        <div class="login-box">
+            <h2 style="color: var(--red);">SECURE LOGIN</h2>
+            <div id="g_id_onload"
+                data-client_id="180586817754-crv0p90dvrml6ojlgo9a6uvqccbjdn44.apps.googleusercontent.com.apps.googleusercontent.com"
+                data-callback="handleCredentialResponse"
+                data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin" data-type="standard"></div>
+            <p onclick="closeLogin()" style="margin-top:20px; cursor:pointer; font-size:12px;">Back to Home</p>
         </div>
     </div>
 
     <script>
-        // 1. PRO USERS LIST (100 USERS)
-        const proUsers = {
-            "AKIYA_PRO_01": "AK@9471", "AKIYA_PRO_02": "AK@8823", "AKIYA_PRO_50": "AK@8802", "AKIYA_PRO_100": "AK@5512"
-            // මචං මම මෙතන සාම්පල් 4ක් දැම්මා, අර 100ම මේ විදිහටම ඇතුලත් කරන්න.
-        };
+        // 1. MULTI-LANGUAGE WELCOME
+        const words = ["ආයුබෝවන්", "WELCOME", "வரவேற்பු"];
+        let counter = 0;
+        setInterval(() => {
+            document.getElementById('welcome-text').innerText = words[counter];
+            counter = (counter + 1) % words.length;
+        }, 2000);
 
-        // 2. FIREBALL BACKGROUND
-        const bgCanvas = document.getElementById('bg-canvas');
-        const ctx = bgCanvas.getContext('2d');
-        bgCanvas.width = window.innerWidth;
-        bgCanvas.height = window.innerHeight;
+        // 2. GOOGLE LOGIN & PERSISTENCE
+        function openLogin() { document.getElementById('login-overlay').style.display = 'flex'; }
+        function closeLogin() { document.getElementById('login-overlay').style.display = 'none'; }
+
+        function handleCredentialResponse(response) {
+            localStorage.setItem('akiya_auth', 'true'); // Month persistence logic
+            localStorage.setItem('auth_date', Date.now());
+            checkAuth();
+            closeLogin();
+        }
+
+        function checkAuth() {
+            const auth = localStorage.getItem('akiya_auth');
+            const savedDate = localStorage.getItem('auth_date');
+            const oneMonth = 30 * 24 * 60 * 60 * 1000;
+
+            if (auth === 'true' && (Date.now() - savedDate < oneMonth)) {
+                document.getElementById('main-content').style.filter = "none";
+                document.getElementById('main-content').style.pointerEvents = "auto";
+                document.getElementById('login-btn').innerText = "LOGGED IN";
+            }
+        }
+        window.onload = checkAuth;
+
+        // 3. FIRE SPARKS ENGINE
+        const canvas = document.getElementById('fire-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
         let particles = [];
-        class Fireball {
-            constructor() {
-                this.x = Math.random() * bgCanvas.width;
-                this.y = bgCanvas.height + 100;
-                this.size = Math.random() * 15 + 5;
-                this.speedY = Math.random() * 1 + 0.5;
-                this.opacity = Math.random() * 0.5 + 0.1;
+
+        class Particle {
+            constructor(x, y, vx, vy) {
+                this.x = x; this.y = y;
+                this.vx = vx; this.vy = vy;
+                this.alpha = 1;
+                this.size = Math.random() * 3;
             }
-            update() { this.y -= this.speedY; if (this.y < -50) this.y = bgCanvas.height + 100; }
             draw() {
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 0, 0, ${this.opacity})`;
-                ctx.fill();
+                ctx.fillStyle = `rgba(255, 69, 0, ${this.alpha})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill();
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                this.alpha -= 0.01;
             }
         }
-        for(let i=0; i<50; i++) particles.push(new Fireball());
-        function animateBg() { ctx.clearRect(0,0,bgCanvas.width, bgCanvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animateBg); }
-        animateBg();
 
-        // 3. MOUSE FIRE TRAIL & CLICK SPARKS
-        const trailCanvas = document.getElementById('trail-canvas');
-        const tCtx = trailCanvas.getContext('2d');
-        trailCanvas.width = window.innerWidth; trailCanvas.height = window.innerHeight;
-        let trail = [];
+        // Mouse Trail
         window.addEventListener('mousemove', (e) => {
-            for(let i=0; i<5; i++) trail.push({x: e.clientX, y: e.clientY, s: Math.random()*5+2, a: 1});
+            for(let i=0; i<2; i++) particles.push(new Particle(e.clientX, e.clientY, Math.random()*2-1, Math.random()*2-1));
         });
-        window.addEventListener('click', (e) => {
-            for(let i=0; i<20; i++) trail.push({x: e.clientX, y: e.clientY, s: Math.random()*8+3, a: 1, vx: Math.random()*4-2, vy: Math.random()*4-2});
-        });
-        function animateTrail() {
-            tCtx.clearRect(0,0,trailCanvas.width, trailCanvas.height);
-            trail.forEach((p, i) => {
-                p.a -= 0.02; if(p.vx) { p.x += p.vx; p.y += p.vy; }
-                tCtx.fillStyle = `rgba(255, 69, 0, ${p.a})`;
-                tCtx.beginPath(); tCtx.arc(p.x, p.y, p.s, 0, Math.PI*2); tCtx.fill();
-                if(p.a <= 0) trail.splice(i, 1);
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Random sparks from bottom
+            if(Math.random() < 0.1) particles.push(new Particle(Math.random()*canvas.width, canvas.height, 0, -Math.random()*3));
+            
+            particles.forEach((p, i) => {
+                p.update(); p.draw();
+                if(p.alpha <= 0) particles.splice(i, 1);
             });
-            requestAnimationFrame(animateTrail);
+            requestAnimationFrame(animate);
         }
-        animateTrail();
+        animate();
 
-        // 4. UI LOGIC
-        function openLogin() { document.getElementById('login-modal').style.display = 'flex'; }
-        function closeLogin() { document.getElementById('login-modal').style.display = 'none'; }
-        function toggleRules() { 
-            let r = document.getElementById('pro-rules');
-            r.style.display = (r.style.display === 'block') ? 'none' : 'block';
-            window.scrollTo(0, r.offsetTop - 100);
-        }
+        // 4. LINK SYSTEM (ADMIN DATA)
+        const links = [
+            { name: "Premium Movie 1", cat: "Movies", url: "#" },
+            { name: "Pro Software 1", cat: "Apps", url: "#" }
+        ];
 
-        function checkLogin() {
-            let u = document.getElementById('user').value;
-            let p = document.getElementById('pass').value;
-            if (proUsers[u] && proUsers[u] === p) {
-                alert("ACCESS GRANTED! Welcome Pro User.");
-                document.getElementById('content-section').style.filter = "none";
-                document.getElementById('content-section').style.pointerEvents = "auto";
-                document.getElementById('welcome-msg').innerText = "සාදරයෙන් පිළිගන්නවා, " + u;
-                closeLogin();
-            } else { alert("INVALID CREDENTIALS!"); }
-        }
+        const container = document.getElementById('link-container');
+        links.forEach(l => {
+            container.innerHTML += `<div class="link-card"><h3>${l.name}</h3><p>${l.cat}</p><button class="btn" onclick="window.open('${l.url}')">GO TO LINK</button></div>`;
+        });
     </script>
 </body>
 </html>
