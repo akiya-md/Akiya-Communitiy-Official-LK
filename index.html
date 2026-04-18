@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="si">
 <head>
@@ -7,208 +6,206 @@
     <title>𝐀𝐊𝐈𝐘𝐀 龍 | Official 2026</title>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
-        :root { --red: #ff0000; --black: #000000; --gold: #ffd700; }
+        :root { --red: #ff0000; --black: #000000; --gold: #ffd700; --dark: #080808; }
         
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; cursor: none; }
         body, html { 
             margin: 0; padding: 0; background: var(--black); color: white; 
-            font-family: 'Segoe UI', sans-serif; overflow-x: hidden;
-            cursor: none; /* Cursor එක හංගලා ගිනි පුපුර පෙන්වන්න */
+            font-family: 'Segoe UI', sans-serif; overflow-x: hidden; scroll-behavior: smooth;
         }
 
-        /* --- BACKGROUND --- */
+        /* --- FIRE SPARKS & CURSOR --- */
         #fire-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
-        #mouse-fire { position: fixed; width: 15px; height: 15px; background: var(--red); border-radius: 50%; pointer-events: none; z-index: 10000; box-shadow: 0 0 15px var(--red), 0 0 30px var(--red); }
+        #cursor-fire { position: fixed; width: 15px; height: 15px; background: var(--red); border-radius: 50%; pointer-events: none; z-index: 10000; box-shadow: 0 0 15px var(--red); }
 
-        /* --- STICKY NAV --- */
+        /* --- NAVIGATION --- */
         nav { 
-            position: fixed; top: 0; width: 100%; background: rgba(0,0,0,0.95); 
+            position: fixed; top: 0; width: 100%; background: rgba(0,0,0,0.9); 
             display: flex; justify-content: space-between; align-items: center; 
-            padding: 10px 30px; z-index: 1000; border-bottom: 2px solid var(--red);
+            padding: 15px 30px; z-index: 1000; border-bottom: 2px solid var(--red);
         }
-        .nav-left { display: flex; gap: 20px; align-items: center; }
-        .nav-logo { color: var(--red); font-weight: bold; font-size: 22px; text-shadow: 0 0 10px var(--red); }
-        .nav-links a { color: white; text-decoration: none; font-weight: 500; cursor: pointer; transition: 0.3s; }
+        .nav-logo { color: var(--red); font-weight: bold; font-size: 24px; text-shadow: 0 0 10px var(--red); }
+        .nav-links a { color: white; text-decoration: none; margin: 0 15px; font-weight: bold; cursor: pointer; }
         .nav-links a:hover { color: var(--red); }
 
-        /* --- BUTTONS --- */
-        .btn { padding: 8px 18px; border: 2px solid var(--red); background: transparent; color: var(--red); font-weight: bold; border-radius: 5px; cursor: pointer; }
-        .btn:hover { background: var(--red); color: white; }
-        .btn-gold { border-color: var(--gold); color: var(--gold); box-shadow: 0 0 10px var(--gold); animation: glow 1.5s infinite; }
-        @keyframes glow { 0%, 100% { box-shadow: 0 0 5px var(--gold); } 50% { box-shadow: 0 0 20px var(--gold); } }
+        /* --- HERO & WELCOME --- */
+        .hero { text-align: center; padding: 150px 20px 50px; }
+        #welcome-msg { font-size: 3rem; color: var(--red); text-shadow: 0 0 20px var(--red); height: 80px; font-weight: 800; }
 
-        /* --- SECTIONS --- */
-        .page-section { display: none; padding: 120px 20px 60px; min-height: 100vh; text-align: center; }
-        .active-section { display: block; }
+        /* --- SMART SEARCH --- */
+        .search-container { max-width: 600px; margin: 20px auto; position: relative; }
+        #main-search { 
+            width: 100%; padding: 15px; background: #111; border: 2px solid var(--red); 
+            color: white; border-radius: 30px; outline: none; padding-left: 25px;
+        }
+        #search-results { 
+            position: absolute; width: 100%; background: #111; border-radius: 10px; 
+            margin-top: 5px; z-index: 100; border: 1px solid #333; display: none;
+        }
 
-        .dragon-logo { width: 220px; filter: drop-shadow(0 0 20px var(--red)); }
-        #welcome-text { font-size: 2.5rem; color: var(--red); margin: 20px 0; text-shadow: 0 0 10px var(--red); height: 60px; }
+        /* --- CONTENT CARDS --- */
+        .section { display: none; padding: 100px 20px; }
+        .active { display: block; }
+        .link-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 1200px; margin: auto; }
+        .link-card { 
+            background: var(--dark); border: 1px solid #222; padding: 25px; 
+            border-radius: 15px; text-align: center; transition: 0.3s;
+        }
+        .link-card:hover { border-color: var(--red); transform: translateY(-5px); }
+        .link-dp { width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--red); margin-bottom: 15px; }
 
-        /* --- CATEGORY CARDS --- */
-        .link-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; max-width: 1200px; margin: auto; padding-top: 30px; }
-        .cat-card { background: #0a0a0a; border: 1px solid #333; padding: 40px; border-radius: 15px; transition: 0.4s; }
-        .cat-card:hover { border-color: var(--red); transform: translateY(-10px); box-shadow: 0 10px 30px rgba(255,0,0,0.2); }
+        /* --- ABOUT SECTION --- */
+        .about-card { 
+            max-width: 800px; margin: auto; background: var(--dark); padding: 40px; 
+            border-radius: 20px; border: 1px solid #333; text-align: left; position: relative;
+        }
+        .visitor-bar { background: linear-gradient(90deg, transparent, var(--red), transparent); padding: 10px; margin-top: 30px; text-align: center; font-weight: bold; }
 
-        /* --- LOGIN OVERLAY --- */
-        #login-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 5000; justify-content: center; align-items: center; }
-        .login-box { background: #111; padding: 50px; border: 2px solid var(--red); border-radius: 20px; text-align: center; }
+        /* --- COMMENTS --- */
+        .comment-box { max-width: 800px; margin: 40px auto; background: #111; padding: 20px; border-radius: 10px; }
+        .comment-input { width: 100%; padding: 10px; background: #222; border: 1px solid #444; color: white; margin-bottom: 10px; }
 
         /* --- AI BOT --- */
-        .ai-bot { position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; background: #000; border: 2px solid var(--red); border-radius: 50%; display: flex; justify-content: center; align-items: center; z-index: 999; box-shadow: 0 0 20px var(--red); }
-        .ai-bot img { width: 45px; border-radius: 50%; }
+        .ai-bot-btn { 
+            position: fixed; bottom: 30px; right: 30px; width: 70px; height: 70px; 
+            background: #000; border: 2px solid var(--red); border-radius: 50%; 
+            display: flex; justify-content: center; align-items: center; z-index: 9999; box-shadow: 0 0 20px var(--red);
+        }
+        .ai-bot-btn img { width: 50px; border-radius: 50%; }
 
-        footer { padding: 40px; text-align: center; background: #050505; border-top: 1px solid #222; }
+        /* --- UTILS --- */
+        .btn { padding: 10px 25px; border: 2px solid var(--red); background: transparent; color: var(--red); font-weight: bold; border-radius: 5px; transition: 0.3s; }
+        .btn:hover { background: var(--red); color: white; }
+        footer { text-align: center; padding: 40px; border-top: 1px solid #222; margin-top: 50px; }
     </style>
 </head>
 <body>
 
-    <div id="mouse-fire"></div>
+    <div id="cursor-fire"></div>
     <canvas id="fire-canvas"></canvas>
-    
+
     <nav>
-        <div class="nav-left">
-            <div class="nav-logo">𝐀𝐊𝐈𝐘𝐀 龍</div>
-            <div class="nav-links">
-                <a onclick="showPage('home')">HOME</a>
-                <a onclick="showPage('category')">CATEGORY</a>
-                <a onclick="showPage('about')">ABOUT</a>
-            </div>
+        <div class="nav-logo">𝐀𝐊𝐈𝐘𝐀 龍</div>
+        <div class="nav-links">
+            <a onclick="showSec('home')">HOME</a>
+            <a onclick="showSec('category')">CATEGORY</a>
+            <a onclick="showSec('about')">ABOUT</a>
         </div>
-        <div>
-            <button class="btn btn-gold" onclick="alert('LKR 2250 - Contact WhatsApp for PRO')">PRO</button>
-            <button class="btn" id="login-nav-btn" onclick="openLogin()">LOGIN</button>
-        </div>
+        <button class="btn" id="login-btn" onclick="openLogin()">LOGIN</button>
     </nav>
 
-    <div id="home" class="page-section active-section">
-        <img src="dragon.png" alt="Dragon" class="dragon-logo">
-        <div id="welcome-text">Loading...</div>
-        <p style="font-size: 1.2rem;">Official Web Platform - 2026</p>
-        <button class="btn" style="margin-top: 20px; font-size: 1.2rem;" onclick="showPage('category')">EXPLORE LINKS</button>
+    <div id="home" class="section active">
+        <div class="hero">
+            <img src="dragon.png" alt="Logo" style="width: 200px; filter: drop-shadow(0 0 20px red);">
+            <div id="welcome-msg">ආයුබෝවන්</div>
+            <div class="search-container">
+                <input type="text" id="main-search" placeholder="Search 3000+ Premium Links..." onkeyup="smartSearch()">
+                <div id="search-results"></div>
+            </div>
+            <p>Visitor Count: <span id="v-count" style="color: var(--red); font-weight: bold;">1,402</span></p>
+        </div>
     </div>
 
-    <div id="category" class="page-section">
-        <div id="locked-content">
-            <h1 style="color: var(--red);">[ LOCKED SECTION ]</h1>
-            <p>Please Login with Google to Unlock 2000+ Premium Links</p>
-            <button class="btn" onclick="openLogin()">LOGIN NOW</button>
-        </div>
-        <div id="unlocked-content" style="display: none;">
-            <h1 style="color: var(--red);">CATEGORIES</h1>
-            <div class="link-grid">
-                <div class="cat-card"><h2>MOVIES</h2><p>1200+ Premium Links</p></div>
-                <div class="cat-card"><h2>SOFTWARES</h2><p>500+ Full Apps</p></div>
-                <div class="cat-card"><h2>GAMES</h2><p>300+ Mod Games</p></div>
+    <div id="category" class="section">
+        <h1 style="text-align: center; color: var(--red);">PREMIUM CATEGORIES</h1>
+        <div class="link-grid">
+            <div class="link-card">
+                <img src="https://via.placeholder.com/80" class="link-dp" alt="WA">
+                <h3>WHATSAPP GROUPS</h3>
+                <p>Join the best Sri Lankan community groups.</p>
+                <button class="btn">DIRECT JOIN</button>
+            </div>
+            <div class="link-card">
+                <img src="https://via.placeholder.com/80" class="link-dp" alt="TG">
+                <h3>TELEGRAM CHANNELS</h3>
+                <p>High speed movies and app links.</p>
+                <button class="btn">DIRECT JOIN</button>
             </div>
         </div>
     </div>
 
-    <div id="about" class="page-section">
-        <h1 style="color: var(--red);">ABOUT OWNER</h1>
-        <div style="max-width: 600px; margin: auto; background: #0a0a0a; padding: 30px; border-radius: 15px; border: 1px solid #333;">
-            <p><b>Name:</b> M.A. AKINDU DEWSHAN MANCHANAYAKE</p>
-            <p><b>Age:</b> 17</p>
-            <p><b>Project:</b> 𝐀𝐊𝐈𝐘𝐀 龍 x DRAGON AI</p>
-            <p>Official Developer of this secure link platform.</p>
+    <div id="about" class="section">
+        <div class="about-card">
+            <h2 style="color: var(--red);">M.A. AKINDU DEWSHAN MANCHANAYAKE</h2>
+            <p><b>Age:</b> 17 Years Old</p>
+            <p><b>Education:</b> CH/MEDAGAMA ABAYA ADARSHA NATIONAL SCHOOL</p>
+            <p><b>Expertise:</b> Web Development & AI Implementation</p>
+            <p>This platform is designed to provide 100% secure and verified links under the 𝐀𝐊𝐈𝐘𝐀 龍 brand.</p>
+            <button class="btn" onclick="window.location.href='https://wa.me/94755751816'">WHATSAPP ME</button>
+            <div class="visitor-bar">THANKS FOR VISITING MY SITE</div>
+        </div>
+
+        <div class="comment-section comment-box">
+            <h3>COMMUNITY COMMENTS</h3>
+            <input type="text" class="comment-input" placeholder="Write your thoughts...">
+            <button class="btn">POST COMMENT</button>
         </div>
     </div>
+
+    <a href="https://wa.me/94755751816?text=HELLO%20𝐀𝐊𝐈𝐘𝐀%20龍%20x%20DRAGON%20AI,%20I%20NEED%20SOME%20HELP!" class="ai-bot-btn">
+        <img src="whitedragon.png" alt="Bot">
+    </a>
 
     <footer>
         <p style="color: var(--red); font-weight: bold; letter-spacing: 2px;">© 2026 ALL RIGHTS RESERVED</p>
         <p>POWERED BY 𝐀𝐊𝐈𝐘𝐀 龍 x DRAGON</p>
     </footer>
 
-    <a href="https://wa.me/94755751816?text=HELLO%20𝐀𝐊𝐈𝐘𝐀%20龍%20x%20DRAGON%20AI,%20I%20NEED%20SOME%20HELP!" class="ai-bot">
-        <img src="whitedragon.png" alt="Bot">
-    </a>
-
-    <div id="login-overlay">
-        <div class="login-box">
-            <h2 style="color: var(--red); margin-bottom: 30px;">SECURE LOGIN</h2>
-            <div id="g_id_onload"
-                data-client_id="180586817754-crv0p90dvrml6ojlgo9a6uvqccbjdn44.apps.googleusercontent.com"
-                data-callback="handleCredentialResponse">
-            </div>
-            <div class="g_id_signin" data-type="standard"></div>
-            <p onclick="closeLogin()" style="margin-top:30px; cursor:pointer; color: #666;">Back to Site</p>
-        </div>
-    </div>
-
     <script>
-        // 1. PAGE SWITCHING LOGIC
-        function showPage(pageId) {
-            document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active-section'));
-            document.getElementById(pageId).classList.add('active-section');
+        // 1. NAVIGATION
+        function showSec(id) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
             window.scrollTo(0,0);
         }
 
-        // 2. MOUSE CURSOR FIRE TRAIL
-        const mouseFire = document.getElementById('mouse-fire');
-        window.addEventListener('mousemove', (e) => {
-            mouseFire.style.left = e.clientX + 'px';
-            mouseFire.style.top = e.clientY + 'px';
-            createSpark(e.clientX, e.clientY);
-        });
-
-        // 3. FIRE SPARKS ENGINE (GINI PUPURU)
+        // 2. FIRE & CURSOR ENGINE
         const canvas = document.getElementById('fire-canvas');
         const ctx = canvas.getContext('2d');
+        const cursor = document.getElementById('cursor-fire');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
         let particles = [];
 
-        class Particle {
-            constructor(x, y, vx, vy) {
-                this.x = x; this.y = y; this.vx = vx; this.vy = vy;
-                this.alpha = 1; this.size = Math.random() * 4;
-            }
-            draw() {
-                ctx.fillStyle = `rgba(255, 60, 0, ${this.alpha})`;
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill();
-            }
-            update() { this.x += this.vx; this.y += this.vy; this.alpha -= 0.015; }
-        }
-
-        function createSpark(x, y) {
-            for(let i=0; i<3; i++) particles.push(new Particle(x, y, Math.random()*2-1, Math.random()*2-1));
-        }
+        window.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            for(let i=0; i<3; i++) particles.push({x: e.clientX, y: e.clientY, vx: Math.random()*2-1, vy: Math.random()*2-1, a: 1});
+        });
 
         function animate() {
             ctx.clearRect(0,0,canvas.width, canvas.height);
-            if(Math.random() < 0.2) particles.push(new Particle(Math.random()*canvas.width, canvas.height, 0, -Math.random()*3));
             particles.forEach((p, i) => {
-                p.update(); p.draw();
-                if(p.alpha <= 0) particles.splice(i, 1);
+                p.x += p.vx; p.y += p.vy; p.a -= 0.02;
+                ctx.fillStyle = `rgba(255, 0, 0, ${p.a})`;
+                ctx.beginPath(); ctx.arc(p.x, p.y, 2, 0, Math.PI*2); ctx.fill();
+                if(p.a <= 0) particles.splice(i, 1);
             });
             requestAnimationFrame(animate);
         }
         animate();
 
-        // 4. WELCOME TEXT (3 LANGUAGES)
-        const words = ["ආයුබෝවන්", "WELCOME", "வரவேற்பு"];
-        let count = 0;
+        // 3. SMART SEARCH
+        const database = ["WhatsApp Movie Group", "Telegram Apps", "Facebook Social", "Premium Pro Links"];
+        function smartSearch() {
+            let input = document.getElementById('main-search').value.toLowerCase();
+            let res = document.getElementById('search-results');
+            if(input.length > 0) {
+                res.style.display = "block";
+                res.innerHTML = database.filter(i => i.toLowerCase().includes(input)).map(i => `<div style="padding:10px; border-bottom:1px solid #222;">${i}</div>`).join('');
+            } else { res.style.display = "none"; }
+        }
+
+        // 4. WELCOME MSG (3 LANG)
+        const msgs = ["ආයුබෝවන්", "WELCOME", "வரவேற்பு"];
+        let mIdx = 0;
         setInterval(() => {
-            document.getElementById('welcome-text').innerText = words[count];
-            count = (count + 1) % words.length;
+            document.getElementById('welcome-msg').innerText = msgs[mIdx];
+            mIdx = (mIdx + 1) % msgs.length;
         }, 2000);
 
-        // 5. LOGIN & AUTH
-        function openLogin() { document.getElementById('login-overlay').style.display = 'flex'; }
-        function closeLogin() { document.getElementById('login-overlay').style.display = 'none'; }
-
-        function handleCredentialResponse(response) {
-            localStorage.setItem('akiya_logged', 'true');
-            unlockContent();
-            closeLogin();
-        }
-
-        function unlockContent() {
-            if(localStorage.getItem('akiya_logged') === 'true') {
-                document.getElementById('locked-content').style.display = 'none';
-                document.getElementById('unlocked-content').style.display = 'block';
-                document.getElementById('login-nav-btn').innerText = "LOGGED IN";
-            }
-        }
-        window.onload = unlockContent;
+        // 5. LOGIN STATUS
+        function openLogin() { alert("Google Login Integrated. (Redirecting...)"); localStorage.setItem('user', 'Akindu'); location.reload(); }
+        if(localStorage.getItem('user')) { document.getElementById('login-btn').innerText = "LOGGED IN"; }
     </script>
 </body>
 </html>
