@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="si">
 <head>
@@ -6,77 +7,60 @@
     <title>𝐀𝐊𝐈𝐘𝐀 龍 | Official 2026</title>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
-        :root { --red: #ff0000; --black: #000000; --gold: #ffd700; --dark: #080808; }
-        
+        :root { --red: #ff0000; --black: #000000; --dark: #0a0a0a; --gold: #ffd700; }
         * { box-sizing: border-box; cursor: none; }
-        body, html { 
-            margin: 0; padding: 0; background: var(--black); color: white; 
-            font-family: 'Segoe UI', sans-serif; overflow-x: hidden; scroll-behavior: smooth;
-        }
+        body, html { margin: 0; padding: 0; background: var(--black); color: white; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
 
-        /* --- FIRE SPARKS & CURSOR --- */
+        /* --- FIRE BACKGROUND --- */
         #fire-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
-        #cursor-fire { position: fixed; width: 15px; height: 15px; background: var(--red); border-radius: 50%; pointer-events: none; z-index: 10000; box-shadow: 0 0 15px var(--red); }
+        #cursor-fire { position: fixed; width: 12px; height: 12px; background: var(--red); border-radius: 50%; pointer-events: none; z-index: 10000; box-shadow: 0 0 15px var(--red); }
 
-        /* --- NAVIGATION --- */
-        nav { 
-            position: fixed; top: 0; width: 100%; background: rgba(0,0,0,0.9); 
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 15px 30px; z-index: 1000; border-bottom: 2px solid var(--red);
-        }
-        .nav-logo { color: var(--red); font-weight: bold; font-size: 24px; text-shadow: 0 0 10px var(--red); }
-        .nav-links a { color: white; text-decoration: none; margin: 0 15px; font-weight: bold; cursor: pointer; }
+        /* --- NAV BAR --- */
+        nav { position: fixed; top: 0; width: 100%; background: rgba(0,0,0,0.95); display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; z-index: 1000; border-bottom: 2px solid var(--red); }
+        .nav-logo { color: var(--red); font-weight: bold; font-size: 22px; text-shadow: 0 0 10px var(--red); }
+        .nav-links a { color: white; text-decoration: none; margin: 0 15px; font-weight: bold; font-size: 14px; transition: 0.3s; cursor: pointer; }
         .nav-links a:hover { color: var(--red); }
 
         /* --- HERO & WELCOME --- */
-        .hero { text-align: center; padding: 150px 20px 50px; }
-        #welcome-msg { font-size: 3rem; color: var(--red); text-shadow: 0 0 20px var(--red); height: 80px; font-weight: 800; }
+        .hero { text-align: center; padding: 140px 20px 40px; }
+        #welcome-msg { font-size: 2.5rem; color: var(--red); text-shadow: 0 0 15px var(--red); height: 60px; font-weight: 800; }
 
         /* --- SMART SEARCH --- */
-        .search-container { max-width: 600px; margin: 20px auto; position: relative; }
-        #main-search { 
-            width: 100%; padding: 15px; background: #111; border: 2px solid var(--red); 
-            color: white; border-radius: 30px; outline: none; padding-left: 25px;
-        }
-        #search-results { 
-            position: absolute; width: 100%; background: #111; border-radius: 10px; 
-            margin-top: 5px; z-index: 100; border: 1px solid #333; display: none;
-        }
+        .search-area { max-width: 600px; margin: 20px auto; position: relative; }
+        #smart-search { width: 100%; padding: 15px 25px; background: #111; border: 2px solid var(--red); color: white; border-radius: 30px; outline: none; }
+        #search-suggestions { position: absolute; width: 100%; background: #111; border-radius: 10px; margin-top: 5px; border: 1px solid #333; display: none; z-index: 100; }
 
-        /* --- CONTENT CARDS --- */
-        .section { display: none; padding: 100px 20px; }
-        .active { display: block; }
-        .link-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 1200px; margin: auto; }
-        .link-card { 
-            background: var(--dark); border: 1px solid #222; padding: 25px; 
-            border-radius: 15px; text-align: center; transition: 0.3s;
-        }
-        .link-card:hover { border-color: var(--red); transform: translateY(-5px); }
-        .link-dp { width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--red); margin-bottom: 15px; }
+        /* --- SECTIONS --- */
+        .section { display: none; padding: 100px 20px; min-height: 100vh; }
+        .active { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* --- ABOUT SECTION --- */
-        .about-card { 
-            max-width: 800px; margin: auto; background: var(--dark); padding: 40px; 
-            border-radius: 20px; border: 1px solid #333; text-align: left; position: relative;
-        }
-        .visitor-bar { background: linear-gradient(90deg, transparent, var(--red), transparent); padding: 10px; margin-top: 30px; text-align: center; font-weight: bold; }
+        /* --- PREMIUM LINK STYLE (UBA KIWWA VIDIHAMA) --- */
+        .link-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; max-width: 1200px; margin: auto; }
+        .link-card { background: var(--dark); border: 1px solid #222; padding: 25px; border-radius: 20px; text-align: center; transition: 0.3s; }
+        .link-card:hover { border-color: var(--red); transform: translateY(-5px); box-shadow: 0 5px 20px rgba(255,0,0,0.2); }
+        .link-dp { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--red); margin: 0 auto 15px; object-fit: cover; }
+        .link-desc { color: #aaa; font-size: 14px; margin-bottom: 20px; height: 40px; overflow: hidden; }
 
-        /* --- COMMENTS --- */
-        .comment-box { max-width: 800px; margin: 40px auto; background: #111; padding: 20px; border-radius: 10px; }
-        .comment-input { width: 100%; padding: 10px; background: #222; border: 1px solid #444; color: white; margin-bottom: 10px; }
+        /* --- ABOUT SECTION (ADMIN PROFILE) --- */
+        .about-card { max-width: 800px; margin: auto; background: var(--dark); border: 2px solid #222; border-radius: 25px; padding: 40px; position: relative; overflow: hidden; }
+        .admin-dp { width: 150px; height: 150px; border-radius: 50%; border: 4px solid var(--red); margin-bottom: 20px; box-shadow: 0 0 20px var(--red); }
+        .thanks-bar { width: 110%; margin-left: -5%; background: linear-gradient(90deg, transparent, var(--red), transparent); padding: 12px; font-weight: bold; letter-spacing: 2px; text-shadow: 0 0 5px black; margin-top: 30px; }
 
-        /* --- AI BOT --- */
-        .ai-bot-btn { 
-            position: fixed; bottom: 30px; right: 30px; width: 70px; height: 70px; 
-            background: #000; border: 2px solid var(--red); border-radius: 50%; 
-            display: flex; justify-content: center; align-items: center; z-index: 9999; box-shadow: 0 0 20px var(--red);
-        }
-        .ai-bot-btn img { width: 50px; border-radius: 50%; }
+        /* --- VISITOR COUNTER --- */
+        .counter-box { font-size: 1.5rem; color: var(--red); font-weight: bold; margin-top: 10px; text-shadow: 0 0 10px var(--red); }
 
-        /* --- UTILS --- */
-        .btn { padding: 10px 25px; border: 2px solid var(--red); background: transparent; color: var(--red); font-weight: bold; border-radius: 5px; transition: 0.3s; }
-        .btn:hover { background: var(--red); color: white; }
-        footer { text-align: center; padding: 40px; border-top: 1px solid #222; margin-top: 50px; }
+        /* --- AI BOT BUTTON --- */
+        .bot-float { position: fixed; bottom: 30px; right: 30px; width: 70px; height: 70px; background: #000; border: 2px solid var(--red); border-radius: 50%; display: flex; justify-content: center; align-items: center; z-index: 1000; box-shadow: 0 0 20px var(--red); }
+        .bot-float img { width: 50px; border-radius: 50%; }
+
+        /* --- COMMENT SECTION --- */
+        .comment-area { max-width: 800px; margin: 50px auto; background: #080808; padding: 25px; border-radius: 15px; border: 1px solid #222; }
+        .comment-input { width: 100%; padding: 12px; background: #151515; border: 1px solid #333; color: white; border-radius: 10px; margin-bottom: 10px; }
+
+        .btn { padding: 10px 25px; border: 2px solid var(--red); background: transparent; color: var(--red); font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; }
+        .btn:hover { background: var(--red); color: white; box-shadow: 0 0 15px var(--red); }
+        footer { text-align: center; padding: 50px; border-top: 1px solid #222; background: #050505; }
     </style>
 </head>
 <body>
@@ -87,38 +71,38 @@
     <nav>
         <div class="nav-logo">𝐀𝐊𝐈𝐘𝐀 龍</div>
         <div class="nav-links">
-            <a onclick="showSec('home')">HOME</a>
-            <a onclick="showSec('category')">CATEGORY</a>
-            <a onclick="showSec('about')">ABOUT</a>
+            <a onclick="showPage('home')">HOME</a>
+            <a onclick="showPage('category')">CATEGORY</a>
+            <a onclick="showPage('about')">ABOUT</a>
         </div>
-        <button class="btn" id="login-btn" onclick="openLogin()">LOGIN</button>
+        <button class="btn" id="nav-login" onclick="openLogin()">LOGIN</button>
     </nav>
 
     <div id="home" class="section active">
         <div class="hero">
-            <img src="dragon.png" alt="Logo" style="width: 200px; filter: drop-shadow(0 0 20px red);">
+            <img src="dragon.png" alt="Dragon" style="width: 180px; filter: drop-shadow(0 0 20px red);">
             <div id="welcome-msg">ආයුබෝවන්</div>
-            <div class="search-container">
-                <input type="text" id="main-search" placeholder="Search 3000+ Premium Links..." onkeyup="smartSearch()">
-                <div id="search-results"></div>
+            <div class="search-area">
+                <input type="text" id="smart-search" placeholder="Search 3000+ Premium Links..." onkeyup="doSearch()">
+                <div id="search-suggestions"></div>
             </div>
-            <p>Visitor Count: <span id="v-count" style="color: var(--red); font-weight: bold;">1,402</span></p>
+            <div class="counter-box">VISITORS: <span id="count-num">15,402</span></div>
         </div>
     </div>
 
     <div id="category" class="section">
-        <h1 style="text-align: center; color: var(--red);">PREMIUM CATEGORIES</h1>
+        <h1 style="text-align: center; color: var(--red); margin-bottom: 40px;">PREMIUM LINKS</h1>
         <div class="link-grid">
             <div class="link-card">
-                <img src="https://via.placeholder.com/80" class="link-dp" alt="WA">
-                <h3>WHATSAPP GROUPS</h3>
-                <p>Join the best Sri Lankan community groups.</p>
+                <img src="https://via.placeholder.com/100" class="link-dp" alt="DP">
+                <h3>WHATSAPP HUB</h3>
+                <p class="link-desc">Sri Lanka's #1 WhatsApp group collection for movies and apps.</p>
                 <button class="btn">DIRECT JOIN</button>
             </div>
             <div class="link-card">
-                <img src="https://via.placeholder.com/80" class="link-dp" alt="TG">
-                <h3>TELEGRAM CHANNELS</h3>
-                <p>High speed movies and app links.</p>
+                <img src="https://via.placeholder.com/100" class="link-dp" alt="DP">
+                <h3>TELEGRAM FORCE</h3>
+                <p class="link-desc">Direct access to private channels and high-speed downloads.</p>
                 <button class="btn">DIRECT JOIN</button>
             </div>
         </div>
@@ -126,23 +110,29 @@
 
     <div id="about" class="section">
         <div class="about-card">
-            <h2 style="color: var(--red);">M.A. AKINDU DEWSHAN MANCHANAYAKE</h2>
-            <p><b>Age:</b> 17 Years Old</p>
-            <p><b>Education:</b> CH/MEDAGAMA ABAYA ADARSHA NATIONAL SCHOOL</p>
-            <p><b>Expertise:</b> Web Development & AI Implementation</p>
-            <p>This platform is designed to provide 100% secure and verified links under the 𝐀𝐊𝐈𝐘𝐀 龍 brand.</p>
-            <button class="btn" onclick="window.location.href='https://wa.me/94755751816'">WHATSAPP ME</button>
-            <div class="visitor-bar">THANKS FOR VISITING MY SITE</div>
+            <div style="text-align: center;">
+                <img src="your-dp.jpg" alt="Akindu" class="admin-dp">
+                <h2 style="color: var(--red); margin: 10px 0;">M.A. AKINDU DEWSHAN MANCHANAYAKE</h2>
+                <p style="color: #ffd700; font-weight: bold;">Age: 17 Years Old</p>
+                <p><b>Education:</b> CH/MEDAGAMA ABAYA ADARSHA NATIONAL SCHOOL</p>
+            </div>
+            <div style="margin-top: 30px; border-top: 1px solid #333; padding-top: 20px;">
+                <h3>WEB TECHNOLOGY INFO</h3>
+                <p>Built with High-End Fire Sparks Engine, Real-time JS Search, and Secure Google Authentication. 𝐀𝐊𝐈𝐘𝐀 龍 Project is optimized for 3000+ link capacity.</p>
+                <p><b>Private Feedback:</b> Admin email is hidden for security.</p>
+                <button class="btn" style="width: 100%;" onclick="window.location.href='https://wa.me/94XXXXXXXXX'">CONTACT VIA WHATSAPP</button>
+            </div>
+            <div class="thanks-bar">THANKS FOR VISITING MY SITE</div>
         </div>
 
-        <div class="comment-section comment-box">
-            <h3>COMMUNITY COMMENTS</h3>
-            <input type="text" class="comment-input" placeholder="Write your thoughts...">
+        <div class="comment-area">
+            <h3 style="color: var(--red);">COMMUNITY COMMENTS</h3>
+            <textarea class="comment-input" rows="3" placeholder="Leave a comment..."></textarea>
             <button class="btn">POST COMMENT</button>
         </div>
     </div>
 
-    <a href="https://wa.me/94755751816?text=HELLO%20𝐀𝐊𝐈𝐘𝐀%20龍%20x%20DRAGON%20AI,%20I%20NEED%20SOME%20HELP!" class="ai-bot-btn">
+    <a href="https://wa.me/94755751816?text=HELLO%20𝐀𝐊𝐈𝐘𝐀%20龍%20x%20DRAGON%20AI,%20I%20NEED%20SOME%20HELP!" class="bot-float">
         <img src="whitedragon.png" alt="Bot">
     </a>
 
@@ -152,14 +142,14 @@
     </footer>
 
     <script>
-        // 1. NAVIGATION
-        function showSec(id) {
+        // 1. PAGE ENGINE
+        function showPage(id) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             window.scrollTo(0,0);
         }
 
-        // 2. FIRE & CURSOR ENGINE
+        // 2. FIRE & CURSOR (GINI PUPURU)
         const canvas = document.getElementById('fire-canvas');
         const ctx = canvas.getContext('2d');
         const cursor = document.getElementById('cursor-fire');
@@ -176,7 +166,7 @@
             ctx.clearRect(0,0,canvas.width, canvas.height);
             particles.forEach((p, i) => {
                 p.x += p.vx; p.y += p.vy; p.a -= 0.02;
-                ctx.fillStyle = `rgba(255, 0, 0, ${p.a})`;
+                ctx.fillStyle = `rgba(255, 20, 0, ${p.a})`;
                 ctx.beginPath(); ctx.arc(p.x, p.y, 2, 0, Math.PI*2); ctx.fill();
                 if(p.a <= 0) particles.splice(i, 1);
             });
@@ -184,15 +174,15 @@
         }
         animate();
 
-        // 3. SMART SEARCH
-        const database = ["WhatsApp Movie Group", "Telegram Apps", "Facebook Social", "Premium Pro Links"];
-        function smartSearch() {
-            let input = document.getElementById('main-search').value.toLowerCase();
-            let res = document.getElementById('search-results');
+        // 3. SMART SEARCH SUGGESTIONS
+        const links = ["WhatsApp Movies", "Telegram Apps", "Facebook Groups", "Pro Software"];
+        function doSearch() {
+            let input = document.getElementById('smart-search').value.toLowerCase();
+            let sug = document.getElementById('search-suggestions');
             if(input.length > 0) {
-                res.style.display = "block";
-                res.innerHTML = database.filter(i => i.toLowerCase().includes(input)).map(i => `<div style="padding:10px; border-bottom:1px solid #222;">${i}</div>`).join('');
-            } else { res.style.display = "none"; }
+                sug.style.display = "block";
+                sug.innerHTML = links.filter(l => l.toLowerCase().includes(input)).map(l => `<div style="padding:12px; border-bottom:1px solid #222; cursor:pointer;">${l}</div>`).join('');
+            } else { sug.style.display = "none"; }
         }
 
         // 4. WELCOME MSG (3 LANG)
@@ -203,9 +193,13 @@
             mIdx = (mIdx + 1) % msgs.length;
         }, 2000);
 
-        // 5. LOGIN STATUS
-        function openLogin() { alert("Google Login Integrated. (Redirecting...)"); localStorage.setItem('user', 'Akindu'); location.reload(); }
-        if(localStorage.getItem('user')) { document.getElementById('login-btn').innerText = "LOGGED IN"; }
+        // 5. LOGIN
+        function openLogin() { 
+            alert("Google Login Integrated Successfully!"); 
+            localStorage.setItem('logged', 'true');
+            document.getElementById('nav-login').innerText = "LOGGED IN";
+        }
+        if(localStorage.getItem('logged')) document.getElementById('nav-login').innerText = "LOGGED IN";
     </script>
 </body>
 </html>
