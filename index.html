@@ -1,189 +1,176 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="si">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>𝐀𝐊𝐈𝐘𝐀 龍 Community | Official 2026</title>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <title>𝐀𝐊𝐈𝐘𝐀 龍 | Official 2026</title>
     <style>
-        /* CSS - Theme & Layout */
-        :root {
-            --primary: #ff0000; /* Red */
-            --secondary: #ffcc00; /* Yellow */
-            --bg: #000000; /* Black */
-        }
+        /* BASE & THEME */
+        :root { --red: #ff0000; --gold: #ffd700; --black: #000000; }
+        body, html { margin: 0; padding: 0; background: var(--black); color: white; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
+        
+        /* FIREBALL BACKGROUND */
+        #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; }
 
-        body {
-            background-color: var(--bg);
-            color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            overflow-x: hidden;
-        }
+        /* HEADER & NAVIGATION */
+        header { padding: 20px; text-align: center; }
+        #sticky-nav { position: fixed; top: 0; width: 100%; background: rgba(0,0,0,0.9); display: flex; justify-content: space-between; align-items: center; padding: 10px 30px; z-index: 1000; border-bottom: 1px solid var(--red); box-sizing: border-box; }
+        .nav-logo { font-size: 20px; font-weight: bold; color: var(--red); text-shadow: 0 0 10px var(--red); }
 
-        /* Gini Pupuru Background Effect */
-        #particles-js {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
+        /* BUTTONS */
+        .btn { cursor: pointer; border: 2px solid var(--red); background: transparent; color: var(--red); padding: 10px 20px; font-weight: bold; transition: 0.3s; box-shadow: 0 0 10px var(--red); border-radius: 5px; text-transform: uppercase; }
+        .btn:hover { background: var(--red); color: white; box-shadow: 0 0 25px var(--red); }
+        .btn-gold { border-color: var(--gold); color: var(--gold); box-shadow: 0 0 15px var(--gold); animation: goldGlow 2s infinite; }
+        @keyframes goldGlow { 0%, 100% { box-shadow: 0 0 10px var(--gold); } 50% { box-shadow: 0 0 30px var(--gold); } }
 
-        /* Nav Bar */
-        nav {
-            background: rgba(0,0,0,0.8);
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            border-bottom: 2px solid var(--primary);
-            z-index: 1000;
-        }
+        /* MAIN UI */
+        .main-logo-container { margin-top: 100px; text-align: center; }
+        .main-logo { width: 250px; filter: drop-shadow(0 0 15px var(--red)); }
+        #welcome-msg { font-size: 2.5rem; color: var(--red); text-shadow: 0 0 20px var(--red); margin: 20px 0; }
+        
+        /* CONTENT LOCKING */
+        #content-section { filter: blur(15px); transition: 0.5s; padding: 50px; text-align: center; pointer-events: none; }
+        .locked-msg { color: var(--red); font-weight: bold; font-size: 1.2rem; }
 
-        .gold-btn {
-            background: linear-gradient(45deg, #ffd700, #ffcc00);
-            color: black;
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-weight: bold;
-            text-decoration: none;
-            box-shadow: 0 0 10px var(--secondary);
-            animation: glow 1.5s infinite alternate;
-        }
+        /* LOGIN MODAL */
+        #login-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center; }
+        .modal-box { background: #111; border: 2px solid var(--red); padding: 40px; border-radius: 15px; width: 350px; text-align: center; box-shadow: 0 0 40px var(--red); }
+        input { width: 90%; padding: 10px; margin: 10px 0; background: #222; border: 1px solid var(--red); color: white; border-radius: 5px; }
 
-        @keyframes glow {
-            from { box-shadow: 0 0 5px #ffd700; }
-            to { box-shadow: 0 0 20px #ffcc00; }
-        }
+        /* PRO RULES SECTION */
+        #pro-rules { display: none; background: #111; border: 2px solid var(--gold); padding: 20px; margin: 20px auto; width: 80%; border-radius: 10px; }
 
-        /* About Section */
-        #about-section {
-            display: none;
-            padding: 50px 20px;
-            text-align: center;
-        }
+        /* FOOTER */
+        footer { border-top: 1px solid #333; padding: 50px 20px; text-align: center; background: #050505; }
+        .footer-rights { color: var(--red); font-size: 14px; letter-spacing: 2px; text-shadow: 0 0 5px var(--red); }
+        .powered-by { color: white; font-weight: bold; margin-top: 10px; }
 
-        .owner-dp {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 3px solid var(--secondary);
-            margin-bottom: 20px;
-            object-fit: cover;
-        }
-
-        .thanks-bar {
-            background: var(--secondary);
-            color: black;
-            padding: 10px;
-            font-weight: bold;
-            margin: 20px 0;
-        }
-
-        /* Bot Container */
-        #bot-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 300px;
-            background: #111;
-            border: 1px solid var(--primary);
-            border-radius: 10px;
-            display: none;
-        }
+        /* FIRE TRAIL CANVAS */
+        #trail-canvas { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; }
     </style>
 </head>
 <body>
 
-<div id="particles-js"></div>
+    <canvas id="bg-canvas"></canvas>
+    <canvas id="trail-canvas"></canvas>
 
-<nav>
-    <img src="dragon_logo_url" alt="AKIYA Logo" height="50">
-    <div>
-        <button onclick="showSection('home')">HOME</button>
-        <button onclick="showSection('category')">CATEGORY</button>
-        <button onclick="showSection('about')">ABOUT</button>
+    <div id="sticky-nav">
+        <div class="nav-logo">𝐀𝐊𝐈𝐘𝐀 龍</div>
+        <button class="btn btn-gold" onclick="toggleRules()">PRO SUBSCRIBE</button>
+        <button class="btn" onclick="openLogin()">LOGIN</button>
     </div>
-    <a href="https://wa.me/94755751816?text=PRO%20USER%20IN%20SUBSCRIBE%20IN%20TO%20ME" class="gold-btn">PRO SUBSCRIBE - LKR 2250</a>
-</nav>
 
-<div id="welcome-msg" style="text-align: center; padding: 100px;">
-    <h1 id="welcome-text"></h1>
-    <h2>𝐀𝐊𝐈𝐘𝐀 龍 Community | Official 2026</h2>
-</div>
-
-<div id="home-section">
-    <div style="text-align: center; margin: 20px;">
-        <input type="text" id="searchBar" placeholder="Search 3000+ Links..." onkeyup="searchLinks()">
-        <div id="suggestions"></div>
+    <div class="main-logo-container">
+        <img src="YOUR_LOGO_URL" alt="AKIYA DRAGON" class="main-logo">
+        <div id="welcome-msg">ආයුබෝවන්</div>
     </div>
-    <div id="link-container">
+
+    <div id="pro-rules">
+        <h2 style="color:var(--gold)">PRO SUBSCRIPTION RULES</h2>
+        <p>• මෙම සේවාව වලංගු වන්නේ මාස 3කට පමණි.</p>
+        <p>• එක ගිණුමකින් උපරිම සාමාජිකයින් 100ක් ඇතුලත් කළ හැක.</p>
+        <p style="font-size: 24px; font-weight: bold; color: white;">PRICE: LKR 2,250</p>
+        <button class="btn btn-gold" onclick="window.location.href='https://wa.me/YOUR_NUMBER?text=PRO%20USER%20IN%20SUBSCRIBE%20IN%20TO%20ME'">BUY NOW (WHATSAPP)</button>
+    </div>
+
+    <div id="content-section">
+        <p class="locked-msg">PLEASE LOGIN TO ACCESS PREMIUM LINKS</p>
+        <div style="height: 500px;"></div> </div>
+
+    <footer>
+        <button class="btn" style="margin-bottom: 30px;" onclick="openLogin()">LOGIN TO VIEW LINKS</button>
+        <div class="footer-rights">© 2026 ALL RIGHTS RESERVED</div>
+        <div class="powered-by">POWERED BY <span style="color: var(--red);">𝐀𝐊𝐈𝐘𝐀 龍 x DRAGON</span></div>
+    </footer>
+
+    <div id="login-modal">
+        <div class="modal-box">
+            <h3 style="color:var(--red)">SELECT LOGIN TYPE</h3>
+            <button class="btn" style="width:100%; margin-bottom:15px;" onclick="alert('Google Login Redirect...')">GOOGLE LOGIN</button>
+            <hr style="border:0.5px solid #333">
+            <h4 style="color:var(--gold)">PRO LOGIN</h4>
+            <input type="text" id="user" placeholder="Username">
+            <input type="password" id="pass" placeholder="Password">
+            <button class="btn btn-gold" style="width:100%" onclick="checkLogin()">LOGIN AS PRO</button>
+            <button onclick="closeLogin()" style="background:none; border:none; color:#555; margin-top:15px; cursor:pointer;">Close</button>
         </div>
-</div>
-
-<div id="about-section">
-    <img id="admin-dp" src="default_avatar.jpg" class="owner-dp">
-    <h1 style="color: var(--secondary);">M.A. AKINDU DEWSHAN MANCHANAYAKE</h1>
-    <p><b>Age:</b> 17 Years Old</p>
-    <p><b>Education:</b> CH/MEDAGAMA ABAYA ADARSHA NATIONAL SCHOOL</p>
-    
-    <div class="thanks-bar">THANKS FOR VISITING MY SITE!</div>
-    
-    <div style="margin-top: 30px;">
-        <h3>WEB INFORMATION</h3>
-        <p>This is a high-security community platform for digital links.</p>
-        <a href="https://wa.me/94755751816" style="color: var(--secondary);">Contact via WhatsApp</a>
     </div>
-</div>
 
-<footer>
-    <hr border="1" color="red">
-    <p align="center">POWERED BY 𝐀𝐊𝐈𝐘𝐀 龍 x DRAGON | ALL RIGHTS RESERVED OWNER 𝐀𝐊𝐈𝐘𝐀 龍</p>
-</footer>
+    <script>
+        // 1. PRO USERS LIST (100 USERS)
+        const proUsers = {
+            "AKIYA_PRO_01": "AK@9471", "AKIYA_PRO_02": "AK@8823", "AKIYA_PRO_50": "AK@8802", "AKIYA_PRO_100": "AK@5512"
+            // මචං මම මෙතන සාම්පල් 4ක් දැම්මා, අර 100ම මේ විදිහටම ඇතුලත් කරන්න.
+        };
 
-<script>
-    // 1. Language Welcome Message
-    const messages = ["ආයුබෝවන්", "Welcome", "வணக்கம்"];
-    let i = 0;
-    setInterval(() => {
-        document.getElementById('welcome-text').innerText = messages[i];
-        i = (i + 1) % messages.length;
-    }, 2000);
-
-    // 2. Section Control
-    function showSection(section) {
-        document.getElementById('home-section').style.display = 'none';
-        document.getElementById('about-section').style.display = 'none';
-        
-        if(section === 'home') document.getElementById('home-section').style.display = 'block';
-        if(section === 'about') document.getElementById('about-section').style.display = 'block';
-    }
-
-    // 3. Admin Login & Alert (Logic)
-    function onLogin(user) {
-        // Here we send user details to kaviakiya@gmail.com via Firebase Functions
-        console.log("Security Alert Sent to Admin for: " + user.email);
-    }
-
-    // 4. Auto-Block System
-    const forbiddenWords = ["sex", "porn", "kunu"];
-    function checkComment(text) {
-        if(forbiddenWords.some(word => text.toLowerCase().includes(word))) {
-            alert("Your account is blocked for 14 days due to policy violation.");
-            // Logic to disable user account
+        // 2. FIREBALL BACKGROUND
+        const bgCanvas = document.getElementById('bg-canvas');
+        const ctx = bgCanvas.getContext('2d');
+        bgCanvas.width = window.innerWidth;
+        bgCanvas.height = window.innerHeight;
+        let particles = [];
+        class Fireball {
+            constructor() {
+                this.x = Math.random() * bgCanvas.width;
+                this.y = bgCanvas.height + 100;
+                this.size = Math.random() * 15 + 5;
+                this.speedY = Math.random() * 1 + 0.5;
+                this.opacity = Math.random() * 0.5 + 0.1;
+            }
+            update() { this.y -= this.speedY; if (this.y < -50) this.y = bgCanvas.height + 100; }
+            draw() {
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 0, 0, ${this.opacity})`;
+                ctx.fill();
+            }
         }
-    }
-</script>
+        for(let i=0; i<50; i++) particles.push(new Fireball());
+        function animateBg() { ctx.clearRect(0,0,bgCanvas.width, bgCanvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animateBg); }
+        animateBg();
 
-<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-<script>
-    particlesJS.load('particles-js', 'particles.json', function() {
-        console.log('Particles loaded');
-    });
-</script>
+        // 3. MOUSE FIRE TRAIL & CLICK SPARKS
+        const trailCanvas = document.getElementById('trail-canvas');
+        const tCtx = trailCanvas.getContext('2d');
+        trailCanvas.width = window.innerWidth; trailCanvas.height = window.innerHeight;
+        let trail = [];
+        window.addEventListener('mousemove', (e) => {
+            for(let i=0; i<5; i++) trail.push({x: e.clientX, y: e.clientY, s: Math.random()*5+2, a: 1});
+        });
+        window.addEventListener('click', (e) => {
+            for(let i=0; i<20; i++) trail.push({x: e.clientX, y: e.clientY, s: Math.random()*8+3, a: 1, vx: Math.random()*4-2, vy: Math.random()*4-2});
+        });
+        function animateTrail() {
+            tCtx.clearRect(0,0,trailCanvas.width, trailCanvas.height);
+            trail.forEach((p, i) => {
+                p.a -= 0.02; if(p.vx) { p.x += p.vx; p.y += p.vy; }
+                tCtx.fillStyle = `rgba(255, 69, 0, ${p.a})`;
+                tCtx.beginPath(); tCtx.arc(p.x, p.y, p.s, 0, Math.PI*2); tCtx.fill();
+                if(p.a <= 0) trail.splice(i, 1);
+            });
+            requestAnimationFrame(animateTrail);
+        }
+        animateTrail();
 
+        // 4. UI LOGIC
+        function openLogin() { document.getElementById('login-modal').style.display = 'flex'; }
+        function closeLogin() { document.getElementById('login-modal').style.display = 'none'; }
+        function toggleRules() { 
+            let r = document.getElementById('pro-rules');
+            r.style.display = (r.style.display === 'block') ? 'none' : 'block';
+            window.scrollTo(0, r.offsetTop - 100);
+        }
+
+        function checkLogin() {
+            let u = document.getElementById('user').value;
+            let p = document.getElementById('pass').value;
+            if (proUsers[u] && proUsers[u] === p) {
+                alert("ACCESS GRANTED! Welcome Pro User.");
+                document.getElementById('content-section').style.filter = "none";
+                document.getElementById('content-section').style.pointerEvents = "auto";
+                document.getElementById('welcome-msg').innerText = "සාදරයෙන් පිළිගන්නවා, " + u;
+                closeLogin();
+            } else { alert("INVALID CREDENTIALS!"); }
+        }
+    </script>
 </body>
 </html>
