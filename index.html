@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>𝐀𝐊𝐈𝐘𝐀 龍 | Official 2026 v2.8 ONLINE</title>
+    <title>𝐀𝐊𝐈𝐘𝐀 龍 | Official 2026 v2.9 ONLINE</title>
     
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
@@ -12,26 +12,31 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* [උඹේ පරණ පට්ටම CSS ටික මෙතන තියෙනවා - මම ඒක වෙනස් කළේ නැහැ] */
-        :root { --red: #ff1100; --black: #000000; --dark: #0a0a0a; --gold: #ffd700; --glass: rgba(15, 15, 15, 0.85); }
+        :root { --red: #ff1100; --black: #000000; --dark: #0a0a0a; --gold: #ffd700; }
         * { box-sizing: border-box; cursor: none; }
-        body, html { margin: 0; padding: 0; background: var(--black); color: white; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
-        #fire-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.6; }
-        #cursor-fire { position: fixed; width: 12px; height: 12px; background: var(--red); border-radius: 50%; pointer-events: none; z-index: 10000; box-shadow: 0 0 15px var(--red); }
-        nav { position: fixed; top: 0; width: 100%; background: rgba(0,0,0,0.95); display: flex; justify-content: space-between; align-items: center; padding: 12px 30px; z-index: 1000; border-bottom: 2px solid var(--red); }
-        .nav-logo { color: var(--red); font-weight: bold; font-size: 20px; text-shadow: 0 0 10px var(--red); }
-        .nav-links a { color: white; text-decoration: none; margin: 0 12px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        body, html { margin: 0; padding: 0; background: var(--black); color: white; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; }
+
+        /* --- LOGO FIX --- */
+        .nav-logo-container { display: flex; align-items: center; gap: 10px; }
+        .main-logo { width: 40px; height: 40px; object-fit: contain; filter: drop-shadow(0 0 5px var(--red)); }
+
+        nav { position: fixed; top: 0; width: 100%; background: rgba(0,0,0,0.95); display: flex; justify-content: space-between; align-items: center; padding: 10px 25px; z-index: 1000; border-bottom: 2px solid var(--red); }
+        .nav-logo-text { color: var(--red); font-weight: bold; font-size: 22px; text-shadow: 0 0 10px var(--red); }
+        
         .section { display: none; padding: 110px 20px 60px; min-height: 100vh; }
-        .active { display: block; animation: fadeIn 0.6s ease-out; }
+        .active { display: block; animation: fadeIn 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
         #admin-panel { background: var(--dark); border: 2px solid var(--red); padding: 25px; border-radius: 20px; max-width: 500px; margin: 20px auto; display: none; }
-        .admin-input { width: 100%; padding: 12px; background: #151515; border: 1px solid #333; color: white; margin-bottom: 12px; border-radius: 8px; }
+        .admin-input { width: 100%; padding: 12px; background: #151515; border: 1px solid #333; color: white; margin-bottom: 12px; border-radius: 8px; outline: none; }
+        
         .link-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; max-width: 1200px; margin: auto; }
-        .link-card { background: #0d0d0d; border: 1px solid #222; padding: 20px; border-radius: 20px; text-align: center; position: relative; }
-        .card-dp { width: 70px; height: 70px; border-radius: 15px; margin-bottom: 15px; }
-        .glow-btn { padding: 10px 20px; border: 2px solid var(--red); background: transparent; color: var(--red); font-weight: bold; border-radius: 50px; cursor: pointer; animation: pulse 2s infinite; }
-        @keyframes pulse { 0%, 100% { box-shadow: 0 0 5px var(--red); } 50% { box-shadow: 0 0 20px var(--red); } }
-        .float-wa { position: fixed; bottom: 25px; right: 25px; background: #25d366; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; z-index: 2000; box-shadow: 0 0 15px #25d366; }
+        .link-card { background: #0d0d0d; border: 1px solid #222; padding: 20px; border-radius: 20px; text-align: center; transition: 0.3s; }
+        .card-dp { width: 80px; height: 80px; border-radius: 15px; margin-bottom: 10px; border: 1px solid #333; }
+        
+        #fire-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.5; }
+        #cursor-fire { position: fixed; width: 12px; height: 12px; background: var(--red); border-radius: 50%; pointer-events: none; z-index: 10000; box-shadow: 0 0 15px var(--red); }
+        .glow-btn { padding: 10px 20px; border: 2px solid var(--red); background: transparent; color: var(--red); font-weight: bold; border-radius: 50px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -40,39 +45,45 @@
     <canvas id="fire-canvas"></canvas>
 
     <nav>
-        <div class="nav-logo">𝐀𝐊𝐈𝐘𝐀 龍</div>
+        <div class="nav-logo-container">
+            <img src="dragon.png" class="main-logo" alt="Dragon" onerror="this.style.display='none'">
+            <div class="nav-logo-text">𝐀𝐊𝐈𝐘𝐀 龍</div>
+        </div>
         <div class="nav-links">
-            <a onclick="showPage('home')">HOME</a>
-            <a onclick="showPage('category')">CATEGORY</a>
-            <a id="pro-btn" style="color:var(--gold);">GET PRO</a>
+            <a onclick="showPage('home')" style="color:white; margin-right:15px; text-decoration:none; font-weight:bold; cursor:pointer;">HOME</a>
+            <a onclick="showPage('category')" style="color:white; text-decoration:none; font-weight:bold; cursor:pointer;">LINKS</a>
         </div>
         <div id="auth-area">
             <div id="g_id_onload" data-client_id="180586817754-crv0p90dvrml6ojlgo9a6uvqccbjdn44.apps.googleusercontent.com" data-callback="handleCredentialResponse"></div>
             <div class="g_id_signin" data-type="standard"></div>
         </div>
+        <div id="user-profile" style="display:none;">
+            <button onclick="logout()" style="background:none; border:1px solid #444; color:#888; border-radius:5px; font-size:10px; cursor:pointer;">LOGOUT</button>
+        </div>
     </nav>
 
     <div id="home" class="section active">
         <div style="text-align: center;">
-            <h1 style="color: var(--red);">WELCOME ADMIN</h1>
+            <h1 style="color:var(--red);">ADMIN DASHBOARD</h1>
             <div id="admin-panel">
-                <input type="text" id="t" class="admin-input" placeholder="Name">
-                <input type="text" id="d" class="admin-input" placeholder="Info">
-                <input type="text" id="u" class="admin-input" placeholder="URL">
+                <input type="text" id="t" class="admin-input" placeholder="Group Name">
+                <input type="text" id="d" class="admin-input" placeholder="Small Description">
+                <input type="text" id="u" class="admin-input" placeholder="URL (Link)">
                 <select id="c" class="admin-input">
                     <option value="WHATSAPP">WHATSAPP</option>
                     <option value="TELEGRAM">TELEGRAM</option>
                 </select>
                 <input type="file" id="l-img" class="admin-input">
-                <button class="glow-btn" style="width:100%" onclick="saveLink()">PUBLISH ONLINE</button>
+                <button class="glow-btn" style="width:100%" onclick="saveLink()">PUBLISH TO ONLINE DATABASE</button>
             </div>
+            <p id="status-msg" style="color:#555; margin-top:20px;">Please login as Admin to add links.</p>
         </div>
     </div>
 
     <div id="category" class="section">
-        <div style="text-align:center; margin-bottom:20px;">
-            <select id="filter" class="admin-input" style="width:200px" onchange="render()">
-                <option value="ALL">ALL</option>
+        <div style="text-align:center; margin-bottom:30px;">
+            <select id="filter" class="admin-input" style="width:180px" onchange="render()">
+                <option value="ALL">ALL LINKS</option>
                 <option value="WHATSAPP">WHATSAPP</option>
                 <option value="TELEGRAM">TELEGRAM</option>
             </select>
@@ -80,103 +91,6 @@
         <div class="link-grid" id="grid"></div>
     </div>
 
-    <a href="https://wa.me/94755751816" class="float-wa"><i class="fab fa-whatsapp"></i></a>
-
     <script>
-        // --- FIREBASE CONFIGURATION ---
         const firebaseConfig = {
-            databaseURL: "https://akiya-communitiy-official-lk-default-rtdb.firebaseio.com/" 
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-
-        const ADMIN = "kaviakiya@gmail.com";
-
-        // GOOGLE LOGIN
-        function handleCredentialResponse(r) {
-            const d = JSON.parse(atob(r.credential.split('.')[1]));
-            localStorage.setItem('u_email', d.email);
-            localStorage.setItem('is_l', 'true');
-            location.reload();
-        }
-
-        window.onload = () => {
-            if(localStorage.getItem('u_email') === ADMIN) {
-                document.getElementById('admin-panel').style.display = 'block';
-            }
-            render(); // මුලින්ම ලින්ක්ස් ටික ලෝඩ් කරන්න
-        };
-
-        function showPage(p) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.getElementById(p).classList.add('active');
-        }
-
-        // --- SAVE TO FIREBASE ---
-        function saveLink() {
-            const title = document.getElementById('t').value;
-            const desc = document.getElementById('d').value;
-            const url = document.getElementById('u').value;
-            const cat = document.getElementById('c').value;
-            const file = document.getElementById('l-img').files[0];
-
-            if(!title || !url) return alert("Title and URL required!");
-
-            const reader = new FileReader();
-            reader.onloadend = function() {
-                const imgData = reader.result || 'dragon.png';
-                db.ref('links').push({ title, desc, url, cat, img: imgData }).then(() => {
-                    alert("Link Saved Online!");
-                    location.reload();
-                });
-            }
-            if(file) reader.readAsDataURL(file); else reader.onloadend();
-        }
-
-        // --- RENDER FROM FIREBASE ---
-        function render() {
-            const f = document.getElementById('filter').value;
-            const grid = document.getElementById('grid');
-            
-            db.ref('links').on('value', (snapshot) => {
-                const data = snapshot.val();
-                grid.innerHTML = "";
-                for (let id in data) {
-                    let l = data[id];
-                    if (f === 'ALL' || l.cat === f) {
-                        grid.innerHTML += `
-                            <div class="link-card">
-                                <img src="${l.img}" class="card-dp">
-                                <h3>${l.title}</h3>
-                                <p>${l.desc}</p>
-                                <button class="glow-btn" onclick="window.open('${l.url}')">JOIN NOW</button>
-                            </div>`;
-                    }
-                }
-            });
-        }
-
-        // --- FIRE EFFECT ---
-        const canvas = document.getElementById('fire-canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        let p = [];
-        window.onmousemove = (e) => {
-            document.getElementById('cursor-fire').style.left = e.clientX+'px';
-            document.getElementById('cursor-fire').style.top = e.clientY+'px';
-            for(let i=0; i<2; i++) p.push({x: e.clientX, y: e.clientY, s: Math.random()*3+1, vy: -Math.random()*2, a: 1});
-        };
-        function anim() {
-            ctx.clearRect(0,0,canvas.width, canvas.height);
-            p.forEach((m, i) => {
-                m.y += m.vy; m.a -= 0.015;
-                ctx.fillStyle = `rgba(255, 50, 0, ${m.a})`;
-                ctx.beginPath(); ctx.arc(m.x, m.y, m.s, 0, Math.PI*2); ctx.fill();
-                if(m.a <= 0) p.splice(i, 1);
-            });
-            requestAnimationFrame(anim);
-        }
-        anim();
-    </script>
-</body>
-</html>
+            databaseURL: "https://akiya-communitiy-official-lk-default-rtdb.
