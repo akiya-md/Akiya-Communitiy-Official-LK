@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,36 +20,17 @@
             background: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(20,0,0,1)), url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
         }
 
-        /* 🔥 Gini Pupuru Style */
-        .cursor-fire { 
-            position: fixed; 
-            width: 10px; 
-            height: 10px; 
-            background: orange; 
-            border-radius: 50%; 
-            pointer-events: none; 
-            box-shadow: 0 0 10px red, 0 0 20px yellow; 
-            z-index: 9999; 
-            animation: fireTrail 0.6s ease-out forwards; 
-        }
-        @keyframes fireTrail { 
-            0% { transform: scale(1.2) translateY(0); opacity: 1; } 
-            100% { transform: scale(0) translateY(-30px); opacity: 0; } 
+        /* 🔴 Old Style Particles (Gini Pupuru) */
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            border-radius: 50%;
+            z-index: 9999;
         }
 
         .fire-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; opacity: 0.2; background: url('https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJndW95ZzRyeG13eGZ4Z3R4Z3R4Z3R4Z3R4Z3R4Z3R4Z3R4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/yr7n0u3qzJC8mJLIL7/giphy.gif') center/cover; }
 
-        nav { 
-            background: rgba(0,0,0,0.95); 
-            padding: 10px 5%; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            position: sticky; 
-            top: 0; 
-            z-index: 2000; 
-            border-bottom: 2px solid var(--red);
-        }
+        nav { background: rgba(0,0,0,0.95); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 2000; border-bottom: 2px solid var(--red); }
         .nav-brand { display: flex; align-items: center; gap: 10px; }
         .nav-logo-img { width: 35px; height: 35px; filter: drop-shadow(0 0 5px var(--red)); }
         .nav-title { font-weight: 900; color: white; font-size: 16px; }
@@ -60,12 +42,10 @@
         .group-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; padding: 20px; }
         .group-card { background: #111; border: 1px solid #222; padding: 15px; border-radius: 15px; width: 150px; text-align: center; transition: 0.3s; }
         .group-card img { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--red); margin-bottom: 10px; object-fit: cover; }
-        .group-card:hover { transform: scale(1.05); border-color: var(--red); box-shadow: var(--glow); }
 
         .about-card { max-width: 600px; margin: 20px auto; background: #111; padding: 25px; border-radius: 15px; border-left: 5px solid var(--red); text-align: center; }
-
         .search-bar { width: 85%; max-width: 500px; padding: 12px; border-radius: 50px; border: 1px solid #333; background: #111; color: white; text-align: center; display: block; margin: 20px auto; outline: none; }
-
+        
         .link-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding: 20px; max-width: 1200px; margin: 0 auto; }
         .link-card { background: var(--card); border-radius: 15px; padding: 20px; text-align: center; border-top: 3px solid var(--red); transition: 0.3s; }
         .link-card:hover { transform: translateY(-5px); box-shadow: var(--glow); }
@@ -79,16 +59,15 @@
         .comment-item { background: #181818; padding: 12px; border-radius: 10px; border-left: 3px solid var(--red); font-size: 13px; }
         .comment-item span { color: var(--red); font-weight: bold; font-size: 11px; display: block; margin-bottom: 4px; }
 
-        .wa-float { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; color: white; z-index: 3000; text-decoration: none; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-
         #login-overlay { position: fixed; inset: 0; z-index: 2500; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #000; }
         #content-wrapper { filter: blur(25px); pointer-events: none; opacity: 0; transition: 1s; }
         body.unlocked #content-wrapper { filter: blur(0); pointer-events: all; opacity: 1; }
         footer { text-align: center; padding: 40px; color: #444; font-size: 11px; border-top: 1px solid #222; }
+        
+        .wa-float { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; color: white; z-index: 3000; text-decoration: none; }
     </style>
 </head>
-<body onmousemove="spawnFire(event)">
+<body>
 
     <div class="fire-bg"></div>
 
@@ -100,7 +79,7 @@
     <div id="content-wrapper">
         <nav>
             <div class="nav-brand">
-                <img src="dragon.png" class="nav-logo-img" alt="Logo">
+                <img src="dragon.png" class="nav-logo-img">
                 <div class="nav-title">𝐀𝐊𝐈𝐘𝐀 <span style="color:red;">龍</span> HUB</div>
             </div>
             <div class="nav-links">
@@ -117,19 +96,14 @@
 
         <div class="group-container">
             <div class="group-card">
-                <img src="dragon.png" alt="FB">
+                <img src="dragon.png">
                 <h4>Dragon FB</h4>
-                <a href="https://facebook.com/yourpage" style="color:var(--red); font-size:10px; text-decoration:none;">JOIN NOW</a>
+                <a href="#" style="color:var(--red); font-size:10px; text-decoration:none;">JOIN NOW</a>
             </div>
             <div class="group-card">
-                <img src="dragon.png" alt="YT">
+                <img src="dragon.png">
                 <h4>Dragon YT</h4>
-                <a href="https://youtube.com/yourchannel" style="color:var(--red); font-size:10px; text-decoration:none;">SUBSCRIBE</a>
-            </div>
-            <div class="group-card">
-                <img src="dragon.png" alt="TG">
-                <h4>Dragon TG</h4>
-                <a href="https://t.me/yourgroup" style="color:var(--red); font-size:10px; text-decoration:none;">JOIN GROUP</a>
+                <a href="#" style="color:var(--red); font-size:10px; text-decoration:none;">SUBSCRIBE</a>
             </div>
         </div>
 
@@ -138,18 +112,16 @@
             <p>Welcome to <b>Akiya Dragon Community</b>. Best scripts and tools in one place. 🔥🐲</p>
         </div>
 
-        <input type="text" class="search-bar" placeholder="Search Promo Links...">
-
         <div id="admin-panel" style="display:none; background:rgba(30,0,0,0.5); padding:20px; border-radius:10px; margin: 20px auto; max-width: 600px; border:1px dashed red;">
             <input type="text" id="title" style="width:100%; padding:10px; margin-bottom:10px; background:black; color:white; border:1px solid #333;" placeholder="Title">
             <input type="text" id="url" style="width:100%; padding:10px; margin-bottom:10px; background:black; color:white; border:1px solid #333;" placeholder="URL">
-            <button onclick="publish()" style="width:100%; padding:10px; background:red; color:white; border:none; font-weight:bold; cursor:pointer;">PUBLISH NEW LINK</button>
+            <button onclick="publish()" style="width:100%; padding:10px; background:red; color:white; border:none; font-weight:bold;">PUBLISH NEW LINK</button>
         </div>
 
         <div class="link-grid" id="linkGrid"></div>
 
         <div class="comment-section" id="comments">
-            <h3 style="margin-bottom:15px; color:var(--red);"><i class="fas fa-comments"></i> COMMUNITY FEEDBACK</h3>
+            <h3 style="margin-bottom:15px; color:var(--red);"><i class="fas fa-comments"></i> FEEDBACK</h3>
             <div class="comment-input-box">
                 <input type="text" id="commentText" placeholder="Write a comment...">
                 <button onclick="postComment()">POST</button>
@@ -158,8 +130,8 @@
         </div>
 
         <footer>
-            <p>&copy; 2026 𝐀𝐊𝐈𝐘𝐀 龍 COMMUNITY - ALL RIGHTS RESERVED</p>
-            <p>Total Visitors: <span id="count">0</span></p>
+            <p>&copy; 2026 𝐀𝐊𝐈𝐘𝐀 龍 COMMUNITY</p>
+            <p>Visitors: <span id="count">0</span></p>
         </footer>
     </div>
 
@@ -188,15 +160,13 @@
         const provider = new GoogleAuthProvider();
         let currentUser = null;
 
-        // Redirect එකෙන් පස්සේ ලැබෙන ප්‍රතිඵලය පරීක්ෂා කිරීම
-        getRedirectResult(auth).catch((error) => console.error("Login Error:", error));
+        getRedirectResult(auth).catch((error) => console.error(error));
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 currentUser = user;
                 document.body.classList.add('unlocked');
                 document.getElementById('login-overlay').style.display = 'none';
-                // Email එක එකම පේළියේ තියෙන්න ඕනේ
                 if(["kaviakiya@gmail.com", "dewshanakiya@gmail.com"].includes(user.email)) {
                     document.getElementById('admin-panel').style.display = 'block';
                 }
@@ -208,23 +178,60 @@
                 return signInWithRedirect(auth, provider);
             });
         };
-        
+
+        // 🟢 OLD STYLE BOLA GINI PUPURU LOGIC
+        document.addEventListener('mousemove', function(e) {
+            for (let i = 0; i < 3; i++) { // එක පාර පුපුරු 3ක් හදනවා
+                createParticle(e.clientX, e.clientY);
+            }
+        });
+
+        function createParticle(x, y) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            document.body.appendChild(p);
+
+            const size = Math.random() * 8 + 2;
+            p.style.width = `${size}px`;
+            p.style.height = `${size}px`;
+            
+            // පාටවල් මාරු වෙන්න (ගින්දර වගේ)
+            const colors = ['#ff0000', '#ff8c00', '#ffff00', '#ffffff'];
+            p.style.background = colors[Math.floor(Math.random() * colors.length)];
+            p.style.boxShadow = `0 0 10px ${p.style.background}`;
+
+            let posX = x;
+            let posY = y;
+            
+            // පැත්තට විසිවෙන වේගය (Physics)
+            let velX = (Math.random() - 0.5) * 8;
+            let velY = (Math.random() - 0.5) * 8;
+            let opacity = 1;
+
+            function update() {
+                posX += velX;
+                posY += velY;
+                velY += 0.1; // ගුරුත්වාකර්ෂණය (පහළට වැටෙන්න)
+                opacity -= 0.02;
+
+                p.style.left = `${posX}px`;
+                p.style.top = `${posY}px`;
+                p.style.opacity = opacity;
+
+                if (opacity > 0) {
+                    requestAnimationFrame(update);
+                } else {
+                    p.remove();
+                }
+            }
+            update();
+        }
+
+        // Firebase Other Functions (Links/Comments)
         window.publish = () => {
             const t = document.getElementById('title').value;
             const u = document.getElementById('url').value;
             if(t && u) push(ref(db, 'links'), { name: t, url: u });
-        };
-
-        window.postComment = () => {
-            const txt = document.getElementById('commentText').value;
-            if(txt && currentUser) {
-                push(ref(db, 'comments'), {
-                    name: currentUser.displayName,
-                    text: txt,
-                    time: serverTimestamp()
-                });
-                document.getElementById('commentText').value = "";
-            }
         };
 
         onValue(ref(db, 'links'), (snap) => {
@@ -233,22 +240,6 @@
                 grid.innerHTML += `<div class="link-card"><h3>${l.name}</h3><a href="${l.url}" target="_blank" style="color:red; text-decoration:none; font-weight:bold;">ACCESS 🔥</a></div>`;
             });
         });
-
-        onValue(ref(db, 'comments'), (snap) => {
-            const list = document.getElementById('commentList'); list.innerHTML = "";
-            if(snap.val()) Object.values(snap.val()).reverse().forEach(c => {
-                list.innerHTML += `<div class="comment-item"><span>${c.name}</span>${c.text}</div>`;
-            });
-        });
-
-        window.spawnFire = (e) => {
-            const f = document.createElement('div');
-            f.className = 'cursor-fire';
-            f.style.left = e.clientX + 'px';
-            f.style.top = e.clientY + 'px';
-            document.body.appendChild(f);
-            setTimeout(() => f.remove(), 600);
-        };
 
         let v = localStorage.getItem('vCount') || 1240;
         localStorage.setItem('vCount', ++v);
