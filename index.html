@@ -22,46 +22,57 @@
         .nav-logo-container { display: flex; align-items: center; gap: 10px; }
         .pc-logo { width: 30px; filter: drop-shadow(0 0 5px var(--red)); }
         .nav-logo { color: var(--red); font-weight: bold; font-size: 18px; text-shadow: 0 0 10px var(--red); letter-spacing: 1px; }
-        .nav-links a { color: white; text-decoration: none; margin: 0 8px; font-weight: bold; cursor: pointer; font-size: 12px; transition: 0.3s; }
+        .nav-links a { color: white; text-decoration: none; margin: 0 8px; font-weight: bold; cursor: pointer; font-size: 11px; transition: 0.3s; }
         .nav-links a:hover { color: var(--red); }
 
         .section { display: none; padding: 90px 15px 60px; min-height: 100vh; }
         .active { display: block; animation: fadeIn 0.6s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- ADMIN PANEL --- */
-        #admin-panel { background: var(--dark); border: 2px solid var(--red); padding: 20px; border-radius: 20px; max-width: 500px; margin: 20px auto; display: none; box-shadow: 0 0 25px rgba(255,0,0,0.5); }
-        .admin-input { width: 100%; padding: 10px; background: #151515; border: 1px solid #333; color: white; margin-bottom: 10px; border-radius: 8px; outline: none; font-size: 13px; }
-        
-        /* --- SEARCH & CATEGORY --- */
-        .search-box { width: 100%; max-width: 600px; margin: 20px auto; position: relative; }
-        .search-box input { width: 100%; padding: 12px 20px; border-radius: 50px; border: 1px solid #333; background: #0d0d0d; color: white; outline: none; transition: 0.3s; }
-        .search-box input:focus { border-color: var(--red); box-shadow: 0 0 15px rgba(255,17,0,0.3); }
+        /* --- CATEGORY TABS --- */
+        .category-container { display: flex; justify-content: center; gap: 10px; margin: 20px 0; flex-wrap: wrap; }
+        .cat-tab { padding: 8px 15px; background: #111; border: 1px solid #333; border-radius: 50px; font-size: 10px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .cat-tab.active-tab { background: var(--red); border-color: var(--red); box-shadow: 0 0 10px var(--red); }
+
+        /* --- SEARCH BOX --- */
+        .search-box { width: 100%; max-width: 600px; margin: 0 auto 20px; position: relative; }
+        .search-box input { width: 100%; padding: 12px 25px; border-radius: 50px; border: 1px solid #222; background: #0d0d0d; color: white; outline: none; }
 
         /* --- CARDS --- */
-        .link-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; max-width: 1200px; margin: 20px auto; }
-        @media (min-width: 768px) { .link-grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; } }
-        
-        .link-card { background: #0d0d0d; border: 1px solid #222; padding: 15px; border-radius: 15px; text-align: center; transition: 0.3s; position: relative; overflow: hidden; }
-        .link-card.locked { filter: blur(8px); pointer-events: none; }
-        .card-dp { width: 55px; height: 55px; border-radius: 12px; object-fit: cover; margin-bottom: 10px; border: 1px solid #333; }
-        
-        .admin-btns { position: absolute; top: 5px; right: 5px; display: none; gap: 5px; }
-        .admin-btns i { background: rgba(0,0,0,0.7); padding: 5px; border-radius: 5px; font-size: 10px; cursor: pointer; }
+        .link-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; max-width: 1200px; margin: 20px auto; }
+        .link-card { background: #0d0d0d; border: 1px solid #222; padding: 15px; border-radius: 20px; text-align: center; position: relative; transition: 0.3s; }
+        .link-card.locked { filter: blur(10px); pointer-events: none; }
+        .card-dp { width: 60px; height: 60px; border-radius: 15px; object-fit: cover; margin-bottom: 10px; border: 2px solid #222; }
+        .card-info { font-size: 11px; color: #888; margin: 10px 0; min-height: 30px; }
 
-        .glow-btn { padding: 10px 18px; background: transparent; border: 2px solid var(--red); color: var(--red); font-weight: bold; border-radius: 50px; cursor: pointer; text-transform: uppercase; font-size: 11px; transition: 0.3s; }
+        .admin-btns { position: absolute; top: 10px; right: 10px; display: none; gap: 5px; z-index: 100; }
+        .admin-btns i { background: #000; padding: 5px; border-radius: 5px; color: var(--red); font-size: 12px; border: 1px solid var(--red); }
+
+        /* --- ADMIN PANEL --- */
+        #admin-panel { background: var(--dark); border: 2px solid var(--red); padding: 20px; border-radius: 20px; max-width: 500px; margin: 20px auto; display: none; }
+        .admin-input { width: 100%; padding: 10px; background: #151515; border: 1px solid #333; color: white; margin-bottom: 8px; border-radius: 8px; outline: none; font-size: 12px; }
+
+        /* --- FLOATING CHAT BOT --- */
+        .chat-bot { position: fixed; bottom: 25px; right: 25px; width: 50px; height: 50px; background: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 25px; color: white; cursor: pointer; z-index: 5000; box-shadow: 0 0 20px rgba(37, 211, 102, 0.5); animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
+        .glow-btn { padding: 10px 20px; background: transparent; border: 2px solid var(--red); color: var(--red); font-weight: bold; border-radius: 50px; cursor: pointer; font-size: 10px; transition: 0.3s; }
         .glow-btn:hover { background: var(--red); color: white; }
 
-        .pro-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #0a0a0a; border: 2px solid var(--red); padding: 30px; border-radius: 20px; z-index: 3000; display: none; width: 90%; max-width: 350px; text-align: center; }
-
         footer { text-align: center; padding: 40px; border-top: 1px solid #111; color: #444; font-size: 12px; }
-        .rights-text { color: var(--red); font-weight: bold; margin-top: 5px; font-size: 10px; }
+        .rights-text { color: var(--red); font-weight: bold; margin-top: 5px; font-size: 10px; letter-spacing: 1px; }
+
+        .pro-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #0a0a0a; border: 2px solid var(--red); padding: 30px; border-radius: 20px; z-index: 3000; display: none; width: 90%; max-width: 350px; text-align: center; }
     </style>
 </head>
 <body>
 
     <div id="cursor-fire"></div>
     <canvas id="fire-canvas"></canvas>
+
+    <div class="chat-bot" onclick="window.location.href='https://wa.me/94755751816'">
+        <i class="fab fa-whatsapp"></i>
+    </div>
 
     <nav>
         <div class="nav-logo-container">
@@ -79,7 +90,7 @@
         </div>
         <div id="user-profile" style="display:none; align-items:center; gap:8px;">
             <img id="user-pfp" style="width:28px; border-radius:50%; border: 1px solid var(--red);">
-            <span onclick="logout()" style="color:#ff1100; cursor:pointer; font-size:8px; font-weight:bold;">LOGOUT</span>
+            <span onclick="logout()" style="color:#ff1100; cursor:pointer; font-size:9px; font-weight:bold;">LOGOUT</span>
         </div>
     </nav>
 
@@ -100,10 +111,19 @@
                 <input type="text" id="searchInput" placeholder="ලින්ක් එකේ නම මෙතන search කරන්න..." onkeyup="renderLinks()">
             </div>
 
+            <div class="category-container">
+                <div class="cat-tab active-tab" onclick="filterCat('ALL', this)">ALL</div>
+                <div class="cat-tab" onclick="filterCat('WHATSAPP', this)">WHATSAPP</div>
+                <div class="cat-tab" onclick="filterCat('TELEGRAM', this)">TELEGRAM</div>
+                <div class="cat-tab" onclick="filterCat('YT', this)">YOUTUBE</div>
+                <div class="cat-tab" onclick="filterCat('FB', this)">FACEBOOK</div>
+            </div>
+
             <div id="admin-panel">
                 <h3 style="color: var(--gold); font-size: 14px;">🐲 MASTER ADMIN PANEL</h3>
                 <input type="hidden" id="edit-id">
                 <input type="text" id="t" class="admin-input" placeholder="Name">
+                <input type="text" id="info" class="admin-input" placeholder="Link Info (Description)">
                 <input type="text" id="u" class="admin-input" placeholder="Link URL">
                 <select id="c" class="admin-input">
                     <option value="WHATSAPP">WHATSAPP</option>
@@ -116,16 +136,12 @@
                 
                 <hr style="border:0; border-top:1px solid #222; margin:20px 0;">
                 <h4 style="color:var(--gold); font-size:12px;">EDIT ABOUT INFO</h4>
-                <input type="text" id="set-name" class="admin-input" placeholder="New Name">
-                <input type="text" id="set-age" class="admin-input" placeholder="New Age">
-                <input type="text" id="set-school" class="admin-input" placeholder="New School">
-                <input type="text" id="set-info" class="admin-input" placeholder="About Info">
-                <input type="file" id="set-dp" class="admin-input" accept="image/*">
-                <button class="glow-btn" style="width:100%; border-color:var(--gold); color:var(--gold);" onclick="updateAbout()">UPDATE ABOUT</button>
-            </div>
-
-            <div id="guest-msg" style="margin:20px 0;">
-                <p style="color:#777; font-size:10px;">GUEST MODE: LINKS ARE BLURRED</p>
+                <input type="text" id="set-name" class="admin-input" placeholder="Full Name">
+                <input type="text" id="set-age" class="admin-input" placeholder="Age">
+                <input type="text" id="set-school" class="admin-input" placeholder="School">
+                <input type="text" id="set-info" class="admin-input" placeholder="About Description">
+                <input type="file" id="set-dp" class="admin-input">
+                <button class="glow-btn" style="width:100%;" onclick="updateAbout()">UPDATE ABOUT</button>
             </div>
 
             <div class="link-grid" id="home-grid"></div>
@@ -140,9 +156,9 @@
                 <p><b>Name:</b> <span id="val-name">Akindu Dewshan</span></p>
                 <p><b>Age:</b> <span id="val-age">17 Years</span></p>
                 <p><b>School:</b> <span id="val-school">High School</span></p>
-                <p><b>Info:</b> <span id="val-info">Official Developer.</span></p>
+                <p><b>About:</b> <span id="val-info">Official Developer.</span></p>
             </div>
-            <button class="glow-btn" style="width:100%; margin-top:20px;" onclick="window.location.href='https://wa.me/94755751816'">CONTACT</button>
+            <button class="glow-btn" style="width:100%; margin-top:20px;" onclick="window.location.href='https://wa.me/94755751816'">CONTACT DEVELOPER</button>
         </div>
     </div>
 
@@ -156,6 +172,7 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
         const ADMIN = "kaviakiya@gmail.com";
+        let currentCategory = "ALL";
 
         function handleCredentialResponse(r) {
             const d = JSON.parse(atob(r.credential.split('.')[1]));
@@ -177,22 +194,28 @@
                 document.getElementById('user-profile').style.display = 'flex';
                 document.getElementById('user-pfp').src = u.img;
                 if(u.email === ADMIN) document.getElementById('admin-panel').style.display = 'block';
-                document.getElementById('guest-msg').style.display = 'none';
             }
             loadAbout();
             renderLinks();
         };
 
+        function filterCat(cat, el) {
+            currentCategory = cat;
+            document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active-tab'));
+            el.classList.add('active-tab');
+            renderLinks();
+        }
+
         function saveLink() {
             const id = document.getElementById('edit-id').value;
             const data = {
                 title: document.getElementById('t').value,
+                desc: document.getElementById('info').value,
                 url: document.getElementById('u').value,
                 cat: document.getElementById('c').value
             };
             const file = document.getElementById('l-img').files[0];
             const reader = new FileReader();
-            
             reader.onloadend = () => {
                 if(file) data.img = reader.result;
                 if(id) db.ref('links/'+id).update(data);
@@ -213,7 +236,7 @@
                 grid.innerHTML = "";
                 for(let id in data) {
                     let l = data[id];
-                    if(l.title.toLowerCase().includes(search)) {
+                    if((currentCategory === "ALL" || l.cat === currentCategory) && l.title.toLowerCase().includes(search)) {
                         grid.innerHTML += `
                         <div class="link-card ${!isLogged ? 'locked' : ''}">
                             <div class="admin-btns" style="display:${isAdmin ? 'flex' : 'none'}">
@@ -221,27 +244,29 @@
                                 <i class="fas fa-trash" onclick="deleteLink('${id}')"></i>
                             </div>
                             <img src="${l.img || 'dragon.png'}" class="card-dp">
-                            <h3 style="font-size:14px;">${l.title}</h3>
-                            <button class="glow-btn" onclick="window.open('${l.url}')">JOIN</button>
+                            <h3 style="font-size:14px; margin:0;">${l.title}</h3>
+                            <p class="card-info">${l.desc || 'No description available.'}</p>
+                            <button class="glow-btn" style="width:100%;" onclick="window.open('${l.url}')">JOIN NOW</button>
                         </div>`;
                     }
                 }
             });
         }
 
-        function deleteLink(id) { if(confirm("Delete?")) db.ref('links/'+id).remove(); }
-        
         function editLink(id) {
             db.ref('links/'+id).once('value', s => {
                 const d = s.val();
                 document.getElementById('edit-id').value = id;
                 document.getElementById('t').value = d.title;
+                document.getElementById('info').value = d.desc;
                 document.getElementById('u').value = d.url;
                 document.getElementById('c').value = d.cat;
                 document.getElementById('pub-btn').innerText = "UPDATE LINK";
                 window.scrollTo(0,0);
             });
         }
+
+        function deleteLink(id) { if(confirm("Delete this link?")) db.ref('links/'+id).remove(); }
 
         function updateAbout() {
             const data = {
@@ -254,7 +279,7 @@
             const r = new FileReader();
             r.onloadend = () => {
                 if(file) data.dp = r.result;
-                db.ref('about_data').update(data).then(() => alert("Updated!"));
+                db.ref('about_data').update(data).then(() => alert("About Section Updated!"));
             };
             if(file) r.readAsDataURL(file); else r.onloadend();
         }
