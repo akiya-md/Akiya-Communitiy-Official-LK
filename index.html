@@ -13,12 +13,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --red: #ff1100; --black: #000000; --dark: #0a0a0a; --gold: #ffd700; --glass: rgba(15, 15, 15, 0.95); }
-        * { box-sizing: border-box; } /* Cursor none අයින් කළා */
+        * { box-sizing: border-box; }
         
         body, html { 
             margin: 0; padding: 0; background: var(--black); color: white; 
             font-family: 'Segoe UI', sans-serif; overflow-x: hidden; scroll-behavior: smooth; 
-            -webkit-user-select: none; user-select: none; /* Text copy කිරීම වැළැක්වීමට */
+            -webkit-user-select: none; user-select: none;
         }
 
         #fire-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.7; }
@@ -32,6 +32,10 @@
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .login-container { max-width: 400px; margin: 100px auto; background: var(--glass); padding: 30px; border-radius: 20px; border: 1px solid var(--red); text-align: center; }
+        .admin-input { width: 100%; margin-bottom: 10px; background: #111; border: 1px solid #333; color: white; padding: 12px; border-radius: 10px; }
+        .glow-btn { padding: 12px 24px; background: transparent; border: 2px solid var(--red); color: var(--red); font-weight: bold; border-radius: 50px; cursor: pointer; transition: 0.3s; }
+        .glow-btn:hover { background: var(--red); color: white; box-shadow: 0 0 20px var(--red); }
+        
         .cat-bar { display: flex; gap: 10px; overflow-x: auto; padding: 10px; background: #111; border-radius: 10px; margin-bottom: 20px; scrollbar-width: none; }
         .cat-item { padding: 8px 20px; background: #222; border-radius: 50px; white-space: nowrap; font-size: 13px; cursor: pointer; border: 1px solid #333; }
         .cat-item:hover, .cat-active { background: var(--red); border-color: var(--red); }
@@ -39,10 +43,6 @@
         .link-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; max-width: 1200px; margin: auto; }
         .link-card { background: var(--glass); border: 1px solid #222; padding: 20px; border-radius: 20px; text-align: center; }
         .link-card img { width: 100%; height: 150px; object-fit: cover; border-radius: 15px; margin-bottom: 10px; }
-
-        .admin-input { width: 100%; margin-bottom: 10px; background: #111; border: 1px solid #333; color: white; padding: 12px; border-radius: 10px; }
-        .glow-btn { padding: 12px 24px; background: transparent; border: 2px solid var(--red); color: var(--red); font-weight: bold; border-radius: 50px; cursor: pointer; transition: 0.3s; }
-        .glow-btn:hover { background: var(--red); color: white; box-shadow: 0 0 20px var(--red); }
         
         .about-card { max-width: 600px; margin: auto; background: var(--glass); padding: 30px; border-radius: 20px; border: 1px solid var(--red); text-align: center; }
         .about-pfp { width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--red); margin-bottom: 15px; object-fit: cover; }
@@ -55,7 +55,7 @@
 
     <div id="login-screen" class="section active">
         <div class="login-container">
-            <img src="dragon.png" width="80">
+            <img src="dragon.png" width="80" alt="logo">
             <h2 style="color:var(--red);">AKIYA龍 LOGIN</h2>
             <div id="pro-login-box">
                 <input type="text" id="user-id" class="admin-input" placeholder="Username" autocomplete="off">
@@ -63,7 +63,7 @@
                 <button class="glow-btn" style="width:100%" onclick="proLogin()">LOGIN PRO</button>
             </div>
             <hr style="margin:20px; border:0; border-top:1px solid #333;">
-            <button class="glow-btn" style="width:100%; border-color:#4285F4; color:#4285F4;" onclick="googleLogin()">
+            <button id="google-btn" class="glow-btn" style="width:100%; border-color:#4285F4; color:#4285F4;">
                 <i class="fab fa-google"></i> SIGN IN WITH GOOGLE
             </button>
         </div>
@@ -104,29 +104,29 @@
     </div>
 
     <script>
-        // 🛡️ SECURITY LAYER: Right Click & Key Protection
+        // 🛡️ PROTECTIONS
         document.addEventListener('contextmenu', e => e.preventDefault());
-        document.onkeydown = function(e) {
-            if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) {
-                return false;
-            }
+        document.onkeydown = (e) => {
+            if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) return false;
         };
 
-        // FIREBASE CONFIG
+        // FIREBASE INITIALIZATION
         const firebaseConfig = { 
             databaseURL: "https://akiya-communitiy-official-lk-default-rtdb.firebaseio.com/" 
         };
-        firebase.initializeApp(firebaseConfig);
+        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
+        
         const db = firebase.database();
         const auth = firebase.auth();
         const ADMIN_EMAIL = "kaviakiya@gmail.com";
 
-        // PRO USERS DATA
+        // PRO USERS
         const _0x5a1 = {"akiya_p1":"ax92Lm7Q","akiya_p2":"zP4vK1rN","akiya_p3":"mL9oP2xW","akiya_p4":"qR7tM5yB","akiya_p5":"vN3mX8kP","akiya_p6":"kL5nZ9qR","akiya_p7":"jD4fG2hS","akiya_p8":"wS1eR8tY","akiya_p9":"xN7vB2mK","akiya_p10":"zP9lK3oM","akiya_p11":"mL5xW8qR","akiya_p12":"vN2mP7kS","akiya_p13":"kR9tY1mB","akiya_p14":"qZ3xC8vN","akiya_p15":"jD7fG1hW","akiya_p16":"wS5eR9tP","akiya_p17":"xN2vB8mQ","akiya_p18":"zP7lK4oX","akiya_p19":"mL1xW9qN","akiya_p20":"vN9mP3kY","akiya_p21":"kR5tY2mX","akiya_p22":"qZ8xC4vM","akiya_p23":"jD1fG7hL","akiya_p24":"wS7eR2tB","akiya_p25":"xN5vB3mP","akiya_p26":"vN4mK8pW","akiya_p27":"qZ1xC9vB","akiya_p28":"kR7tM2yX","akiya_p29":"pL5nO8xQ","akiya_p30":"jD2fG6hS","akiya_p31":"wS9eR4tY","akiya_p32":"xN1vB7mK","akiya_p33":"zP3lK9oM","akiya_p34":"mL2xW5qR","akiya_p35":"vN8mP1kS","akiya_p36":"kR4tY7mB","akiya_p37":"qZ9xC1vN","akiya_p38":"jD5fG8hW","akiya_p39":"wS2eR6tP","akiya_p40":"xN9vB3mQ","akiya_p41":"zP1lK7oX","akiya_p42":"mL8xW2qN","akiya_p43":"vN4mP9kY","akiya_p44":"kR1tY5mX","akiya_p45":"qZ7xC2vM","akiya_p46":"jD9fG3hL","akiya_p47":"wS4eR1tB","akiya_p48":"xN2vB9mS","akiya_p49":"zP5lK1oR","akiya_p50":"mL9xW4qC"};
 
         let currentUser = null;
         let isPro = false;
 
+        // AUTH STATE
         auth.onAuthStateChanged(user => {
             const savedPro = localStorage.getItem('pro_session');
             if (user || savedPro) {
@@ -141,6 +141,7 @@
             } else { showPage('login-screen'); }
         });
 
+        // PRO LOGIN
         function proLogin() {
             const u = document.getElementById('user-id').value;
             const p = document.getElementById('user-pass').value;
@@ -150,10 +151,19 @@
             } else { alert("Access Denied! 💀"); }
         }
 
-        function googleLogin() { 
+        // GOOGLE LOGIN FIX
+        document.getElementById('google-btn').addEventListener('click', () => {
             const provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithPopup(provider).catch(err => alert("Google Login Error: " + err.message));
-        }
+            // Force popup to avoid redirect issues
+            auth.signInWithPopup(provider)
+            .then((result) => {
+                console.log("Success login");
+            })
+            .catch((error) => {
+                console.error("Login Error:", error.message);
+                alert("Login Failed: " + error.message);
+            });
+        });
 
         function logout() { auth.signOut(); localStorage.removeItem('pro_session'); location.reload(); }
 
@@ -175,7 +185,7 @@
                 for(let id in data) {
                     let l = data[id];
                     if(f !== 'All' && l.category !== f) continue;
-                    grid.innerHTML += `<div class="link-card"><img src="${l.img}"><h3>${l.title}</h3><button class="glow-btn" onclick="window.open('${l.url}')">JOIN</button></div>`;
+                    grid.innerHTML += `<div class="link-card"><img src="${l.img || 'dragon.png'}"><h3>${l.title}</h3><button class="glow-btn" onclick="window.open('${l.url}')">JOIN</button></div>`;
                 }
             });
         }
@@ -191,7 +201,7 @@
             document.getElementById(p).classList.add('active');
         }
 
-        // FIRE ANIMATION & MOUSE TRACKING
+        // FIRE EFFECTS
         const canvas = document.getElementById('fire-canvas'), ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
         let particles = [];
