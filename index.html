@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="si">
 <head>
@@ -110,23 +111,27 @@
             if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) return false;
         };
 
-        // FIREBASE INITIALIZATION
+        // FIREBASE INITIALIZATION (FIXED CONFIG)
         const firebaseConfig = { 
-            databaseURL: "https://akiya-communitiy-official-lk-default-rtdb.firebaseio.com/" 
+            apiKey: "AIzaSyDEmPDHu3jybcYu-nKl5cCHyyWNnerex-w", // IMPORTANT: Add your API Key here
+            authDomain: "akiya-communitiy-official-lk.firebaseapp.com",
+            databaseURL: "https://akiya-communitiy-official-lk-default-rtdb.firebaseio.com/",
+            projectId: "akiya-communitiy-official-lk"
         };
+        
         if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
         
         const db = firebase.database();
         const auth = firebase.auth();
         const ADMIN_EMAIL = "kaviakiya@gmail.com";
 
-        // PRO USERS
+        // PRO USERS DATA
         const _0x5a1 = {"akiya_p1":"ax92Lm7Q","akiya_p2":"zP4vK1rN","akiya_p3":"mL9oP2xW","akiya_p4":"qR7tM5yB","akiya_p5":"vN3mX8kP","akiya_p6":"kL5nZ9qR","akiya_p7":"jD4fG2hS","akiya_p8":"wS1eR8tY","akiya_p9":"xN7vB2mK","akiya_p10":"zP9lK3oM","akiya_p11":"mL5xW8qR","akiya_p12":"vN2mP7kS","akiya_p13":"kR9tY1mB","akiya_p14":"qZ3xC8vN","akiya_p15":"jD7fG1hW","akiya_p16":"wS5eR9tP","akiya_p17":"xN2vB8mQ","akiya_p18":"zP7lK4oX","akiya_p19":"mL1xW9qN","akiya_p20":"vN9mP3kY","akiya_p21":"kR5tY2mX","akiya_p22":"qZ8xC4vM","akiya_p23":"jD1fG7hL","akiya_p24":"wS7eR2tB","akiya_p25":"xN5vB3mP","akiya_p26":"vN4mK8pW","akiya_p27":"qZ1xC9vB","akiya_p28":"kR7tM2yX","akiya_p29":"pL5nO8xQ","akiya_p30":"jD2fG6hS","akiya_p31":"wS9eR4tY","akiya_p32":"xN1vB7mK","akiya_p33":"zP3lK9oM","akiya_p34":"mL2xW5qR","akiya_p35":"vN8mP1kS","akiya_p36":"kR4tY7mB","akiya_p37":"qZ9xC1vN","akiya_p38":"jD5fG8hW","akiya_p39":"wS2eR6tP","akiya_p40":"xN9vB3mQ","akiya_p41":"zP1lK7oX","akiya_p42":"mL8xW2qN","akiya_p43":"vN4mP9kY","akiya_p44":"kR1tY5mX","akiya_p45":"qZ7xC2vM","akiya_p46":"jD9fG3hL","akiya_p47":"wS4eR1tB","akiya_p48":"xN2vB9mS","akiya_p49":"zP5lK1oR","akiya_p50":"mL9xW4qC"};
 
         let currentUser = null;
         let isPro = false;
 
-        // AUTH STATE
+        // AUTH STATE & REDIRECT RESULT HANDLING
         auth.onAuthStateChanged(user => {
             const savedPro = localStorage.getItem('pro_session');
             if (user || savedPro) {
@@ -141,7 +146,17 @@
             } else { showPage('login-screen'); }
         });
 
-        // PRO LOGIN
+        // GOOGLE LOGIN (REDIRECT MODE - Best for GitHub Pages)
+        document.getElementById('google-btn').addEventListener('click', () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithRedirect(provider);
+        });
+
+        // Handle the result after redirect
+        auth.getRedirectResult().catch(err => {
+            if(err.message) alert("Google Login Error: " + err.message);
+        });
+
         function proLogin() {
             const u = document.getElementById('user-id').value;
             const p = document.getElementById('user-pass').value;
@@ -151,23 +166,10 @@
             } else { alert("Access Denied! 💀"); }
         }
 
-        // GOOGLE LOGIN FIX
-        document.getElementById('google-btn').addEventListener('click', () => {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            // Force popup to avoid redirect issues
-            auth.signInWithPopup(provider)
-            .then((result) => {
-                console.log("Success login");
-            })
-            .catch((error) => {
-                console.error("Login Error:", error.message);
-                alert("Login Failed: " + error.message);
-            });
-        });
-
         function logout() { auth.signOut(); localStorage.removeItem('pro_session'); location.reload(); }
 
         function updateProfileUI() {
+            if(!currentUser) return;
             const id = isPro ? localStorage.getItem('pro_session') : currentUser.uid;
             db.ref('users/' + id).on('value', s => {
                 const d = s.val() || {};
@@ -182,6 +184,7 @@
             db.ref('links').on('value', s => {
                 grid.innerHTML = "";
                 const data = s.val();
+                if(!data) return;
                 for(let id in data) {
                     let l = data[id];
                     if(f !== 'All' && l.category !== f) continue;
@@ -198,7 +201,8 @@
 
         function showPage(p) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.getElementById(p).classList.add('active');
+            const target = document.getElementById(p);
+            if(target) target.classList.add('active');
         }
 
         // FIRE EFFECTS
@@ -207,8 +211,10 @@
         let particles = [];
         window.onmousemove = (e) => {
             const cursorFire = document.getElementById('cursor-fire');
-            cursorFire.style.left = e.clientX + 'px';
-            cursorFire.style.top = e.clientY + 'px';
+            if(cursorFire) {
+                cursorFire.style.left = e.clientX + 'px';
+                cursorFire.style.top = e.clientY + 'px';
+            }
             for(let i=0; i<2; i++) particles.push({x: e.clientX, y: e.clientY, s: Math.random()*2+1, vy: -Math.random()*2, a: 1});
         };
         function anim() {
