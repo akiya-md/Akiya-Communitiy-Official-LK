@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>𝐀𝐊𝐈𝐘𝐀 龍 | Official 2026 v2.0 PRO</title>
+    <title>𝐀𝐊𝐈𝐘𝐀 龍 | Official 2026 PRO v4.0</title>
     
     <link rel="icon" type="image/png" href="dragon.png">
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -12,116 +12,102 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --red: #ff1100; --black: #000000; --dark: #0a0a0a; --gold: #ffd700; --glass: rgba(15, 15, 15, 0.95); }
-        * { box-sizing: border-box; }
+        :root { --red: #ff1100; --black: #000000; --gold: #ffd700; --glass: rgba(15, 15, 15, 0.95); }
+        body, html { margin: 0; padding: 0; background: var(--black); color: white; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
         
-        body, html { 
-            margin: 0; padding: 0; background: var(--black); color: white; 
-            font-family: 'Segoe UI', sans-serif; overflow-x: hidden;
-        }
-
-        /* 🔥 FIRE BACKGROUND */
-        #fire-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.8; }
-
-        /* 🐲 MAIN LOGO ANIMATION */
-        .main-dragon-logo { width: 120px; animation: float 3s infinite ease-in-out; filter: drop-shadow(0 0 15px var(--red)); margin-bottom: 10px; }
-        @keyframes float { 0%, 100% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-20px) rotate(5deg); } }
-
-        nav { position: fixed; top: 0; width: 100%; background: var(--glass); display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; z-index: 1000; border-bottom: 2px solid var(--red); box-shadow: 0 0 20px rgba(255,0,0,0.3); }
+        #fire-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.7; }
+        nav { position: fixed; top: 0; width: 100%; background: var(--glass); display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; z-index: 1000; border-bottom: 2px solid var(--red); }
         
-        .section { display: none; padding: 100px 15px 60px; min-height: 100vh; }
-        .active { display: block; animation: slideUp 0.5s ease; }
-        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .section { display: none; padding: 90px 15px 60px; min-height: 100vh; }
+        .active { display: block; animation: fadeIn 0.4s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* 💎 TOKEN & STATS */
-        .stats-bar { background: #111; padding: 10px 20px; border-radius: 50px; border: 1px solid var(--gold); display: inline-flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+        /* 🐲 CARDS */
+        .link-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; max-width: 1200px; margin: auto; }
+        .link-card { background: var(--glass); border: 1px solid #222; padding: 15px; border-radius: 20px; position: relative; transition: 0.3s; }
+        .link-card:hover { border-color: var(--red); transform: translateY(-5px); }
+        .card-dragon { position: absolute; top: 10px; right: 10px; width: 25px; filter: drop-shadow(0 0 5px red); }
+        .admin-tools { position: absolute; top: 40px; right: 10px; display: none; flex-direction: column; gap: 5px; }
 
-        /* 🃏 ADVANCED LINK CARDS */
-        .link-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; max-width: 1300px; margin: auto; }
-        .link-card { 
-            background: linear-gradient(145deg, #111, #050505); border: 1px solid #333; padding: 15px; border-radius: 20px; 
-            position: relative; overflow: hidden; transition: 0.4s;
-        }
-        .link-card:hover { border-color: var(--red); transform: scale(1.03); box-shadow: 0 0 30px rgba(255,0,0,0.2); }
-        .card-dragon-icon { position: absolute; top: 10px; right: 10px; width: 30px; opacity: 0.5; filter: grayscale(1); }
-        .link-card:hover .card-dragon-icon { opacity: 1; filter: grayscale(0); }
-        .link-card img { width: 100%; height: 180px; object-fit: cover; border-radius: 15px; border: 1px solid #222; }
+        /* 🔘 BUTTONS */
+        .glow-btn { padding: 10px 20px; background: transparent; border: 2px solid var(--red); color: var(--red); font-weight: bold; border-radius: 50px; cursor: pointer; transition: 0.3s; text-decoration: none; display: inline-block; }
+        .glow-btn:hover { background: var(--red); color: white; box-shadow: 0 0 15px var(--red); }
+        .home-back { position: fixed; bottom: 20px; right: 20px; z-index: 2000; display: none; }
 
-        /* 🔒 BLOCK SCREEN */
-        #block-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        /* 📂 CATEGORY BAR */
+        .cat-bar { display: flex; gap: 10px; overflow-x: auto; padding: 15px; margin-bottom: 20px; sticky: top; background: black; }
+        .cat-item { padding: 8px 18px; background: #111; border-radius: 50px; border: 1px solid #333; cursor: pointer; white-space: nowrap; font-size: 13px; }
+        .cat-active { background: var(--red); border-color: var(--red); }
 
-        .glow-btn { padding: 12px 24px; background: transparent; border: 2px solid var(--red); color: var(--red); font-weight: bold; border-radius: 50px; cursor: pointer; transition: 0.3s; margin-top: 10px; }
-        .glow-btn:hover { background: var(--red); color: white; box-shadow: 0 0 20px var(--red); }
-
-        /* ⌨️ TYPING SLOGAN */
-        #slogan-text { color: var(--gold); font-size: 14px; font-weight: bold; letter-spacing: 2px; height: 20px; margin-bottom: 20px; }
-
-        footer { text-align: center; padding: 40px; background: #050505; border-top: 1px solid #222; font-size: 13px; color: #555; }
+        /* 👤 PROFILE FORM */
+        .profile-card { max-width: 500px; margin: auto; background: #0a0a0a; padding: 30px; border-radius: 25px; border: 1px solid var(--red); }
+        .profile-input { width: 100%; margin: 8px 0; padding: 12px; background: #111; border: 1px solid #333; color: white; border-radius: 10px; }
     </style>
 </head>
 <body>
 
     <canvas id="fire-canvas"></canvas>
-
-    <div id="block-screen">
-        <img src="dragon.png" width="100">
-        <h1 style="color:red;">YOU ARE BLOCKED!</h1>
-        <p>නීති උල්ලංඝනය කිරීම නිසා ඔබව තාවකාලිකව තහනම් කර ඇත.</p>
-        <div id="block-timer" style="font-size: 30px; color: gold;">00:00:00</div>
-    </div>
-
-    <div id="login-screen" class="section active">
-        <div style="text-align:center; max-width:400px; margin:auto;">
-            <img src="dragon.png" class="main-dragon-logo">
-            <div id="slogan-text"></div>
-            <div style="background:var(--glass); padding:30px; border-radius:20px; border:1px solid var(--red);">
-                <input type="text" id="user-id" class="glow-btn" style="width:100%; text-align:left; border-radius:10px;" placeholder="Username">
-                <input type="password" id="user-pass" class="glow-btn" style="width:100%; text-align:left; border-radius:10px;" placeholder="Password">
-                <button class="glow-btn" style="width:100%; background:var(--red); color:white;" onclick="proLogin()">LOGIN PRO</button>
-                <p>OR</p>
-                <button id="google-btn" class="glow-btn" style="width:100%; border-color:#4285F4; color:#4285F4;">
-                    <i class="fab fa-google"></i> SIGN IN WITH GOOGLE
-                </button>
-            </div>
-        </div>
-    </div>
+    <button class="glow-btn home-back" id="global-home-btn" onclick="showPage('home')"><i class="fas fa-home"></i> HOME</button>
 
     <nav id="main-nav" style="display:none;">
         <div style="color:red; font-weight:bold;"><img src="dragon.png" width="25"> AKIYA 龍</div>
-        <div class="stats-bar"><i class="fas fa-coins text-gold"></i> <span id="user-tokens">0</span> DRAGONS</div>
-        <img id="nav-pfp" onclick="showPage('profile')" style="width:35px; border-radius:50%; border:2px solid red; cursor:pointer;">
+        <div id="token-display" style="color:gold;"><i class="fas fa-coins"></i> 0</div>
+        <img id="nav-pfp" onclick="showPage('profile')" style="width:35px; height:35px; border-radius:50%; border:2px solid red; cursor:pointer; object-fit: cover;">
     </nav>
 
-    <div id="home" class="section">
-        <div style="text-align:center;">
-            <input type="text" id="search-bar" class="glow-btn" style="width:80%; max-width:600px; border-radius:50px; text-align:center;" placeholder="🔍 Search Premium Groups..." onkeyup="searchLinks()">
+    <div id="login-screen" class="section active">
+        <div style="text-align:center; padding-top: 50px;">
+            <img src="dragon.png" width="120" style="animation: float 3s infinite ease-in-out;">
+            <h2 style="color:red;">AKIYA 龍 2026 PRO</h2>
+            <button id="google-btn" class="glow-btn" style="width:280px; border-color:#4285F4; color:#4285F4;">
+                <i class="fab fa-google"></i> GOOGLE LOGIN
+            </button>
         </div>
-        <br>
+    </div>
+
+    <div id="home" class="section">
+        <div class="cat-bar" id="cat-scroll">
+            <div class="cat-item cat-active" onclick="renderLinks('All')">All</div>
+            <div class="cat-item" onclick="renderLinks('WhatsApp')">WhatsApp</div>
+            <div class="cat-item" onclick="renderLinks('Telegram')">Telegram</div>
+            <div class="cat-item" onclick="renderLinks('Tech')">Tech</div>
+            <div class="cat-item" onclick="renderLinks('18+')">18+</div>
+        </div>
+        
+        <div id="admin-panel" style="display:none; background:#111; padding:20px; border-radius:20px; border:1px solid gold; margin-bottom:30px;">
+            <h3 style="color:gold;">🐉 ADD NEW LINK (-20 Tokens)</h3>
+            <input type="text" id="link-t" class="profile-input" placeholder="Title">
+            <input type="text" id="link-u" class="profile-input" placeholder="URL">
+            <input type="file" id="link-img" class="profile-input">
+            <button class="glow-btn" onclick="publishLink()">PUBLISH NOW</button>
+        </div>
+
         <div class="link-grid" id="home-grid"></div>
     </div>
 
     <div id="profile" class="section">
-        <div style="max-width:600px; margin:auto; background:var(--glass); padding:30px; border-radius:25px; border:1px solid var(--red); text-align:center;">
-            <img id="prof-img" src="dragon.png" style="width:120px; border-radius:50%; border:3px solid red;">
-            <h2 id="prof-name">User Name</h2>
-            <p id="prof-email" style="color:#666;"></p>
-            <hr style="border-color:#222;">
-            <h4>💬 MESSAGE ADMIN</h4>
-            <textarea id="admin-msg" class="glow-btn" style="width:100%; height:80px; border-radius:10px; color:white;" placeholder="Type your message here..."></textarea>
-            <button class="glow-btn" onclick="sendMessage()">SEND TO KAVIAKIYA</button>
-            <br><br>
-            <button class="glow-btn" style="border-color:gold; color:gold;" onclick="showPage('shop')">REDEEM TOKENS</button>
-            <button class="glow-btn" onclick="logout()">LOGOUT</button>
+        <div class="profile-card">
+            <div style="text-align:center;">
+                <label for="pfp-upload">
+                    <img id="prof-img-display" src="dragon.png" style="width:100px; height:100px; border-radius:50%; border:3px solid red; cursor:pointer; object-fit: cover;">
+                </label>
+                <input type="file" id="pfp-upload" style="display:none;" onchange="uploadProfilePic(this)">
+                <p style="font-size:10px; color:#666;">Click image to change DP</p>
+            </div>
+            <input type="text" id="u-name" class="profile-input" placeholder="Name">
+            <input type="number" id="u-age" class="profile-input" placeholder="Age">
+            <input type="text" id="u-loc" class="profile-input" placeholder="Location">
+            <input type="text" id="u-phone" class="profile-input" placeholder="Phone Number">
+            <select id="u-gender" class="profile-input">
+                <option value="Boy">Boy</option>
+                <option value="Girl">Girl</option>
+            </select>
+            <button class="glow-btn" style="width:100%; margin-top:10px;" onclick="saveUserProfile()">SAVE PROFILE</button>
+            <button class="glow-btn" style="width:100%; margin-top:10px; border-color:gray; color:gray;" onclick="logout()">LOGOUT</button>
         </div>
     </div>
 
-    <footer>
-        <div style="color:red; font-weight:bold;">𝐀𝐊𝐈𝐘𝐀 龍 Official 2026</div>
-        SRILANKA NO.1 LINK SHARE PLATFORM | Powered by AKIYA Community Official
-    </footer>
-
     <script>
-        // 🔒 CONFIG & FIREBASE
         const firebaseConfig = { 
             apiKey: "AIzaSyDEmPDHu3jybcYu-nKl5cCHyyWNnerex-w",
             authDomain: "akiya-communitiy-official-lk.firebaseapp.com",
@@ -131,127 +117,138 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database(), auth = firebase.auth(), ADMIN_EMAIL = "kaviakiya@gmail.com";
 
-        let userData = { tokens: 100, isBlocked: false };
-
-        // ⌨️ TYPING ANIMATION
-        const slogan = "SRILANKA NO.1 LINK SHARE PLATFORM";
-        let i = 0;
-        function typeSlogan() {
-            if (i < slogan.length) {
-                document.getElementById("slogan-text").innerHTML += slogan.charAt(i);
-                i++; setTimeout(typeSlogan, 100);
-            }
-        }
-        typeSlogan();
-
-        // 🛡️ AUTHENTICATION
-        document.getElementById('google-btn').onclick = () => {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithPopup(provider);
-        };
-
+        // 🛡️ PERSISTENT LOGIN & SESSION
         auth.onAuthStateChanged(user => {
             if (user) {
-                setupUser(user);
-            } else if (localStorage.getItem('pro_session')) {
-                setupUser({ displayName: localStorage.getItem('pro_session'), email: "PRO", photoURL: "dragon.png" });
+                const uid = user.email.replace(/[.#$[\]]/g, "_");
+                db.ref('users/' + uid).on('value', snap => {
+                    let data = snap.val();
+                    if(!data) {
+                        data = { tokens: 100, name: user.displayName, email: user.email, pfp: user.photoURL };
+                        db.ref('users/' + uid).set(data);
+                    }
+                    updateUI(data, user);
+                });
+            } else {
+                showPage('login-screen');
             }
         });
 
-        function setupUser(user) {
-            const userId = user.email.replace(/[.#$[\]]/g, "_");
-            db.ref('users/' + userId).on('value', snap => {
-                let data = snap.val();
-                if (!data) {
-                    data = { name: user.displayName, email: user.email, tokens: 100, blocked: false, device: navigator.userAgent };
-                    db.ref('users/' + userId).set(data);
-                }
-                if(data.blocked) document.getElementById('block-screen').style.display = 'flex';
-                
-                document.getElementById('user-tokens').innerText = data.tokens;
-                document.getElementById('nav-pfp').src = user.photoURL || 'dragon.png';
-                document.getElementById('prof-img').src = user.photoURL || 'dragon.png';
-                document.getElementById('prof-name').innerText = user.displayName;
-                
-                document.getElementById('login-screen').classList.remove('active');
-                document.getElementById('home').classList.add('active');
-                document.getElementById('main-nav').style.display = 'flex';
-                renderLinks();
+        function updateUI(data, user) {
+            document.getElementById('token-display').innerHTML = `<i class="fas fa-coins"></i> ${data.tokens}`;
+            document.getElementById('nav-pfp').src = data.pfp || 'dragon.png';
+            document.getElementById('prof-img-display').src = data.pfp || 'dragon.png';
+            document.getElementById('u-name').value = data.name || '';
+            document.getElementById('u-age').value = data.age || '';
+            document.getElementById('u-loc').value = data.location || '';
+            document.getElementById('u-phone').value = data.phone || '';
+            document.getElementById('u-gender').value = data.gender || 'Boy';
+            
+            document.getElementById('login-screen').classList.remove('active');
+            document.getElementById('home').classList.add('active');
+            document.getElementById('main-nav').style.display = 'flex';
+            document.getElementById('global-home-btn').style.display = 'block';
+
+            if(user.email === ADMIN_EMAIL) document.getElementById('admin-panel').style.display = 'block';
+            renderLinks();
+        }
+
+        // 📤 UPLOAD DP (BASE64 for Mobile/PC Compatibility)
+        function uploadProfilePic(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('prof-img-display').src = e.target.result;
+                    const uid = auth.currentUser.email.replace(/[.#$[\]]/g, "_");
+                    db.ref('users/' + uid).update({ pfp: e.target.result });
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function saveUserProfile() {
+            const uid = auth.currentUser.email.replace(/[.#$[\]]/g, "_");
+            const update = {
+                name: document.getElementById('u-name').value,
+                age: document.getElementById('u-age').value,
+                location: document.getElementById('u-loc').value,
+                phone: document.getElementById('u-phone').value,
+                gender: document.getElementById('u-gender').value
+            };
+            db.ref('users/' + uid).update(update).then(() => alert("Profile Saved! 🔥"));
+        }
+
+        // 🚀 PUBLISH & TOKENS
+        function publishLink() {
+            const uid = auth.currentUser.email.replace(/[.#$[\]]/g, "_");
+            db.ref('users/' + uid + '/tokens').once('value', s => {
+                if(s.val() >= 20) {
+                    const title = document.getElementById('link-t').value;
+                    const url = document.getElementById('link-u').value;
+                    const file = document.getElementById('link-img').files[0];
+                    
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        db.ref('links').push({ title, url, img: reader.result, category: 'All', owner: auth.currentUser.email });
+                        db.ref('users/' + uid + '/tokens').set(s.val() - 20);
+                        alert("Published! -20 Tokens");
+                    };
+                    if(file) reader.readAsDataURL(file); else reader.onloadend();
+                } else alert("Tokens මදි!");
             });
         }
 
-        // 🃏 RENDER ADVANCED LINKS
-        function renderLinks() {
-            db.ref('links').on('value', s => {
+        function renderLinks(filter = 'All') {
+            db.ref('links').on('value', snap => {
                 const grid = document.getElementById('home-grid');
                 grid.innerHTML = "";
-                const data = s.val();
-                if(!data) return;
-                Object.keys(data).reverse().forEach(id => {
-                    let l = data[id];
+                snap.forEach(child => {
+                    const l = child.val();
+                    if(filter !== 'All' && l.category !== filter) return;
+                    
+                    const isAdmin = auth.currentUser && auth.currentUser.email === ADMIN_EMAIL;
                     grid.innerHTML += `
                         <div class="link-card">
-                            <img src="dragon.png" class="card-dragon-icon">
-                            <img src="${l.img || 'dragon.png'}">
-                            <h3 style="color:red; margin:10px 0;">${l.title}</h3>
-                            <p style="font-size:12px; color:#aaa;">${l.desc || 'Premium Link'}</p>
-                            <div style="display:flex; justify-content:space-between; align-items:center;">
-                                <span style="color:gold;"><i class="fas fa-coins"></i> 20</span>
-                                <button class="glow-btn" style="padding:5px 15px;" onclick="deductAndJoin('${l.url}')">JOIN NOW</button>
+                            <img src="dragon.png" class="card-dragon">
+                            <img src="${l.img || 'dragon.png'}" style="width:100%; height:150px; object-fit:cover; border-radius:10px;">
+                            <h3>${l.title}</h3>
+                            <div style="display:flex; justify-content:space-between;">
+                                <button class="glow-btn" style="padding:5px 15px;" onclick="window.open('${l.url}')">JOIN</button>
+                                ${isAdmin ? `<button onclick="deleteLink('${child.key}')" style="background:none; border:none; color:red; cursor:pointer;"><i class="fas fa-trash"></i></button>` : ''}
                             </div>
                         </div>`;
                 });
             });
         }
 
-        // 💰 TOKEN DEDUCTION
-        function deductAndJoin(url) {
-            const user = auth.currentUser;
-            const userId = user.email.replace(/[.#$[\]]/g, "_");
-            db.ref('users/' + userId).once('value', snap => {
-                let tokens = snap.val().tokens;
-                if(tokens >= 20) {
-                    db.ref('users/' + userId + '/tokens').set(tokens - 20);
-                    window.open(url);
-                } else {
-                    alert("TOKENS මදි! කරුණාකර තව එකතු කරගන්න. 🐲");
-                }
-            });
-        }
+        function deleteLink(id) { if(confirm("Delete this link?")) db.ref('links/' + id).remove(); }
 
-        // ✉️ MESSAGE ADMIN
-        function sendMessage() {
-            const msg = document.getElementById('admin-msg').value;
-            if(msg) {
-                db.ref('admin_messages').push({ user: auth.currentUser.email, message: msg, time: Date.now() });
-                alert("Message Sent To Akiya! 🔥");
-                document.getElementById('admin-msg').value = "";
-            }
-        }
-
+        document.getElementById('google-btn').onclick = () => auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+        
         function showPage(p) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(p).classList.add('active');
+            window.scrollTo(0,0);
         }
 
-        function logout() { auth.signOut(); localStorage.removeItem('pro_session'); location.reload(); }
+        function logout() { auth.signOut().then(() => location.reload()); }
 
-        // 🔥 FIRE ANIMATION
+        // FIRE BG
         const canvas = document.getElementById('fire-canvas'), ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        let pArr = [];
-        window.onmousemove = (e) => { for(let i=0; i<3; i++) pArr.push({x:e.clientX, y:e.clientY, s:Math.random()*3, a:1}); };
-        function drawFire() {
+        let particles = [];
+        window.onmousemove = (e) => { for(let i=0; i<2; i++) particles.push({x:e.clientX, y:e.clientY, a:1, s:Math.random()*2}); };
+        function animate() {
             ctx.clearRect(0,0,canvas.width, canvas.height);
-            pArr.forEach((p, i) => {
-                p.y -= 2; p.a -= 0.015;
-                ctx.fillStyle = `rgba(255, ${Math.random()*100}, 0, ${p.a})`;
+            particles.forEach((p, i) => {
+                p.y -= 1; p.a -= 0.02;
+                ctx.fillStyle = `rgba(255,40,0,${p.a})`;
                 ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, 7); ctx.fill();
-                if(p.a <= 0) pArr.splice(i, 1);
+                if(p.a <=0) particles.splice(i,1);
             });
-            requestAnimationFrame(drawFire);
+            requestAnimationFrame(animate);
         }
-        drawFire();
+        animate();
     </script>
 </body>
 </html>
