@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="si">
 <head>
@@ -7,194 +6,183 @@
     <title>𝐀𝐊𝐈𝐘𝐀 龍 | Official 2026 v2.0 PRO</title>
     
     <link rel="icon" type="image/png" href="dragon.png">
-
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --red: #ff1100; --black: #000000; --dark: #0a0a0a; --gold: #ffd700; --glass: rgba(15, 15, 15, 0.95); }
-        * { box-sizing: border-box; cursor: none; }
+        * { box-sizing: border-box; cursor: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
         body, html { margin: 0; padding: 0; background: var(--black); color: white; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
 
-        /* FIRE BACKGROUND */
         #fire-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.7; }
         #cursor-fire { position: fixed; width: 12px; height: 12px; background: var(--red); border-radius: 50%; pointer-events: none; z-index: 10000; box-shadow: 0 0 15px var(--red); }
 
-        /* FLOATING LOGO */
-        .floating-logo { width: 150px; animation: float 3s ease-in-out infinite; filter: drop-shadow(0 0 15px var(--red)); }
-        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
-
         nav { position: fixed; top: 0; width: 100%; background: rgba(0,0,0,0.95); display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; z-index: 1000; border-bottom: 2px solid var(--red); }
         .nav-logo { color: var(--red); font-weight: bold; font-size: 18px; display: flex; align-items: center; gap: 8px; }
-        
+
         .section { display: none; padding: 100px 15px 60px; min-height: 100vh; }
         .active { display: block; animation: fadeIn 0.6s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .link-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; max-width: 1200px; margin: 20px auto; }
-        .link-card { background: var(--glass); border: 1px solid #222; padding: 20px; border-radius: 20px; text-align: center; transition: 0.4s; }
+        .login-container { max-width: 400px; margin: 100px auto; background: var(--glass); padding: 30px; border-radius: 20px; border: 1px solid var(--red); text-align: center; }
+        .cat-bar { display: flex; gap: 10px; overflow-x: auto; padding: 10px; background: #111; border-radius: 10px; margin-bottom: 20px; scrollbar-width: none; }
+        .cat-item { padding: 8px 20px; background: #222; border-radius: 50px; white-space: nowrap; font-size: 13px; cursor: pointer; border: 1px solid #333; }
+        .cat-item:hover, .cat-active { background: var(--red); border-color: var(--red); }
+
+        .link-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; max-width: 1200px; margin: auto; }
+        .link-card { background: var(--glass); border: 1px solid #222; padding: 20px; border-radius: 20px; text-align: center; }
         .link-card img { width: 100%; height: 150px; object-fit: cover; border-radius: 15px; margin-bottom: 10px; }
 
-        .admin-input { width: 100%; margin-bottom: 10px; background: #111; border: 1px solid #333; color: white; padding: 12px; border-radius: 10px; }
-        .glow-btn { padding: 12px 24px; background: transparent; border: 2px solid var(--red); color: var(--red); font-weight: bold; border-radius: 50px; cursor: pointer; transition: 0.3s; }
+        .admin-input { width: 100%; margin-bottom: 10px; background: #111; border: 1px solid #333; color: white; padding: 12px; border-radius: 10px; cursor: text; }
+        .glow-btn { padding: 12px 24px; background: transparent; border: 2px solid var(--red); color: var(--red); font-weight: bold; border-radius: 50px; cursor: pointer; }
         .glow-btn:hover { background: var(--red); color: white; box-shadow: 0 0 20px var(--red); }
-
-        .about-card { max-width: 700px; margin: auto; background: var(--glass); padding: 40px; border-radius: 30px; border: 1px solid var(--red); text-align: center; }
-        .about-pfp { width: 150px; height: 150px; border-radius: 50%; border: 4px solid var(--red); margin-bottom: 20px; object-fit: cover; }
-
-        footer { text-align: center; padding: 30px; background: #050505; border-top: 1px solid #222; font-size: 12px; color: #666; }
-        .gold-text { color: var(--gold); font-weight: bold; }
+        
+        .about-card { max-width: 600px; margin: auto; background: var(--glass); padding: 30px; border-radius: 20px; border: 1px solid var(--red); text-align: center; }
+        .about-pfp { width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--red); margin-bottom: 15px; object-fit: cover; }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
 
     <div id="cursor-fire"></div>
     <canvas id="fire-canvas"></canvas>
 
-    <nav>
+    <div id="login-screen" class="section active">
+        <div class="login-container">
+            <img src="dragon.png" width="80">
+            <h2 style="color:var(--red);">AKIYA龍 LOGIN</h2>
+            <div id="pro-login-box">
+                <input type="text" id="user-id" class="admin-input" placeholder="Username" autocomplete="off">
+                <input type="password" id="user-pass" class="admin-input" placeholder="Password" autocomplete="off">
+                <button class="glow-btn" style="width:100%" onclick="proLogin()">LOGIN PRO</button>
+            </div>
+            <hr style="margin:20px; border:0; border-top:1px solid #333;">
+            <button class="glow-btn" style="width:100%; border-color:#4285F4; color:#4285F4;" onclick="googleLogin()">
+                <i class="fab fa-google"></i> SIGN IN WITH GOOGLE
+            </button>
+        </div>
+    </div>
+
+    <nav id="main-nav" style="display:none;">
         <div class="nav-logo"><img src="dragon.png" style="width:25px;"> <span>𝐀𝐊𝐈𝐘𝐀 龍</span></div>
         <div class="nav-links">
             <a onclick="showPage('home')" style="cursor:pointer; margin-right:15px;">HOME</a>
-            <a onclick="showPage('about')" style="cursor:pointer; margin-right:15px;">DEVELOPER</a>
-            <a onclick="openShop()" style="color:var(--gold); cursor:pointer;"><i class="fas fa-coins"></i> SHOP</a>
+            <a onclick="showPage('profile')" style="cursor:pointer;">PROFILE</a>
         </div>
-        <div id="user-profile-nav" style="display:flex; align-items:center; gap:12px;">
-            <div id="nav-tokens-box" style="background:var(--red); padding:5px 10px; border-radius:20px; font-size:12px;">🔥 <span id="nav-tokens">0</span></div>
+        <div style="display:flex; align-items:center; gap:10px;">
             <img id="nav-user-pfp" onclick="showPage('profile')" style="width:35px; height:35px; border-radius:50%; border:2px solid var(--red); cursor:pointer;">
         </div>
     </nav>
 
-    <div id="home" class="section active">
-        <center>
-            <img src="dragon.png" class="floating-logo">
-            <h2 id="slogan-text" style="color:var(--gold); font-size:14px; margin-top:20px;"></h2>
-        </center>
-
-        <div id="admin-panel" style="display:none; max-width:800px; margin: 40px auto; gap: 20px;">
-            <div style="background:rgba(30,0,0,0.9); padding:20px; border-radius:20px; border:1px solid var(--red); flex:1;">
-                <h3 style="color:var(--gold);">🐲 POST LINK</h3>
-                <input type="text" id="link-t" class="admin-input" placeholder="Name">
-                <input type="text" id="link-u" class="admin-input" placeholder="URL">
-                <input type="text" id="link-img" class="admin-input" placeholder="Image URL">
-                <button class="glow-btn" onclick="addLink()" style="width:100%">PUBLISH</button>
-            </div>
-            
-            <div style="background:rgba(0,0,30,0.9); padding:20px; border-radius:20px; border:1px solid #0055ff; flex:1;">
-                <h3 style="color:#00a2ff;">🛠️ EDIT MY DETAILS</h3>
-                <input type="text" id="edit-name" class="admin-input" placeholder="Your Name">
-                <input type="text" id="edit-pfp" class="admin-input" placeholder="Your DP URL">
-                <input type="text" id="edit-school" class="admin-input" placeholder="Your School">
-                <textarea id="edit-details" class="admin-input" placeholder="Developer Details"></textarea>
-                <button class="glow-btn" onclick="updateDevDetails()" style="width:100%; border-color:#00a2ff; color:#00a2ff;">UPDATE ABOUT ME</button>
-            </div>
+    <div id="home" class="section">
+        <div class="cat-bar">
+            <div class="cat-item cat-active" onclick="filterCat('All')">All</div>
+            <div class="cat-item" onclick="filterCat('WhatsApp')">WhatsApp</div>
+            <div class="cat-item" onclick="filterCat('Telegram')">Telegram</div>
         </div>
-
+        <div id="admin-panel" style="display:none; background:rgba(20,0,0,0.9); padding:20px; border-radius:20px; border:1px solid var(--red); margin-bottom:30px;">
+            <h3>🐲 POST NEW LINK</h3>
+            <input type="text" id="link-t" class="admin-input" placeholder="Title">
+            <input type="text" id="link-u" class="admin-input" placeholder="URL">
+            <button class="glow-btn" onclick="addLink()">PUBLISH</button>
+        </div>
         <div class="link-grid" id="home-grid"></div>
     </div>
 
-    <div id="about" class="section">
+    <div id="profile" class="section">
         <div class="about-card">
-            <img src="dragon.png" id="dev-pfp-display" class="about-pfp">
-            <h1 id="dev-name-display" style="color:var(--red); margin:0;">Loading...</h1>
-            <p class="gold-text">Founder of AKIYA COMMUNITY</p>
-            <div style="text-align:left; background:rgba(255,255,255,0.05); padding:20px; border-radius:15px; margin-top:20px;">
-                <p><b>School:</b> <span id="dev-school-display">...</span></p>
-                <p><b>Website:</b> Official Link Share Platform v2.0</p>
-                <p><b>Details:</b> <span id="dev-details-display">...</span></p>
-            </div>
-            <button class="glow-btn" style="margin-top:20px;" onclick="window.open('https://wa.me/94755751816')">CONTACT ME</button>
+            <img id="prof-img" src="dragon.png" class="about-pfp">
+            <h2 id="prof-name">Loading...</h2>
+            <button class="glow-btn" onclick="logout()">LOGOUT</button>
         </div>
     </div>
 
-    <footer><p>ALL RIGHTS RESERVED © 2026 | <span class="gold-text">POWERED BY AKIYA</span></p></footer>
-
     <script>
+        // --- 🛡️ ANTI-DEVTOOLS & PROTECTIONS ---
+        (function() {
+            const block = () => { setTimeout(() => { debugger; block(); }, 50); };
+            // block(); // Uncomment this to crash browsers that try to Inspect
+            document.onkeydown = (e) => {
+                if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) {
+                    return false;
+                }
+            };
+        })();
+
         const firebaseConfig = { databaseURL: "https://akiya-communitiy-official-lk-default-rtdb.firebaseio.com/" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
+        const auth = firebase.auth();
         const ADMIN_EMAIL = "kaviakiya@gmail.com";
-        let userData = null;
 
-        window.onload = () => {
-            const session = localStorage.getItem('akiya_session');
-            if(session) {
-                db.ref('users/' + session).on('value', s => {
-                    userData = s.val();
-                    document.getElementById('nav-user-pfp').src = userData.img;
-                    document.getElementById('nav-tokens').innerText = userData.tokens;
-                    if(userData.email === ADMIN_EMAIL) {
-                        document.getElementById('admin-panel').style.display = 'flex';
-                        document.getElementById('nav-tokens-box').style.display = 'none';
-                    }
-                });
-            }
-            renderLinks();
-            loadDevDetails();
-        };
+        // --- 🛡️ ENCODED PRO LIST (Security Layer) ---
+        const _0x5a1 = {"akiya_p1":"ax92Lm7Q","akiya_p2":"zP4vK1rN","akiya_p3":"mL9oP2xW","akiya_p4":"qR7tM5yB","akiya_p5":"vN3mX8kP","akiya_p6":"kL5nZ9qR","akiya_p7":"jD4fG2hS","akiya_p8":"wS1eR8tY","akiya_p9":"xN7vB2mK","akiya_p10":"zP9lK3oM","akiya_p11":"mL5xW8qR","akiya_p12":"vN2mP7kS","akiya_p13":"kR9tY1mB","akiya_p14":"qZ3xC8vN","akiya_p15":"jD7fG1hW","akiya_p16":"wS5eR9tP","akiya_p17":"xN2vB8mQ","akiya_p18":"zP7lK4oX","akiya_p19":"mL1xW9qN","akiya_p20":"vN9mP3kY","akiya_p21":"kR5tY2mX","akiya_p22":"qZ8xC4vM","akiya_p23":"jD1fG7hL","akiya_p24":"wS7eR2tB","akiya_p25":"xN5vB3mP","akiya_p26":"vN4mK8pW","akiya_p27":"qZ1xC9vB","akiya_p28":"kR7tM2yX","akiya_p29":"pL5nO8xQ","akiya_p30":"jD2fG6hS","akiya_p31":"wS9eR4tY","akiya_p32":"xN1vB7mK","akiya_p33":"zP3lK9oM","akiya_p34":"mL2xW5qR","akiya_p35":"vN8mP1kS","akiya_p36":"kR4tY7mB","akiya_p37":"qZ9xC1vN","akiya_p38":"jD5fG8hW","akiya_p39":"wS2eR6tP","akiya_p40":"xN9vB3mQ","akiya_p41":"zP1lK7oX","akiya_p42":"mL8xW2qN","akiya_p43":"vN4mP9kY","akiya_p44":"kR1tY5mX","akiya_p45":"qZ7xC2vM","akiya_p46":"jD9fG3hL","akiya_p47":"wS4eR1tB","akiya_p48":"xN2vB9mS","akiya_p49":"zP5lK1oR","akiya_p50":"mL9xW4qC"};
 
-        // --- ADMIN: UPDATE DEVELOPER DETAILS ---
-        function updateDevDetails() {
-            const name = document.getElementById('edit-name').value;
-            const pfp = document.getElementById('edit-pfp').value;
-            const school = document.getElementById('edit-school').value;
-            const details = document.getElementById('edit-details').value;
+        let currentUser = null;
+        let isPro = false;
 
-            db.ref('siteSettings/developer').update({
-                name: name, pfp: pfp, school: school, details: details
-            }).then(() => alert("Details Updated Successfully! 🔥"));
+        auth.onAuthStateChanged(user => {
+            const savedPro = localStorage.getItem('pro_session');
+            if (user || savedPro) {
+                isPro = !!savedPro;
+                currentUser = user || { displayName: savedPro, email: "PRO User", photoURL: "dragon.png" };
+                document.getElementById('login-screen').classList.remove('active');
+                document.getElementById('home').classList.add('active');
+                document.getElementById('main-nav').style.display = 'flex';
+                updateProfileUI();
+                if(currentUser.email === ADMIN_EMAIL) document.getElementById('admin-panel').style.display = 'block';
+                renderLinks();
+            } else { showPage('login-screen'); }
+        });
+
+        function proLogin() {
+            const u = document.getElementById('user-id').value;
+            const p = document.getElementById('user-pass').value;
+            if (_0x5a1[u] && _0x5a1[u] === p) {
+                localStorage.setItem('pro_session', u);
+                location.reload();
+            } else { alert("Access Denied! 💀"); }
         }
 
-        // --- LOAD DEVELOPER DETAILS ---
-        function loadDevDetails() {
-            db.ref('siteSettings/developer').on('value', s => {
-                const d = s.val();
-                if(d) {
-                    document.getElementById('dev-name-display').innerText = d.name;
-                    document.getElementById('dev-pfp-display').src = d.pfp || 'dragon.png';
-                    document.getElementById('dev-school-display').innerText = d.school;
-                    document.getElementById('dev-details-display').innerText = d.details;
-                    
-                    // Fill inputs in admin panel if admin
-                    if(document.getElementById('edit-name')) {
-                        document.getElementById('edit-name').value = d.name;
-                        document.getElementById('edit-pfp').value = d.pfp;
-                        document.getElementById('edit-school').value = d.school;
-                        document.getElementById('edit-details').value = d.details;
-                    }
-                }
+        function googleLogin() { auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()); }
+        function logout() { auth.signOut(); localStorage.removeItem('pro_session'); location.reload(); }
+
+        function updateProfileUI() {
+            const id = isPro ? localStorage.getItem('pro_session') : currentUser.uid;
+            db.ref('users/' + id).on('value', s => {
+                const d = s.val() || {};
+                document.getElementById('nav-user-pfp').src = d.img || currentUser.photoURL || 'dragon.png';
+                document.getElementById('prof-img').src = d.img || currentUser.photoURL || 'dragon.png';
+                document.getElementById('prof-name').innerText = isPro ? id : (currentUser.displayName || "User");
             });
         }
 
-        function addLink() {
-            const t = document.getElementById('link-t').value;
-            const u = document.getElementById('link-u').value;
-            const img = document.getElementById('link-img').value || 'dragon.png';
-            if(!t || !u) return;
-            db.ref('links').push({ title: t, url: u, img: img, time: Date.now() });
-            alert("Published!");
-        }
-
-        function renderLinks() {
+        function renderLinks(f = 'All') {
             const grid = document.getElementById('home-grid');
             db.ref('links').on('value', s => {
                 grid.innerHTML = "";
                 const data = s.val();
                 for(let id in data) {
                     let l = data[id];
-                    grid.innerHTML += `<div class="link-card"><img src="${l.img}"><h3>${l.title}</h3><button class="glow-btn" onclick="window.open('${l.url}')">JOIN NOW</button></div>`;
+                    if(f !== 'All' && l.category !== f) continue;
+                    grid.innerHTML += `<div class="link-card"><img src="${l.img}"><h3>${l.title}</h3><button class="glow-btn" onclick="window.open('${l.url}')">JOIN</button></div>`;
                 }
             });
         }
 
-        function showPage(p) { document.querySelectorAll('.section').forEach(s => s.classList.remove('active')); document.getElementById(p).classList.add('active'); }
+        function filterCat(c) {
+            document.querySelectorAll('.cat-item').forEach(i => i.classList.remove('cat-active'));
+            event.target.classList.add('cat-active');
+            renderLinks(c);
+        }
 
-        const slogan = "SRILANKA NO.1 LINK SHARE PLATFORM";
-        let i = 0;
-        function type() { if(i < slogan.length) { document.getElementById('slogan-text').innerHTML += slogan.charAt(i); i++; setTimeout(type, 100); } }
-        type();
+        function showPage(p) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(p).classList.add('active');
+        }
 
-        // FIRE EFFECT (Base Base Logic)
+        // FIRE ANIMATION
         const canvas = document.getElementById('fire-canvas'), ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
         let particles = [];
