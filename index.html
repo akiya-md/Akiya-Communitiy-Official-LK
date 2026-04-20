@@ -24,48 +24,41 @@
         #fire-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.7; }
         #cursor-fire { position: fixed; width: 12px; height: 12px; background: var(--red); border-radius: 50%; pointer-events: none; z-index: 10000; box-shadow: 0 0 15px var(--red); transform: translate(-50%, -50%); }
 
-        /* 🐲 FLOATING LOGO ANIMATION */
-        .floating-logo {
-            width: 80px; animation: float 3s ease-in-out infinite;
-            filter: drop-shadow(0 0 10px var(--red));
-        }
-        @keyframes float { 
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(5deg); }
-        }
+        /* 🐲 FLOATING LOGO */
+        .floating-logo { width: 80px; animation: float 3s ease-in-out infinite; filter: drop-shadow(0 0 10px var(--red)); }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-15px); } }
 
         nav { position: fixed; top: 0; width: 100%; background: rgba(0,0,0,0.95); display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; z-index: 1000; border-bottom: 2px solid var(--red); }
         .nav-logo { color: var(--red); font-weight: bold; font-size: 18px; display: flex; align-items: center; gap: 8px; }
 
         .section { display: none; padding: 100px 15px 60px; min-height: 100vh; }
-        .active { display: block; animation: fadeIn 0.6s ease-out; }
+        .active { display: block; animation: fadeIn 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .login-container { max-width: 400px; margin: 80px auto; background: var(--glass); padding: 30px; border-radius: 20px; border: 1px solid var(--red); text-align: center; }
         .admin-input, .admin-select { width: 100%; margin-bottom: 12px; background: #111; border: 1px solid #333; color: white; padding: 12px; border-radius: 10px; }
         
-        .glow-btn { padding: 12px 24px; background: transparent; border: 2px solid var(--red); color: var(--red); font-weight: bold; border-radius: 50px; cursor: pointer; transition: 0.3s; margin: 5px 0; }
-        .glow-btn:hover { background: var(--red); color: white; box-shadow: 0 0 20px var(--red); }
-        
+        /* 🔍 SEARCH BAR */
+        .search-container { max-width: 600px; margin: 0 auto 20px; position: relative; }
+        .search-input { width: 100%; padding: 15px 20px; border-radius: 50px; background: #111; border: 1px solid var(--red); color: white; outline: none; }
+
         /* 📂 CATEGORIES */
         .cat-bar { display: flex; gap: 10px; overflow-x: auto; padding: 10px; background: #111; border-radius: 10px; margin-bottom: 20px; scrollbar-width: none; }
-        .cat-item { padding: 8px 20px; background: #222; border-radius: 50px; white-space: nowrap; font-size: 13px; cursor: pointer; border: 1px solid #333; transition: 0.3s; }
-        .cat-item:hover, .cat-active { background: var(--red); border-color: var(--red); transform: scale(1.05); }
+        .cat-item { padding: 8px 20px; background: #222; border-radius: 50px; white-space: nowrap; font-size: 13px; cursor: pointer; border: 1px solid #333; }
+        .cat-active { background: var(--red); border-color: var(--red); }
 
         .link-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; max-width: 1200px; margin: auto; }
         .link-card { background: var(--glass); border: 1px solid #222; padding: 20px; border-radius: 20px; text-align: center; transition: 0.3s; }
-        .link-card:hover { border-color: var(--red); transform: translateY(-5px); }
         .link-card img { width: 100%; height: 160px; object-fit: cover; border-radius: 15px; margin-bottom: 10px; }
         
-        /* 👤 NEW ABOUT SECTION */
-        .about-card { max-width: 600px; margin: 20px auto; background: var(--glass); padding: 40px; border-radius: 25px; border: 1px solid var(--red); text-align: center; box-shadow: 0 0 30px rgba(255,0,0,0.1); }
-        .about-pfp { width: 140px; height: 140px; border-radius: 50%; border: 4px solid var(--red); margin-bottom: 15px; object-fit: cover; transition: 0.5s; }
-        .about-pfp:hover { transform: rotate(360deg); }
-        .about-info { font-size: 14px; color: #ccc; line-height: 1.6; margin-top: 15px; }
+        .glow-btn { padding: 12px 24px; background: transparent; border: 2px solid var(--red); color: var(--red); font-weight: bold; border-radius: 50px; cursor: pointer; transition: 0.3s; }
+        .glow-btn:hover { background: var(--red); color: white; box-shadow: 0 0 20px var(--red); }
 
-        /* 🏷️ FOOTER */
-        footer { text-align: center; padding: 40px 20px; background: #050505; border-top: 1px solid #111; font-size: 12px; color: #555; }
-        .footer-brand { color: var(--red); font-weight: bold; font-size: 14px; margin-bottom: 5px; }
+        /* 👤 ABOUT SECTION */
+        .about-card { max-width: 600px; margin: auto; background: var(--glass); padding: 40px; border-radius: 25px; border: 1px solid var(--red); text-align: center; }
+        .about-pfp { width: 140px; height: 140px; border-radius: 50%; border: 3px solid var(--red); margin-bottom: 15px; }
+
+        footer { text-align: center; padding: 30px; background: #050505; border-top: 1px solid #111; font-size: 13px; color: #666; margin-top: 50px; }
     </style>
 </head>
 <body>
@@ -75,55 +68,64 @@
 
     <div id="login-screen" class="section active">
         <div class="login-container">
-            <img src="dragon.png" class="floating-logo" alt="logo">
-            <h2 style="color:var(--red); letter-spacing: 2px;">AKIYA龍 LOGIN</h2>
-            <div id="pro-login-box">
-                <input type="text" id="user-id" class="admin-input" placeholder="Username">
-                <input type="password" id="user-pass" class="admin-input" placeholder="Password">
-                <button class="glow-btn" style="width:100%" onclick="proLogin()">LOGIN PRO</button>
-            </div>
-            <hr style="margin:20px; border:0; border-top:1px solid #222;">
-            <button id="google-btn" class="glow-btn" style="width:100%; border-color:#4285F4; color:#4285F4;">
-                <i class="fab fa-google"></i> SIGN IN WITH GOOGLE
+            <img src="dragon.png" class="floating-logo">
+            <h2 style="color:var(--red);">AKIYA龍 LOGIN</h2>
+            <input type="text" id="user-id" class="admin-input" placeholder="Username">
+            <input type="password" id="user-pass" class="admin-input" placeholder="Password">
+            <button class="glow-btn" style="width:100%" onclick="proLogin()">LOGIN PRO</button>
+            <hr style="margin:20px; border-color:#222;">
+            <button id="google-btn" class="glow-btn" style="width:100%; color:#4285F4; border-color:#4285F4;">
+                <i class="fab fa-google"></i> GOOGLE LOGIN
             </button>
         </div>
     </div>
 
     <nav id="main-nav" style="display:none;">
-        <div class="nav-logo"><img src="dragon.png" style="width:25px;"> <span>𝐀𝐊𝐈𝐘𝐀 龍</span></div>
+        <div class="nav-logo"><img src="dragon.png" style="width:25px;"> 𝐀𝐊𝐈𝐘𝐀 龍</div>
         <div class="nav-links">
             <a onclick="showPage('home')" style="cursor:pointer; margin-right:15px;">HOME</a>
             <a onclick="showPage('profile')" style="cursor:pointer;">ABOUT</a>
         </div>
-        <div style="display:flex; align-items:center; gap:10px;">
-            <img id="nav-user-pfp" onclick="showPage('profile')" style="width:35px; height:35px; border-radius:50%; border:2px solid var(--red); cursor:pointer;">
-        </div>
+        <img id="nav-user-pfp" onclick="showPage('profile')" style="width:35px; border-radius:50%; border:2px solid var(--red); cursor:pointer;">
     </nav>
 
     <div id="home" class="section">
-        <div class="cat-bar">
-            <div class="cat-item cat-active" onclick="filterCat('All')">All Links</div>
-            <div class="cat-item" onclick="filterCat('WhatsApp')">WhatsApp</div>
-            <div class="cat-item" onclick="filterCat('Telegram')">Telegram</div>
-            <div class="cat-item" onclick="filterCat('Groups')">Groups</div>
-            <div class="cat-item" onclick="filterCat('Other')">Other</div>
+        <div class="search-container">
+            <input type="text" id="search-bar" class="search-input" placeholder="Search links (WhatsApp, Tech, 18+...)" onkeyup="searchLinks()">
         </div>
 
-        <div id="admin-panel" style="display:none; background:rgba(20,0,0,0.9); padding:25px; border-radius:20px; border:1px solid var(--red); margin-bottom:30px;">
-            <h3 style="color:var(--red);"><i class="fas fa-dragon"></i> GOD MODE: POST NEW LINK</h3>
+        <div class="cat-bar">
+            <div class="cat-item cat-active" onclick="filterCat('All')">All</div>
+            <div class="cat-item" onclick="filterCat('WhatsApp')">WhatsApp</div>
+            <div class="cat-item" onclick="filterCat('Telegram')">Telegram</div>
+            <div class="cat-item" onclick="filterCat('YouTube')">YouTube</div>
+            <div class="cat-item" onclick="filterCat('Facebook')">Facebook</div>
+            <div class="cat-item" onclick="filterCat('Tech')">Tech</div>
+            <div class="cat-item" onclick="filterCat('18+')">18+</div>
+        </div>
+
+        <div id="admin-panel" style="display:none; background:rgba(20,0,0,0.9); padding:20px; border-radius:20px; border:1px solid var(--red); margin-bottom:30px;">
+            <h3>🐉 ADMIN GOD MODE</h3>
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                <input type="text" id="link-t" class="admin-input" placeholder="Link Title">
-                <input type="text" id="link-u" class="admin-input" placeholder="Target URL">
-                <input type="text" id="link-d" class="admin-input" placeholder="Short Description">
-                <input type="text" id="link-i" class="admin-input" placeholder="Image URL (DP)">
+                <input type="text" id="link-t" class="admin-input" placeholder="Title">
+                <input type="text" id="link-u" class="admin-input" placeholder="URL">
+                <input type="text" id="link-d" class="admin-input" placeholder="Description">
+                <input type="file" id="link-file" class="admin-input" accept="image/*">
                 <select id="link-c" class="admin-select">
                     <option value="WhatsApp">WhatsApp</option>
                     <option value="Telegram">Telegram</option>
-                    <option value="Groups">Groups</option>
-                    <option value="Other">Other</option>
+                    <option value="YouTube">YouTube</option>
+                    <option value="Facebook">Facebook</option>
+                    <option value="Tech">Tech</option>
+                    <option value="18+">18+</option>
                 </select>
-                <button class="glow-btn" onclick="addLink()">PUBLISH NOW</button>
+                <button class="glow-btn" onclick="handleFileUpload()">PUBLISH LINK</button>
             </div>
+            <hr style="margin:20px 0; border-color:#333;">
+            <h4>👤 UPDATE DEVELOPER INFO</h4>
+            <input type="text" id="dev-name" class="admin-input" placeholder="Your Name">
+            <input type="text" id="dev-school" class="admin-input" placeholder="School/Info">
+            <button class="glow-btn" onclick="updateDevInfo()">UPDATE PROFILE</button>
         </div>
 
         <div class="link-grid" id="home-grid"></div>
@@ -132,135 +134,110 @@
     <div id="profile" class="section">
         <div class="about-card">
             <img id="prof-img" src="dragon.png" class="about-pfp">
-            <h2 id="prof-name" style="color:var(--red); margin-bottom:5px;">Loading...</h2>
-            <div id="pro-badge" style="display:none; color:var(--gold); font-size:12px; margin-bottom:15px;"><i class="fas fa-crown"></i> PRO MEMBER</div>
-            
+            <h2 id="prof-name">Loading...</h2>
+            <p id="prof-school" style="color:#888;">Developer</p>
             <div class="about-info">
                 <p><strong>Official Community:</strong> Akiya Community Official LK</p>
-                <p><strong>Status:</strong> Active 2026 v2.0 PRO</p>
-                <p>This is the official platform for premium links and community updates. All contents are verified.</p>
+                <p><strong>Status:</strong> v2.0 PRO 2026</p>
             </div>
-            
-            <div style="margin-top:25px;">
-                <button class="glow-btn" onclick="logout()">LOGOUT SESSION</button>
-            </div>
+            <button class="glow-btn" style="margin-top:20px;" onclick="logout()">LOGOUT</button>
         </div>
     </div>
 
     <footer>
-        <div class="footer-brand">𝐀𝐊𝐈𝐘𝐀 龍</div>
-        All Rights Reserved 2026 | Powered by AKIYA Community Official
+        <div style="color:var(--red); font-weight:bold;">𝐀𝐊𝐈𝐘𝐀 龍</div>
+        All Rights Reserved 2026 | Powered by AKIYA
     </footer>
 
     <script>
-        // 🛡️ PROTECTIONS
-        document.addEventListener('contextmenu', e => e.preventDefault());
-        document.onkeydown = (e) => { if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) return false; };
-
-        // FIREBASE CONFIG
         const firebaseConfig = { 
             apiKey: "AIzaSyDEmPDHu3jybcYu-nKl5cCHyyWNnerex-w",
             authDomain: "akiya-communitiy-official-lk.firebaseapp.com",
             databaseURL: "https://akiya-communitiy-official-lk-default-rtdb.firebaseio.com/",
             projectId: "akiya-communitiy-official-lk"
         };
-        
-        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
-        const db = firebase.database();
-        const auth = firebase.auth();
-        const ADMIN_EMAIL = "kaviakiya@gmail.com";
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database(), auth = firebase.auth(), ADMIN_EMAIL = "kaviakiya@gmail.com";
 
-        const _0x5a1 = {"akiya_p1":"ax92Lm7Q","akiya_p2":"zP4vK1rN","akiya_p3":"mL9oP2xW","akiya_p4":"qR7tM5yB","akiya_p5":"vN3mX8kP"};
+        let currentUser = null, allLinks = [];
 
-        let currentUser = null;
-        let isPro = false;
+        // GOOGLE LOGIN FIX (Using Popup for better stability)
+        document.getElementById('google-btn').onclick = () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider).catch(e => alert(e.message));
+        };
 
         auth.onAuthStateChanged(user => {
             const savedPro = localStorage.getItem('pro_session');
             if (user || savedPro) {
-                isPro = !!savedPro;
-                currentUser = user || { displayName: savedPro, email: "PRO User", photoURL: "dragon.png" };
+                currentUser = user || { displayName: savedPro, email: "pro@akiya.lk", photoURL: "dragon.png" };
                 document.getElementById('login-screen').classList.remove('active');
                 document.getElementById('home').classList.add('active');
                 document.getElementById('main-nav').style.display = 'flex';
-                if(isPro) document.getElementById('pro-badge').style.display = 'block';
-                
-                // GOD MODE CHECK
-                if(currentUser.email === ADMIN_EMAIL) {
-                    document.getElementById('admin-panel').style.display = 'block';
-                    console.log("GOD MODE ENABLED");
-                }
-                
-                updateProfileUI();
+                if(currentUser.email === ADMIN_EMAIL) document.getElementById('admin-panel').style.display = 'block';
+                loadDevInfo();
                 renderLinks();
             } else { showPage('login-screen'); }
         });
 
-        // 🐲 ADVANCED ADD LINK (IMAGE & DESC)
-        function addLink() {
-            const title = document.getElementById('link-t').value;
-            const url = document.getElementById('link-u').value;
-            const desc = document.getElementById('link-d').value;
-            const img = document.getElementById('link-i').value || 'dragon.png';
-            const cat = document.getElementById('link-c').value;
+        // FILE TO BASE64
+        function handleFileUpload() {
+            const file = document.getElementById('link-file').files[0];
+            if(file) {
+                const reader = new FileReader();
+                reader.onloadend = () => addLink(reader.result);
+                reader.readAsDataURL(file);
+            } else { addLink('dragon.png'); }
+        }
 
-            if(title && url) {
-                db.ref('links').push({
-                    title: title,
-                    url: url,
-                    desc: desc,
-                    img: img,
-                    category: cat,
-                    time: Date.now()
-                }).then(() => {
-                    alert("Published Successfully! 🔥");
-                    document.getElementById('link-t').value = "";
-                    document.getElementById('link-u').value = "";
-                });
+        function addLink(imgData) {
+            const t = document.getElementById('link-t').value, u = document.getElementById('link-u').value;
+            const d = document.getElementById('link-d').value, c = document.getElementById('link-c').value;
+            if(t && u) {
+                db.ref('links').push({ title: t, url: u, desc: d, img: imgData, category: c, time: Date.now() });
+                alert("Link Added! 🔥");
             }
         }
 
-        document.getElementById('google-btn').addEventListener('click', () => {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithRedirect(provider);
-        });
-
-        function proLogin() {
-            const u = document.getElementById('user-id').value;
-            const p = document.getElementById('user-pass').value;
-            if (_0x5a1[u] && _0x5a1[u] === p) {
-                localStorage.setItem('pro_session', u);
-                location.reload();
-            } else { alert("Access Denied! 💀"); }
+        function updateDevInfo() {
+            const n = document.getElementById('dev-name').value, s = document.getElementById('dev-school').value;
+            db.ref('admin/info').set({ name: n, school: s });
+            alert("Profile Updated!");
         }
 
-        function logout() { auth.signOut(); localStorage.removeItem('pro_session'); location.reload(); }
-
-        function updateProfileUI() {
-            if(!currentUser) return;
-            const nameDisp = isPro ? localStorage.getItem('pro_session') : (currentUser.displayName || "Akiya User");
-            document.getElementById('nav-user-pfp').src = currentUser.photoURL || 'dragon.png';
-            document.getElementById('prof-img').src = currentUser.photoURL || 'dragon.png';
-            document.getElementById('prof-name').innerText = nameDisp;
+        function loadDevInfo() {
+            db.ref('admin/info').on('value', snap => {
+                const data = snap.val() || { name: "AKIYA", school: "Developer" };
+                document.getElementById('prof-name').innerText = data.name;
+                document.getElementById('prof-school').innerText = data.school;
+                document.getElementById('nav-user-pfp').src = currentUser.photoURL || 'dragon.png';
+                document.getElementById('prof-img').src = currentUser.photoURL || 'dragon.png';
+            });
         }
 
         function renderLinks(f = 'All') {
-            const grid = document.getElementById('home-grid');
             db.ref('links').on('value', s => {
+                const grid = document.getElementById('home-grid');
                 grid.innerHTML = "";
+                allLinks = [];
                 const data = s.val();
                 if(!data) return;
                 Object.keys(data).reverse().forEach(id => {
                     let l = data[id];
+                    allLinks.push(l);
                     if(f !== 'All' && l.category !== f) return;
-                    grid.innerHTML += `
-                        <div class="link-card">
-                            <img src="${l.img || 'dragon.png'}">
-                            <h3 style="margin:10px 0 5px; color:var(--red);">${l.title}</h3>
-                            <p style="font-size:12px; color:#888; margin-bottom:15px;">${l.desc || 'No description available'}</p>
-                            <button class="glow-btn" style="width:100%" onclick="window.open('${l.url}')">JOIN LINK</button>
-                        </div>`;
+                    grid.innerHTML += `<div class="link-card"><img src="${l.img}"><h3>${l.title}</h3><p>${l.desc || ''}</p><button class="glow-btn" onclick="window.open('${l.url}')">JOIN</button></div>`;
                 });
+            });
+        }
+
+        function searchLinks() {
+            const term = document.getElementById('search-bar').value.toLowerCase();
+            const filtered = allLinks.filter(l => l.title.toLowerCase().includes(term) || l.category.toLowerCase().includes(term));
+            const grid = document.getElementById('home-grid');
+            grid.innerHTML = "";
+            filtered.forEach(l => {
+                grid.innerHTML += `<div class="link-card"><img src="${l.img}"><h3>${l.title}</h3><p>${l.desc || ''}</p><button class="glow-btn" onclick="window.open('${l.url}')">JOIN</button></div>`;
             });
         }
 
@@ -270,23 +247,32 @@
             renderLinks(c);
         }
 
+        function proLogin() {
+            const u = document.getElementById('user-id').value, p = document.getElementById('user-pass').value;
+            const proUsers = {"akiya_p1":"ax92Lm7Q"}; // Add more here
+            if (proUsers[u] === p) { localStorage.setItem('pro_session', u); location.reload(); }
+            else alert("Wrong Login! 💀");
+        }
+
         function showPage(p) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(p).classList.add('active');
         }
 
-        // FIRE EFFECTS
+        function logout() { auth.signOut(); localStorage.removeItem('pro_session'); location.reload(); }
+
+        // FIRE CANVAS (Simplified for speed)
         const canvas = document.getElementById('fire-canvas'), ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
         let particles = [];
         window.onmousemove = (e) => {
-            const cursorFire = document.getElementById('cursor-fire');
-            if(cursorFire) { cursorFire.style.left = e.clientX + 'px'; cursorFire.style.top = e.clientY + 'px'; }
-            for(let i=0; i<2; i++) particles.push({x: e.clientX, y: e.clientY, s: Math.random()*2+1, vy: -Math.random()*2, a: 1});
+            const cf = document.getElementById('cursor-fire');
+            cf.style.left = e.clientX + 'px'; cf.style.top = e.clientY + 'px';
+            for(let i=0; i<2; i++) particles.push({x: e.clientX, y: e.clientY, s: Math.random()*2, a: 1});
         };
         function anim() {
             ctx.clearRect(0,0,canvas.width, canvas.height);
-            particles.forEach((p, i) => { p.y += p.vy; p.a -= 0.02; ctx.fillStyle = `rgba(255,50,0,${p.a})`; ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, 7); ctx.fill(); if(p.a<=0) particles.splice(i,1); });
+            particles.forEach((p, i) => { p.y -= 1; p.a -= 0.02; ctx.fillStyle = `rgba(255,20,0,${p.a})`; ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, 7); ctx.fill(); if(p.a<=0) particles.splice(i,1); });
             requestAnimationFrame(anim);
         }
         anim();
