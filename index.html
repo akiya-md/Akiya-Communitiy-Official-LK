@@ -3,138 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>𝐀𝐊𝐈𝐘𝐀 龍 | ULTIMATE 2026</title>
+    <title>𝐀𝐊𝐈𝐘𝐀 龍 | THE ULTIMATE REALM</title>
     
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
 
     <style>
-        :root { --red: #ff0000; --black: #000; --gold: #ffd700; --glass: rgba(0,0,0,0.9); }
-        * { box-sizing: border-box; transition: 0.3s; }
-        body { margin: 0; background: var(--black); color: white; font-family: 'Poppins', sans-serif; overflow-x: hidden; }
+        :root { --red: #ff0000; --dark-red: #8b0000; --gold: #ffd700; --black: #050505; }
+        * { box-sizing: border-box; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        
+        body { 
+            margin: 0; background: var(--black); color: white; 
+            font-family: 'Poppins', sans-serif; overflow-x: hidden;
+            background-image: radial-gradient(circle at center, #1a0000 0%, #050505 100%);
+        }
 
-        /* 🔥 LIVE BACKGROUND SYSTEM */
+        /* 🌌 LIVE MATRIX/MAGIC BACKGROUND */
         #bg-canvas { position: fixed; top:0; left:0; width:100%; height:100%; z-index:-2; }
-        .spider-web { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; opacity: 0.3; z-index:-1; }
+        .spider-overlay { 
+            position: fixed; top:0; left:0; width:100%; height:100%; 
+            background: url('https://www.transparenttextures.com/patterns/spider-web.png'); 
+            opacity: 0.15; z-index:-1; pointer-events: none; 
+        }
 
-        /* 🧭 NAV & LOGO */
-        nav { position: fixed; top: 0; width: 100%; background: var(--glass); display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; z-index: 1000; border-bottom: 2px solid var(--red); box-shadow: 0 0 20px var(--red); }
-        .logo-area { display: flex; align-items: center; gap: 10px; }
-        .main-logo { width: 50px; height: 50px; filter: drop-shadow(0 0 10px red); }
+        /* 🧭 PREMIUM NAV */
+        nav { 
+            position: fixed; top: 0; width: 100%; background: rgba(0,0,0,0.85); 
+            backdrop-filter: blur(10px); display: flex; justify-content: space-between; 
+            align-items: center; padding: 10px 30px; z-index: 1000; 
+            border-bottom: 2px solid var(--red); box-shadow: 0 0 25px rgba(255,0,0,0.4); 
+        }
+        .logo-box { display: flex; align-items: center; gap: 15px; font-family: 'Orbitron', sans-serif; }
+        .logo-box img { width: 45px; filter: drop-shadow(0 0 8px red); animation: rotate 5s infinite linear; }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* 🏠 LINK CARDS */
-        .link-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; padding: 20px; max-width: 1300px; margin: 100px auto; }
-        .link-card { background: #050505; border: 1px solid #222; border-radius: 15px; overflow: hidden; position: relative; }
-        .card-banner { width: 100%; height: 180px; object-fit: cover; }
-        .card-content { padding: 15px; }
+        /* 🏠 LINK ARCHITECTURE */
+        .container { max-width: 1300px; margin: 110px auto 40px; padding: 0 20px; }
+        .link-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
+        .dragon-card { 
+            background: #0d0d0d; border: 1px solid #222; border-radius: 20px; 
+            overflow: hidden; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .dragon-card:hover { border-color: var(--red); transform: translateY(-10px); box-shadow: 0 0 30px rgba(255,0,0,0.2); }
+        .card-img { width: 100%; height: 190px; object-fit: cover; border-bottom: 2px solid var(--red); }
+        .card-body { padding: 20px; }
 
-        /* 👑 ADMIN PANEL TAB */
-        .admin-tab { background: #111; border: 2px solid var(--gold); padding: 20px; border-radius: 15px; margin: 20px auto; max-width: 800px; }
+        /* 👑 ADMIN & MODALS */
+        .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.9); z-index: 2000; align-items: center; justify-content: center; }
+        .modal-content { 
+            background: #0a0a0a; border: 2px solid var(--red); padding: 40px; 
+            border-radius: 25px; width: 90%; max-width: 500px; position: relative;
+            box-shadow: 0 0 50px rgba(255,0,0,0.3);
+        }
 
-        /* 🕷️ ABOUT SECTION (GAMMATA) */
-        .about-wrap { position: relative; padding: 50px; background: rgba(10,0,0,0.9); border: 2px solid var(--red); border-radius: 30px; box-shadow: 0 0 50px rgba(255,0,0,0.5); overflow: hidden; }
-        .about-wrap::before { content: '🕷️'; position: absolute; top: 10px; right: 10px; font-size: 40px; opacity: 0.5; }
-        .akiya-img { width: 180px; height: 180px; border-radius: 50%; border: 5px solid var(--red); box-shadow: 0 0 30px var(--red); animation: pulse-red 2s infinite; }
-        @keyframes pulse-red { 0% { box-shadow: 0 0 10px var(--red); } 50% { box-shadow: 0 0 40px var(--red); } 100% { box-shadow: 0 0 10px var(--red); } }
+        /* 🕷️ ABOUT ME (THE MASTERPIECE) */
+        .about-card {
+            background: linear-gradient(145deg, #0f0f0f, #1a0000);
+            border: 2px solid var(--red); border-radius: 30px; padding: 40px;
+            text-align: center; position: relative; overflow: hidden;
+            box-shadow: 0 0 60px rgba(255,0,0,0.4);
+        }
+        .akiya-dp { 
+            width: 160px; height: 160px; border-radius: 50%; border: 4px solid var(--red);
+            margin-bottom: 20px; box-shadow: 0 0 30px var(--red); object-fit: cover;
+        }
 
-        /* 💠 BUTTONS */
-        .btn-glowing { background: var(--red); border: none; color: white; padding: 12px 25px; border-radius: 10px; font-weight: bold; cursor: pointer; box-shadow: 0 0 15px var(--red); }
-        .btn-glowing:hover { transform: scale(1.05); box-shadow: 0 0 25px var(--red); }
+        /* 💎 UI ELEMENTS */
+        .btn-dragon { 
+            background: linear-gradient(to right, var(--dark-red), var(--red));
+            border: none; color: white; padding: 12px 25px; border-radius: 12px;
+            font-weight: 900; cursor: pointer; font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+        }
+        .btn-dragon:hover { letter-spacing: 3px; box-shadow: 0 0 20px var(--red); }
+        .input-dragon { 
+            background: #111; border: 1px solid #333; color: white; padding: 15px; 
+            border-radius: 12px; width: 100%; margin-bottom: 15px; outline: none;
+        }
+        .input-dragon:focus { border-color: var(--red); box-shadow: 0 0 10px rgba(255,0,0,0.3); }
 
-        .input-box { background: #111; border: 1px solid #444; color: white; padding: 12px; border-radius: 8px; width: 100%; margin-bottom: 10px; }
-        .section { display: none; padding-top: 100px; }
+        .section { display: none; animation: slideUp 0.5s ease; }
         .active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
     <canvas id="bg-canvas"></canvas>
-    <img src="https://i.imgur.com/8mY8n0T.png" class="spider-web"> <nav>
-        <div class="logo-area">
-            <img src="dragon.png" class="main-logo" alt="LOGO">
-            <span style="color:red; font-size: 20px; font-weight: 900;">AKIYA 龍</span>
+    <div class="spider-overlay"></div>
+
+    <nav>
+        <div class="logo-box" onclick="showPage('home')">
+            <img src="dragon.png" id="main-logo">
+            <div style="line-height: 1;">
+                <div style="font-size: 22px; color: var(--red); font-weight: 900;">AKIYA 龍</div>
+                <div style="font-size: 10px; color: gray; letter-spacing: 2px;">DRAGON REALM</div>
+            </div>
         </div>
-        <div style="display:flex; gap:15px; align-items:center;">
-            <div id="admin-link" style="display:none; color:gold; cursor:pointer;" onclick="showPage('admin-panel')"><i class="fas fa-user-shield"></i> ADMIN</div>
-            <button class="btn-glowing" onclick="showPage('add-link')">+ ADD LINK</button>
-            <div onclick="showPage('profile')" style="cursor:pointer;"><i class="fas fa-coins" style="color:gold;"></i> <span id="u-tokens">0</span></div>
+        <div style="display:flex; gap:20px; align-items:center;">
+            <div id="admin-btn" style="display:none; color:var(--gold); font-weight:bold; cursor:pointer;" onclick="showPage('admin')"><i class="fas fa-shield-alt"></i> ADMIN</div>
+            <div style="font-size: 14px; color: #00ff00;"><span id="online-count">1</span> LIVE</div>
+            <div id="tokens-val" style="color:var(--gold); font-weight:bold;"><i class="fas fa-coins"></i> 0</div>
+            <img id="nav-user-pfp" onclick="showPage('profile')" style="width:40px; height:40px; border-radius:50%; border:2px solid red; cursor:pointer;">
         </div>
     </nav>
 
-    <div id="home" class="section active">
-        <div class="link-grid" id="main-link-container"></div>
-    </div>
-
-    <div id="add-link" class="section">
-        <div style="max-width:500px; margin:auto; background:var(--glass); padding:30px; border-radius:20px; border:1px solid var(--red);">
-            <h2 style="color:red;">🐉 POST NEW LINK (20 TK)</h2>
-            <input type="text" id="ln-title" class="input-box" placeholder="Link Name (e.g. My YT Channel)">
-            <input type="text" id="ln-url" class="input-box" placeholder="Paste URL Here">
-            <textarea id="ln-desc" class="input-box" placeholder="Link Description (Tell about it...)"></textarea>
-            <select id="ln-cat" class="input-box">
-                <option value="Groups">WhatsApp Groups</option>
-                <option value="Channels">Telegram Channels</option>
-                <option value="Social">Social Media</option>
-            </select>
-            <p>Upload Banner (PC/Mobile):</p>
-            <input type="file" id="ln-img" class="input-box">
-            <button class="btn-glowing" style="width:100%;" onclick="uploadLink()">PUBLISH NOW</button>
-        </div>
-    </div>
-
-    <div id="profile" class="section">
-        <div style="max-width:500px; margin:auto; text-align:center; background:var(--glass); padding:30px; border-radius:20px;">
-            <img id="my-pfp" style="width:100px; height:100px; border-radius:50%; border:3px solid red;">
-            <h2 id="my-name-tag">User Name</h2>
-            <input type="text" id="p-name" class="input-box" placeholder="Full Name">
-            <input type="text" id="p-loc" class="input-box" placeholder="Location">
-            <input type="number" id="p-age" class="input-box" placeholder="Age">
-            <button class="btn-glowing" onclick="saveProfile()">SAVE PROFILE</button>
-        </div>
-    </div>
-
-    <div id="admin-panel" class="section">
-        <div class="admin-tab">
-            <h2 style="color:gold;">👑 DRAGON ADMIN CONTROL</h2>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
-                <div style="background:#222; padding:15px; border-radius:10px;">
-                    <h4>Set Token Price (LKR)</h4>
-                    <input type="number" id="set-price" class="input-box" placeholder="1000 Tokens Price">
-                    <button class="btn-glowing" onclick="updatePrice()">UPDATE PRICE</button>
-                </div>
-                <div style="background:#222; padding:15px; border-radius:10px;">
-                    <h4>Live Visitors: <span id="live-total" style="color:lime;">0</span></h4>
-                    <button class="btn-glowing" style="background:gray;" onclick="showPage('home')">BACK</button>
-                </div>
+    <div class="container">
+        
+        <div id="home" class="section active">
+            <div style="margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="font-family: 'Orbitron';">LATEST <span style="color:red;">LINKS</span></h2>
+                <button class="btn-dragon" onclick="showPage('add-link')">+ ADD NEW</button>
             </div>
-            <hr>
-            <h3>Admin Profile Edit</h3>
-            <input type="text" id="adm-edu" class="input-box" placeholder="Education">
-            <input type="text" id="adm-web" class="input-box" placeholder="About Website">
-            <button class="btn-glowing" onclick="saveAdminAbout()">UPDATE MY ABOUT</button>
+            <div class="link-grid" id="link-feed"></div>
         </div>
-    </div>
 
-    <div id="about" class="section">
-        <div style="max-width:800px; margin:auto;" class="about-wrap">
-            <div style="text-align:center;">
-                <img src="akiya.png" class="akiya-img">
-                <h1 style="color:red; text-shadow: 0 0 20px red;">AKIYA 龍</h1>
-                <div style="font-size: 18px; line-height: 2;">
-                    <p>🎓 <b>Education:</b> <span id="dis-edu">By Akiya</span></p>
-                    <p>📍 <b>Location:</b> <span id="dis-loc">Sri Lanka 🇱🇰</span></p>
-                    <p>🎂 <b>Age:</b> <span id="dis-age">20+</span></p>
-                    <p>🐉 <b>About Web:</b> <span id="dis-web">ශ්‍රී ලංකාවේ ප්‍රබලම ඩිජිටල් ප්‍රජාව.</span></p>
+        <div id="add-link" class="section">
+            <div style="max-width:600px; margin:auto; background:rgba(0,0,0,0.8); padding:40px; border-radius:30px; border:1px solid var(--red);">
+                <h2 style="font-family: 'Orbitron'; color:var(--red);">POST NEW CONTENT</h2>
+                <p style="color:gray;">Cost: 20 Dragon Tokens</p>
+                <input type="text" id="link-name" class="input-dragon" placeholder="Link Name / Title">
+                <input type="text" id="link-url" class="input-dragon" placeholder="Paste Destination URL">
+                <textarea id="link-desc" class="input-dragon" style="height:100px" placeholder="Tell us more about this link..."></textarea>
+                <select id="link-cat" class="input-dragon">
+                    <option value="WhatsApp">WhatsApp Community</option>
+                    <option value="Telegram">Telegram Channel</option>
+                    <option value="YouTube">YouTube Official</option>
+                    <option value="TikTok">TikTok Style</option>
+                </select>
+                <p>Upload Banner (Gallery/Files):</p>
+                <input type="file" id="link-file" class="input-dragon" accept="image/*">
+                <button class="btn-dragon" style="width:100%" onclick="handleUpload()">PUBLISH TO REALM</button>
+            </div>
+        </div>
+
+        <div id="profile" class="section">
+            <div style="max-width:500px; margin:auto; text-align:center; background:rgba(15,0,0,0.9); padding:40px; border-radius:30px; border:1px solid #333;">
+                <img id="p-img" class="akiya-dp" src="">
+                <h2 id="p-name-tag" style="font-family: 'Orbitron';">USER NAME</h2>
+                <div id="user-badges" style="margin-bottom: 20px;"></div>
+                
+                <input type="text" id="u-name" class="input-dragon" placeholder="Full Name">
+                <input type="text" id="u-loc" class="input-dragon" placeholder="City / Location">
+                <input type="number" id="u-age" class="input-dragon" placeholder="Your Age">
+                <input type="text" id="u-edu" class="input-dragon" placeholder="Education">
+                
+                <button class="btn-dragon" style="width:100%" onclick="saveUserProfile()">SAVE MY PROFILE</button>
+                <button class="btn-dragon" style="width:100%; margin-top:15px; background:gray;" onclick="showPage('about')">ABOUT AKIYA</button>
+                <button style="margin-top:20px; background:none; border:none; color:red; cursor:pointer;" onclick="auth.signOut()">Logout</button>
+            </div>
+        </div>
+
+        <div id="admin" class="section">
+            <div class="about-card" style="text-align:left;">
+                <h2 style="font-family: 'Orbitron'; color:var(--gold);">DRAGON CONTROL CENTER</h2>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:30px;">
+                    <div>
+                        <h3>Site Management</h3>
+                        <p>Total Users: <span id="adm-users">0</span></p>
+                        <p>Active Now: <span id="adm-live" style="color:lime;">0</span></p>
+                    </div>
+                    <div>
+                        <h3>Update About Website</h3>
+                        <textarea id="adm-site-desc" class="input-dragon" placeholder="Write about your web..."></textarea>
+                        <button class="btn-dragon" onclick="updateSiteAbout()">UPDATE WEB INFO</button>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <div id="about" class="section">
+            <div class="about-card">
+                <div style="position:absolute; top:-20px; left:-20px; font-size:100px; opacity:0.1; color:red;">🐉</div>
+                <img src="akiya.png" class="akiya-dp">
+                <h1 style="font-family: 'Orbitron'; color:var(--red); font-size: 40px; margin:0;">AKIYA 龍</h1>
+                <p style="color:var(--gold); letter-spacing: 5px;">FOUNDER OF DRAGON REALM</p>
+                <div style="max-width:600px; margin:30px auto; text-align:left; line-height:2; border-left: 3px solid var(--red); padding-left: 20px;">
+                    <p><i class="fas fa-user-graduate"></i> <b>Education:</b> <span id="ab-edu">Akiya Official</span></p>
+                    <p><i class="fas fa-map-marker-alt"></i> <b>Location:</b> <span id="ab-loc">Sri Lanka 🇱🇰</span></p>
+                    <p><i class="fas fa-calendar-alt"></i> <b>Age:</b> <span id="ab-age">22</span></p>
+                    <p><i class="fas fa-info-circle"></i> <b>About Me:</b> <span id="ab-web">ශ්‍රී ලංකාවේ ප්‍රබලම ඩිජිටල් ප්‍රජාව බිහි කිරීම අපේ අරමුණයි.</span></p>
+                </div>
+                <button class="btn-dragon" onclick="showPage('home')">BACK TO REALM</button>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        // 🛡️ FIREBASE
+        // 🔑 CONFIG
         const firebaseConfig = { 
             apiKey: "AIzaSyDEmPDHu3jybcYu-nKl5cCHyyWNnerex-w",
             authDomain: "akiya-communitiy-official-lk.firebaseapp.com",
@@ -143,137 +204,190 @@
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database(), auth = firebase.auth();
-        let userData = null;
+        let currentU = null;
 
+        // 🛡️ AUTH SYSTEM
         auth.onAuthStateChanged(user => {
-            if (user) {
+            if(user) {
                 const uid = user.email.replace(/[.#$[\]]/g, "_");
                 db.ref('users/' + uid).on('value', snap => {
-                    userData = snap.val();
-                    if(!userData) {
-                        userData = { tokens: 100, name: user.displayName, pfp: user.photoURL, email: user.email };
-                        db.ref('users/' + uid).set(userData);
+                    currentU = snap.val();
+                    if(!currentU) {
+                        currentU = { tokens: 100, name: user.displayName, pfp: user.photoURL, email: user.email };
+                        db.ref('users/' + uid).set(currentU);
                     }
-                    
-                    // 👑 UNLIMITED TOKENS FOR ADMIN
                     if(user.email === "kaviakiya@gmail.com") {
-                        userData.tokens = 999999999;
-                        document.getElementById('admin-link').style.display = 'block';
+                        currentU.tokens = "UNLIMITED";
+                        document.getElementById('admin-btn').style.display = 'block';
                     }
-                    
-                    loadUI();
+                    updateUI();
                 });
-                db.ref('presence/' + uid).set(true);
+                db.ref('presence/' + uid).set({name: user.displayName, time: Date.now()});
                 db.ref('presence/' + uid).onDisconnect().remove();
-            } else { location.href = "#login"; }
+            } else {
+                // Simplified login for this demo - redirect or show login
+                googleLogin(); 
+            }
         });
 
-        function loadUI() {
-            document.getElementById('u-tokens').innerText = userData.tokens;
-            document.getElementById('my-pfp').src = userData.pfp;
-            document.getElementById('my-name-tag').innerText = userData.name;
-            renderLinks();
-            loadAboutData();
-            updateLiveCount();
+        function googleLogin() { auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()); }
+
+        function updateUI() {
+            document.getElementById('tokens-val').innerHTML = `<i class="fas fa-coins"></i> ${currentU.tokens}`;
+            document.getElementById('nav-user-pfp').src = currentU.pfp;
+            document.getElementById('p-img').src = currentU.pfp;
+            document.getElementById('p-name-tag').innerText = currentU.name;
+            
+            // Fill profile inputs if they exist
+            document.getElementById('u-name').value = currentU.name || "";
+            document.getElementById('u-loc').value = currentU.loc || "";
+            document.getElementById('u-age').value = currentU.age || "";
+            document.getElementById('u-edu').value = currentU.edu || "";
+
+            loadLinks();
+            loadAbout();
+            loadStats();
         }
 
-        function saveProfile() {
-            const uid = userData.email.replace(/[.#$[\]]/g, "_");
-            const update = {
-                name: document.getElementById('p-name').value,
-                loc: document.getElementById('p-loc').value,
-                age: document.getElementById('p-age').value
+        // 📝 PROFILE LOGIC
+        function saveUserProfile() {
+            const uid = currentU.email.replace(/[.#$[\]]/g, "_");
+            const data = {
+                name: document.getElementById('u-name').value,
+                loc: document.getElementById('u-loc').value,
+                age: document.getElementById('u-age').value,
+                edu: document.getElementById('u-edu').value
             };
-            db.ref('users/' + uid).update(update).then(() => alert("Profile Updated! 🔥"));
+            db.ref('users/' + uid).update(data).then(() => alert("Dragon Profile Secured! 🔥"));
         }
 
-        function uploadLink() {
-            if(userData.tokens < 20) return alert("No Tokens!");
-            const title = document.getElementById('ln-title').value;
-            const url = document.getElementById('ln-url').value;
-            const desc = document.getElementById('ln-desc').value;
-            const cat = document.getElementById('ln-cat').value;
-            const file = document.getElementById('ln-img').files[0];
+        // 🚀 LINK LOGIC
+        function handleUpload() {
+            if(currentU.tokens !== "UNLIMITED" && currentU.tokens < 20) return alert("Not enough tokens!");
+            
+            const file = document.getElementById('link-file').files[0];
+            const name = document.getElementById('link-name').value;
+            const url = document.getElementById('link-url').value;
+            const desc = document.getElementById('link-desc').value;
+            const cat = document.getElementById('link-cat').value;
+
+            if(!file || !name || !url) return alert("Fill everything!");
 
             const reader = new FileReader();
             reader.onloadend = () => {
-                db.ref('links').push({ title, url, desc, cat, img: reader.result, owner: userData.name });
-                const uid = userData.email.replace(/[.#$[\]]/g, "_");
-                db.ref('users/' + uid).update({ tokens: userData.tokens - 20 });
+                db.ref('links').push({
+                    title: name, url: url, desc: desc, cat: cat, img: reader.result,
+                    owner: currentU.name, owner_pfp: currentU.pfp, time: Date.now()
+                });
+                if(currentU.tokens !== "UNLIMITED") {
+                    const uid = currentU.email.replace(/[.#$[\]]/g, "_");
+                    db.ref('users/' + uid).update({tokens: currentU.tokens - 20});
+                }
                 showPage('home');
+                alert("Published Successfully! 🐉");
             };
             reader.readAsDataURL(file);
         }
 
-        function renderLinks() {
+        function loadLinks() {
             db.ref('links').on('value', snap => {
-                const cont = document.getElementById('main-link-container');
-                cont.innerHTML = "";
-                snap.forEach(c => {
-                    const l = c.val();
-                    cont.innerHTML += `
-                        <div class="link-card">
-                            <img src="${l.img}" class="card-banner">
-                            <div class="card-content">
-                                <small style="color:red;">${l.cat}</small>
-                                <h3>${l.title}</h3>
-                                <p style="font-size:12px; color:#ccc;">${l.desc}</p>
-                                <a href="${l.url}" target="_blank" class="btn-glowing" style="display:block; text-align:center; text-decoration:none;">VISIT LINK</a>
+                const feed = document.getElementById('link-feed');
+                feed.innerHTML = "";
+                snap.forEach(child => {
+                    const l = child.val();
+                    feed.innerHTML += `
+                        <div class="dragon-card">
+                            <img src="${l.img}" class="card-img">
+                            <div class="card-body">
+                                <span style="background:red; font-size:10px; padding:2px 8px; border-radius:5px;">${l.cat}</span>
+                                <h3 style="margin:10px 0; color:red; font-family:Orbitron;">${l.title}</h3>
+                                <p style="font-size:12px; color:gray; height:40px; overflow:hidden;">${l.desc}</p>
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:15px;">
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <img src="${l.owner_pfp}" style="width:25px; height:25px; border-radius:50%;">
+                                        <span style="font-size:11px;">By ${l.owner}</span>
+                                    </div>
+                                    <a href="${l.url}" target="_blank" class="btn-dragon" style="padding:5px 15px; font-size:12px; text-decoration:none;">JOIN</a>
+                                </div>
                             </div>
                         </div>`;
                 });
             });
         }
 
-        // ADMIN FUNCTIONS
-        function saveAdminAbout() {
-            db.ref('site_about').set({
-                edu: document.getElementById('adm-edu').value,
-                web: document.getElementById('adm-web').value
+        // 📊 ADMIN & STATS
+        function loadStats() {
+            db.ref('presence').on('value', s => {
+                const count = s.numChildren();
+                document.getElementById('online-count').innerText = count;
+                document.getElementById('adm-live').innerText = count;
             });
-            alert("About Page Updated!");
+            db.ref('users').on('value', s => {
+                document.getElementById('adm-users').innerText = s.numChildren();
+            });
         }
 
-        function loadAboutData() {
-            db.ref('site_about').on('value', snap => {
-                const d = snap.val();
+        function updateSiteAbout() {
+            const info = document.getElementById('adm-site-desc').value;
+            db.ref('site_settings').update({about_web: info}).then(() => alert("Site Info Updated!"));
+        }
+
+        function loadAbout() {
+            db.ref('site_settings/about_web').on('value', s => {
+                if(s.val()) document.getElementById('ab-web').innerText = s.val();
+            });
+            // Update about info from Akiya's actual profile (Admin)
+            db.ref('users/kaviakiya@gmail_com').on('value', s => {
+                const d = s.val();
                 if(d) {
-                    document.getElementById('dis-edu').innerText = d.edu;
-                    document.getElementById('dis-web').innerText = d.web;
+                    document.getElementById('ab-edu').innerText = d.edu || "Dragon Master";
+                    document.getElementById('ab-loc').innerText = d.loc || "Sri Lanka";
+                    document.getElementById('ab-age').innerText = d.age || "22";
                 }
             });
         }
 
-        function updateLiveCount() {
-            db.ref('presence').on('value', s => {
-                document.getElementById('live-total').innerText = s.numChildren();
-            });
-        }
-
-        function showPage(p) {
+        // 🧭 NAVIGATION
+        function showPage(id) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.getElementById(p).classList.add('active');
+            document.getElementById(id).classList.add('active');
+            window.scrollTo(0,0);
         }
 
-        // 🔥 LIVE BG PARTICLES
+        // 🔥 LIVE BACKGROUND ANIMATION
         const canvas = document.getElementById('bg-canvas'), ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
         let particles = [];
-        function createP() {
-            for(let i=0; i<2; i++) particles.push({x: Math.random()*canvas.width, y: canvas.height, s: Math.random()*3, v: Math.random()*2});
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.1;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+            }
+            update() {
+                this.x += this.speedX; this.y += this.speedY;
+                if (this.size > 0.2) this.size -= 0.001;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
         }
-        function draw() {
-            ctx.clearRect(0,0,canvas.width, canvas.height);
-            ctx.fillStyle = "rgba(255,0,0,0.5)";
-            particles.forEach((p, i) => {
-                p.y -= p.v;
-                ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, Math.PI*2); ctx.fill();
-                if(p.y < 0) particles.splice(i,1);
-            });
-            createP();
-            requestAnimationFrame(draw);
+        function initBg() { for (let i = 0; i < 100; i++) particles.push(new Particle()); }
+        function animateBg() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update(); particles[i].draw();
+                if (particles[i].size <= 0.3) {
+                    particles.splice(i, 1); particles.push(new Particle());
+                }
+            }
+            requestAnimationFrame(animateBg);
         }
-        draw();
+        initBg(); animateBg();
+
     </script>
 </body>
 </html>
