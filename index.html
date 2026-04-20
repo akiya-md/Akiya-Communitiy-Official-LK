@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>𝐀𝐊𝐈𝐘𝐀 龍 | Official 2026 PRO v35.0</title>
+    <title>𝐀𝐊𝐈𝐘𝐀 龍 | ULTIMATE 2026</title>
     
-    <link rel="icon" type="image/png" href="dragon.png">
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
@@ -13,172 +12,129 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
-        :root { --red: #ff1100; --black: #000000; --gold: #ffd700; --glass: rgba(10, 10, 10, 0.95); }
+        :root { --red: #ff0000; --black: #000; --gold: #ffd700; --glass: rgba(0,0,0,0.9); }
         * { box-sizing: border-box; transition: 0.3s; }
-        body, html { margin: 0; padding: 0; background: var(--black); color: white; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; }
+        body { margin: 0; background: var(--black); color: white; font-family: 'Poppins', sans-serif; overflow-x: hidden; }
 
-        /* 🔥 BACK BACKGROUND & ANIMATIONS */
-        #fire-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
-        .floating-dragon { width: 80px; position: fixed; bottom: 20px; left: 20px; z-index: 2000; animation: float 3s infinite ease-in-out; filter: drop-shadow(0 0 10px red); }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        /* 🔥 LIVE BACKGROUND SYSTEM */
+        #bg-canvas { position: fixed; top:0; left:0; width:100%; height:100%; z-index:-2; }
+        .spider-web { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; opacity: 0.3; z-index:-1; }
 
-        /* 🧭 NAVIGATION */
-        nav { position: fixed; top: 0; width: 100%; background: var(--glass); display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; z-index: 1000; border-bottom: 2px solid var(--red); box-shadow: 0 0 15px var(--red); }
-        .nav-links { display: flex; gap: 15px; align-items: center; }
-        
-        /* 💎 UI BUTTONS & GLOW */
-        .glow-btn { background: transparent; border: 2px solid var(--red); color: var(--red); padding: 10px 20px; border-radius: 50px; font-weight: bold; cursor: pointer; text-decoration: none; text-align: center; font-size: 13px; }
-        .glow-btn:hover { background: var(--red); color: white; box-shadow: 0 0 15px var(--red); }
-        .add-link-btn { background: var(--red); color: white; border: none; padding: 10px 18px; border-radius: 10px; font-weight: bold; cursor: pointer; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 17, 0, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(255, 17, 0, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 17, 0, 0); } }
+        /* 🧭 NAV & LOGO */
+        nav { position: fixed; top: 0; width: 100%; background: var(--glass); display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; z-index: 1000; border-bottom: 2px solid var(--red); box-shadow: 0 0 20px var(--red); }
+        .logo-area { display: flex; align-items: center; gap: 10px; }
+        .main-logo { width: 50px; height: 50px; filter: drop-shadow(0 0 10px red); }
 
-        /* 🏠 SECTIONS */
-        .section { display: none; padding: 100px 20px 60px; min-height: 100vh; animation: fadeIn 0.5s; }
+        /* 🏠 LINK CARDS */
+        .link-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; padding: 20px; max-width: 1300px; margin: 100px auto; }
+        .link-card { background: #050505; border: 1px solid #222; border-radius: 15px; overflow: hidden; position: relative; }
+        .card-banner { width: 100%; height: 180px; object-fit: cover; }
+        .card-content { padding: 15px; }
+
+        /* 👑 ADMIN PANEL TAB */
+        .admin-tab { background: #111; border: 2px solid var(--gold); padding: 20px; border-radius: 15px; margin: 20px auto; max-width: 800px; }
+
+        /* 🕷️ ABOUT SECTION (GAMMATA) */
+        .about-wrap { position: relative; padding: 50px; background: rgba(10,0,0,0.9); border: 2px solid var(--red); border-radius: 30px; box-shadow: 0 0 50px rgba(255,0,0,0.5); overflow: hidden; }
+        .about-wrap::before { content: '🕷️'; position: absolute; top: 10px; right: 10px; font-size: 40px; opacity: 0.5; }
+        .akiya-img { width: 180px; height: 180px; border-radius: 50%; border: 5px solid var(--red); box-shadow: 0 0 30px var(--red); animation: pulse-red 2s infinite; }
+        @keyframes pulse-red { 0% { box-shadow: 0 0 10px var(--red); } 50% { box-shadow: 0 0 40px var(--red); } 100% { box-shadow: 0 0 10px var(--red); } }
+
+        /* 💠 BUTTONS */
+        .btn-glowing { background: var(--red); border: none; color: white; padding: 12px 25px; border-radius: 10px; font-weight: bold; cursor: pointer; box-shadow: 0 0 15px var(--red); }
+        .btn-glowing:hover { transform: scale(1.05); box-shadow: 0 0 25px var(--red); }
+
+        .input-box { background: #111; border: 1px solid #444; color: white; padding: 12px; border-radius: 8px; width: 100%; margin-bottom: 10px; }
+        .section { display: none; padding-top: 100px; }
         .active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        /* 📂 LINK CARDS (Square DP Style) */
-        .link-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; max-width: 1200px; margin: auto; }
-        .link-card { background: #0a0a0a; border: 1px solid #222; border-radius: 15px; overflow: hidden; position: relative; }
-        .link-card:hover { border-color: var(--red); transform: scale(1.02); }
-        .card-img-wrap { position: relative; width: 100%; height: 160px; }
-        .card-img { width: 100%; height: 100%; object-fit: cover; }
-        .square-dp { position: absolute; bottom: 10px; left: 10px; width: 50px; height: 50px; border: 2px solid var(--red); background: black; border-radius: 5px; object-fit: cover; }
-        .back-label { display: none; position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); background: var(--red); color: white; padding: 2px 10px; font-size: 10px; border-radius: 5px; }
-
-        /* 💰 OVERLAY & MODALS */
-        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 3000; align-items: center; justify-content: center; overflow-y: auto; }
-        .modal-content { background: #050505; border: 2px solid var(--red); padding: 30px; border-radius: 20px; width: 95%; max-width: 450px; text-align: center; }
-        .input-field { background: #111; border: 1px solid #333; color: white; padding: 12px; border-radius: 10px; width: 100%; margin-bottom: 10px; }
-
-        /* 👑 BADGES */
-        .badge { font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-right: 5px; }
-        .badge-admin { background: gold; color: black; }
-        .badge-premium { background: var(--red); color: white; }
-
-        /* 🔴 LIVE PULSE */
-        .pulse-dot { height: 10px; width: 10px; background-color: #00ff00; border-radius: 50%; display: inline-block; animation: pulse-green 2s infinite; margin-right: 5px; }
-        @keyframes pulse-green { 0% { box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(0, 255, 0, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 255, 0, 0); } }
     </style>
 </head>
 <body>
 
-    <canvas id="fire-canvas"></canvas>
-    <img src="dragon.png" class="floating-dragon">
-
-    <nav id="main-nav" style="display:none;">
-        <div style="color:red; font-weight:bold; cursor:pointer;" onclick="showPage('home')">AKIYA 龍</div>
-        <div class="nav-links">
-            <div style="font-size:10px;"><span class="pulse-dot"></span> <span id="online-count">0</span> ONLINE</div>
-            <button class="add-link-btn" onclick="openAddLink()">+ ADD LINK</button>
-            <div id="token-display" onclick="openTokenShop()" style="color:gold; cursor:pointer; font-weight:bold;"><i class="fas fa-coins"></i> <span id="user-tokens">0</span></div>
-            <img id="nav-pfp" onclick="showPage('profile')" style="width:35px; height:35px; border-radius:50%; border:2px solid red; cursor:pointer; object-fit: cover;">
+    <canvas id="bg-canvas"></canvas>
+    <img src="https://i.imgur.com/8mY8n0T.png" class="spider-web"> <nav>
+        <div class="logo-area">
+            <img src="dragon.png" class="main-logo" alt="LOGO">
+            <span style="color:red; font-size: 20px; font-weight: 900;">AKIYA 龍</span>
+        </div>
+        <div style="display:flex; gap:15px; align-items:center;">
+            <div id="admin-link" style="display:none; color:gold; cursor:pointer;" onclick="showPage('admin-panel')"><i class="fas fa-user-shield"></i> ADMIN</div>
+            <button class="btn-glowing" onclick="showPage('add-link')">+ ADD LINK</button>
+            <div onclick="showPage('profile')" style="cursor:pointer;"><i class="fas fa-coins" style="color:gold;"></i> <span id="u-tokens">0</span></div>
         </div>
     </nav>
 
-    <div id="login-screen" class="section active">
-        <div style="max-width:380px; margin:auto; text-align:center; padding:40px; background:var(--glass); border-radius:20px; border:1px solid #222;">
-            <img src="dragon.png" width="80">
-            <h2 style="color:red; text-shadow: 0 0 10px red;">DRAGON REALM 2026</h2>
-            
-            <button class="glow-btn" style="width:100%; margin-bottom:20px; border-color:#4285F4; color:#4285F4;" onclick="googleLogin()">
-                <i class="fab fa-google"></i> GOOGLE LOGIN
-            </button>
-            
-            <div style="color:#444; margin-bottom:20px;">- PREMIUM ACCESS -</div>
-            
-            <input type="text" id="pre-user" class="input-field" placeholder="Username">
-            <input type="password" id="pre-pass" class="input-field" placeholder="Password">
-            <button class="glow-btn" style="width:100%;" onclick="premiumLogin()">LOGIN AS PREMIUM 🔥</button>
-        </div>
+    <div id="home" class="section active">
+        <div class="link-grid" id="main-link-container"></div>
     </div>
 
-    <div id="home" class="section">
-        <div class="link-grid" id="link-container"></div>
-    </div>
-
-    <div id="add-link-overlay" class="overlay">
-        <div class="modal-content">
-            <h3 style="color:red;">🐉 POST NEW LINK</h3>
-            <p style="font-size:12px; color:gold;">Entry Fee: 20 Dragon Tokens</p>
-            <input type="text" id="link-title" class="input-field" placeholder="Title / Name">
-            <input type="text" id="link-url" class="input-field" placeholder="Link URL (WhatsApp/TG/YT)">
-            <select id="link-cat" class="input-field">
-                <option value="WhatsApp Groups">WhatsApp Groups</option>
-                <option value="Telegram Channels">Telegram Channels</option>
-                <option value="YouTube Channels">YouTube Channels</option>
-                <option value="TikTok Profiles">TikTok Profiles</option>
-                <option value="Personal Profiles">Personal Profiles</option>
-                <option value="Other Links">Other Links</option>
+    <div id="add-link" class="section">
+        <div style="max-width:500px; margin:auto; background:var(--glass); padding:30px; border-radius:20px; border:1px solid var(--red);">
+            <h2 style="color:red;">🐉 POST NEW LINK (20 TK)</h2>
+            <input type="text" id="ln-title" class="input-box" placeholder="Link Name (e.g. My YT Channel)">
+            <input type="text" id="ln-url" class="input-box" placeholder="Paste URL Here">
+            <textarea id="ln-desc" class="input-box" placeholder="Link Description (Tell about it...)"></textarea>
+            <select id="ln-cat" class="input-box">
+                <option value="Groups">WhatsApp Groups</option>
+                <option value="Channels">Telegram Channels</option>
+                <option value="Social">Social Media</option>
             </select>
-            <p style="font-size:11px; text-align:left; margin:5px 0;">Select Image (PC/Mobile):</p>
-            <input type="file" id="link-file" class="input-field" accept="image/*">
-            <button class="glow-btn" style="width:100%;" onclick="publishLink()">PUBLISH NOW (20 TOKENS)</button>
-            <button class="glow-btn" style="width:100%; margin-top:10px; border-color:gray; color:gray;" onclick="closeOverlay('add-link-overlay')">CANCEL</button>
-        </div>
-    </div>
-
-    <div id="token-overlay" class="overlay">
-        <div class="modal-content">
-            <h3 style="color:gold;">🐉 DRAGON TOKENS</h3>
-            
-            <div style="background:#111; padding:15px; border-radius:10px; margin-bottom:20px;">
-                <p style="font-size:12px; color:#aaa;">Enter Redeem Code:</p>
-                <input type="text" id="redeem-input" class="input-field" placeholder="Code (e.g. qX91vR100)">
-                <button class="glow-btn" style="width:100%;" onclick="redeemToken()">CLAIM TOKENS</button>
-            </div>
-
-            <p style="font-size:12px;">Purchase Tokens (WhatsApp):</p>
-            <div style="background:#0a0a0a; border:1px solid #333; padding:10px; border-radius:10px; display:flex; justify-content:space-between; align-items:center;">
-                <span>1200 Tokens</span> <b>LKR 1000</b> 
-                <button class="glow-btn" style="padding:5px 10px;" onclick="buyWA(1200)">BUY</button>
-            </div>
-            <button class="glow-btn" style="width:100%; margin-top:20px; border-color:gray; color:gray;" onclick="closeOverlay('token-overlay')">CLOSE</button>
+            <p>Upload Banner (PC/Mobile):</p>
+            <input type="file" id="ln-img" class="input-box">
+            <button class="btn-glowing" style="width:100%;" onclick="uploadLink()">PUBLISH NOW</button>
         </div>
     </div>
 
     <div id="profile" class="section">
-        <div style="max-width:400px; margin:auto; text-align:center; background:var(--glass); padding:30px; border-radius:20px; border:1px solid #333;">
-            <div style="position:relative; display:inline-block;">
-                <img id="u-pfp-large" style="width:120px; height:120px; border-radius:50%; border:4px solid red; object-fit: cover;">
-                <div id="profile-alert" style="display:none; position:absolute; top:0; right:0; background:yellow; color:black; border-radius:50%; width:25px; height:25px; line-height:25px; font-weight:bold;">!</div>
-            </div>
-            <h3 id="u-name-display" style="margin-top:10px;">USER</h3>
-            <p id="u-badge-container"></p>
+        <div style="max-width:500px; margin:auto; text-align:center; background:var(--glass); padding:30px; border-radius:20px;">
+            <img id="my-pfp" style="width:100px; height:100px; border-radius:50%; border:3px solid red;">
+            <h2 id="my-name-tag">User Name</h2>
+            <input type="text" id="p-name" class="input-box" placeholder="Full Name">
+            <input type="text" id="p-loc" class="input-box" placeholder="Location">
+            <input type="number" id="p-age" class="input-box" placeholder="Age">
+            <button class="btn-glowing" onclick="saveProfile()">SAVE PROFILE</button>
+        </div>
+    </div>
 
-            <input type="text" id="u-name-in" class="input-field" placeholder="Display Name">
-            <input type="number" id="u-age-in" class="input-field" placeholder="Age">
-            <input type="text" id="u-loc-in" class="input-field" placeholder="Location">
-            <input type="text" id="u-wa-in" class="input-field" placeholder="WhatsApp Number">
-            <select id="u-gen-in" class="input-field">
-                <option value="Boy">Boy</option>
-                <option value="Girl">Girl</option>
-            </select>
-            
-            <button class="glow-btn" style="width:100%;" onclick="updateProfile()">UPDATE PROFILE</button>
-            <button class="glow-btn" style="width:100%; margin-top:10px; border-color:gray; color:gray;" onclick="logout()">LOGOUT</button>
-            <button class="glow-btn" style="width:100%; margin-top:10px; border-color:gold; color:gold;" onclick="showPage('about')">ABOUT ME</button>
+    <div id="admin-panel" class="section">
+        <div class="admin-tab">
+            <h2 style="color:gold;">👑 DRAGON ADMIN CONTROL</h2>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+                <div style="background:#222; padding:15px; border-radius:10px;">
+                    <h4>Set Token Price (LKR)</h4>
+                    <input type="number" id="set-price" class="input-box" placeholder="1000 Tokens Price">
+                    <button class="btn-glowing" onclick="updatePrice()">UPDATE PRICE</button>
+                </div>
+                <div style="background:#222; padding:15px; border-radius:10px;">
+                    <h4>Live Visitors: <span id="live-total" style="color:lime;">0</span></h4>
+                    <button class="btn-glowing" style="background:gray;" onclick="showPage('home')">BACK</button>
+                </div>
+            </div>
+            <hr>
+            <h3>Admin Profile Edit</h3>
+            <input type="text" id="adm-edu" class="input-box" placeholder="Education">
+            <input type="text" id="adm-web" class="input-box" placeholder="About Website">
+            <button class="btn-glowing" onclick="saveAdminAbout()">UPDATE MY ABOUT</button>
         </div>
     </div>
 
     <div id="about" class="section">
-        <div style="max-width:600px; margin:auto; text-align:center;">
-            <div style="width:150px; height:150px; margin:auto; border-radius:50%; border:5px solid red; box-shadow: 0 0 30px red; overflow:hidden;">
-                <img src="akiya.png" style="width:100%; height:100%; object-fit:cover;">
+        <div style="max-width:800px; margin:auto;" class="about-wrap">
+            <div style="text-align:center;">
+                <img src="akiya.png" class="akiya-img">
+                <h1 style="color:red; text-shadow: 0 0 20px red;">AKIYA 龍</h1>
+                <div style="font-size: 18px; line-height: 2;">
+                    <p>🎓 <b>Education:</b> <span id="dis-edu">By Akiya</span></p>
+                    <p>📍 <b>Location:</b> <span id="dis-loc">Sri Lanka 🇱🇰</span></p>
+                    <p>🎂 <b>Age:</b> <span id="dis-age">20+</span></p>
+                    <p>🐉 <b>About Web:</b> <span id="dis-web">ශ්‍රී ලංකාවේ ප්‍රබලම ඩිජිටල් ප්‍රජාව.</span></p>
+                </div>
             </div>
-            <h1 style="color:red; text-shadow: 0 0 15px red; margin-top:20px;">AKIYA 龍</h1>
-            <div style="background:rgba(20,20,20,0.8); padding:30px; border-radius:20px; border:1px solid red; text-align:left; line-height:1.8;">
-                <p><i class="fas fa-graduation-cap" style="color:red;"></i> <b>Education:</b> By Akiya</p>
-                <p><i class="fas fa-birthday-cake" style="color:red;"></i> <b>Age:</b> 20+</p>
-                <p><i class="fas fa-map-marker-alt" style="color:red;"></i> <b>Location:</b> Sri Lanka 🇱🇰</p>
-                <p><i class="fas fa-dragon" style="color:red;"></i> <b>Akiya Dragon Community:</b> අපේ අරමුණ ශ්‍රී ලංකාවේ ප්‍රබලම ඩිජිටල් ප්‍රජාව බිහි කිරීමයි.</p>
-            </div>
-            <button class="glow-btn" style="margin-top:20px;" onclick="showPage('home')">BACK TO HOME</button>
         </div>
     </div>
 
     <script>
-        // 🛡️ CONFIGURATION
+        // 🛡️ FIREBASE
         const firebaseConfig = { 
             apiKey: "AIzaSyDEmPDHu3jybcYu-nKl5cCHyyWNnerex-w",
             authDomain: "akiya-communitiy-official-lk.firebaseapp.com",
@@ -187,198 +143,137 @@
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database(), auth = firebase.auth();
-        let userLocalData = null;
+        let userData = null;
 
-        // 🛡️ 60 CHAOTIC LOGINS (Username: Password)
-        const premiumUsers = {
-            "qxZ91v": "pW28@Rm", "bN44mK": "xT92#Lk", "vR19pL": "jH37$Qp", "kW82sQ": "mN11*Xz", "zT55hX": "bV66!Yt",
-            "mJ29kW": "pL09&Qw", "hL63vN": "kR44^Tv", "yR94qP": "zX12(Mb", "cX12zS": "fG77)Nh", "fV38bM": "sD33_Pl",
-            "sT71nK": "wQ99+Kn", "gL56pQ": "vC22-Xm", "wH89vR": "mN55=Pq", "kM33zT": "bB88[Lp", "rP47qW": "vV11]Zx"
-            // ... (Add all 60 pairs here)
-        };
-
-        // 🛡️ 150 REDEEM CODES
-        const redeemRepo = {
-            "qX91vR100": 100, "bN44mK100": 100, "vR19pL100": 100, "kW82sQ100": 100, "zT55hX100": 100,
-            "xR77pQ200": 200, "hQ19zR200": 200, "fP56vN200": 200, "tT94pS200": 200, "wN12qR200": 200,
-            "cX12zS300": 300, "fV38bM300": 300, "sT71nK300": 300, "gL56pQ300": 300, "wH89vR300": 300
-            // ... (Add all 150 codes here)
-        };
-
-        // 🛡️ AUTH OBSERVER (Sticky Session & Anti-Cheat)
         auth.onAuthStateChanged(user => {
             if (user) {
                 const uid = user.email.replace(/[.#$[\]]/g, "_");
                 db.ref('users/' + uid).on('value', snap => {
-                    userLocalData = snap.val();
-                    if(!userLocalData) {
-                        // First Login: Grant 100 Tokens (Device check logic applied)
-                        userLocalData = { tokens: 100, name: user.displayName, pfp: user.photoURL, email: user.email, signupTime: Date.now() };
-                        db.ref('users/' + uid).set(userLocalData);
+                    userData = snap.val();
+                    if(!userData) {
+                        userData = { tokens: 100, name: user.displayName, pfp: user.photoURL, email: user.email };
+                        db.ref('users/' + uid).set(userData);
                     }
-                    updateUI();
+                    
+                    // 👑 UNLIMITED TOKENS FOR ADMIN
+                    if(user.email === "kaviakiya@gmail.com") {
+                        userData.tokens = 999999999;
+                        document.getElementById('admin-link').style.display = 'block';
+                    }
+                    
+                    loadUI();
                 });
-                db.ref('presence/' + uid).set({ name: user.displayName, status: 'online' });
+                db.ref('presence/' + uid).set(true);
                 db.ref('presence/' + uid).onDisconnect().remove();
-            } else { showPage('login-screen'); }
+            } else { location.href = "#login"; }
         });
 
-        function googleLogin() { auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()); }
-
-        function premiumLogin() {
-            const u = document.getElementById('pre-user').value;
-            const p = document.getElementById('pre-pass').value;
-            if(premiumUsers[u] === p) {
-                alert("Premium Dragon Access Granted! 👑");
-                // Temporary session logic
-                showPage('home');
-            } else { alert("Invalid Credentials!"); }
-        }
-
-        function updateUI() {
-            document.getElementById('main-nav').style.display = 'flex';
-            document.getElementById('user-tokens').innerText = userLocalData.tokens;
-            document.getElementById('nav-pfp').src = userLocalData.pfp || 'dragon.png';
-            document.getElementById('u-pfp-large').src = userLocalData.pfp || 'dragon.png';
-            document.getElementById('u-name-display').innerText = userLocalData.name || 'Dragon User';
-            
-            // Smart Profile Alert
-            if(!userLocalData.wa) document.getElementById('profile-alert').style.display = 'block';
-            else document.getElementById('profile-alert').style.display = 'none';
-
-            // Badges
-            let badgeHTML = (userLocalData.email === 'kaviakiya@gmail.com') ? '<span class="badge badge-admin">👑 ADMIN</span>' : '<span class="badge badge-premium">🔥 PREMIUM</span>';
-            document.getElementById('u-badge-container').innerHTML = badgeHTML;
-
-            showPage('home');
+        function loadUI() {
+            document.getElementById('u-tokens').innerText = userData.tokens;
+            document.getElementById('my-pfp').src = userData.pfp;
+            document.getElementById('my-name-tag').innerText = userData.name;
             renderLinks();
-            updateVisitorCount();
+            loadAboutData();
+            updateLiveCount();
         }
 
-        // ➕ PUBLISH LINK (Cost 20 Tokens)
-        function openAddLink() { document.getElementById('add-link-overlay').style.display = 'flex'; }
-        
-        function publishLink() {
-            if(userLocalData.tokens < 20) { alert("You need 20 Tokens to post a link!"); return; }
-            
-            const title = document.getElementById('link-title').value;
-            const url = document.getElementById('link-url').value;
-            const cat = document.getElementById('link-cat').value;
-            const file = document.getElementById('link-file').files[0];
+        function saveProfile() {
+            const uid = userData.email.replace(/[.#$[\]]/g, "_");
+            const update = {
+                name: document.getElementById('p-name').value,
+                loc: document.getElementById('p-loc').value,
+                age: document.getElementById('p-age').value
+            };
+            db.ref('users/' + uid).update(update).then(() => alert("Profile Updated! 🔥"));
+        }
 
-            if(!title || !url || !file) { alert("Please fill all fields and select a DP!"); return; }
+        function uploadLink() {
+            if(userData.tokens < 20) return alert("No Tokens!");
+            const title = document.getElementById('ln-title').value;
+            const url = document.getElementById('ln-url').value;
+            const desc = document.getElementById('ln-desc').value;
+            const cat = document.getElementById('ln-cat').value;
+            const file = document.getElementById('ln-img').files[0];
 
             const reader = new FileReader();
             reader.onloadend = () => {
-                db.ref('links').push({ title, url, cat, img: reader.result, owner: userLocalData.email, time: Date.now() });
-                const newBal = userLocalData.tokens - 20;
-                db.ref('users/' + userLocalData.email.replace(/[.#$[\]]/g, "_")).update({ tokens: newBal });
-                closeOverlay('add-link-overlay');
-                alert("Success! -20 Tokens Deduction. 🐉");
+                db.ref('links').push({ title, url, desc, cat, img: reader.result, owner: userData.name });
+                const uid = userData.email.replace(/[.#$[\]]/g, "_");
+                db.ref('users/' + uid).update({ tokens: userData.tokens - 20 });
+                showPage('home');
             };
             reader.readAsDataURL(file);
         }
 
         function renderLinks() {
             db.ref('links').on('value', snap => {
-                const container = document.getElementById('link-container');
-                container.innerHTML = "";
-                snap.forEach(child => {
-                    const l = child.val();
-                    container.innerHTML += `
-                        <div class="link-card" onclick="triggerBackLabel(this)">
-                            <div class="card-img-wrap">
-                                <img src="${l.img}" class="card-img">
-                                <img src="dragon.png" class="square-dp">
-                            </div>
-                            <div style="padding:15px;">
-                                <small style="color:gray;">${l.cat}</small>
-                                <h4 style="margin:5px 0; color:red;">${l.title}</h4>
-                                <a href="${l.url}" target="_blank" class="glow-btn" style="width:100%; display:block; padding:8px;">JOIN NOW</a>
-                                <div class="back-label">BACK</div>
+                const cont = document.getElementById('main-link-container');
+                cont.innerHTML = "";
+                snap.forEach(c => {
+                    const l = c.val();
+                    cont.innerHTML += `
+                        <div class="link-card">
+                            <img src="${l.img}" class="card-banner">
+                            <div class="card-content">
+                                <small style="color:red;">${l.cat}</small>
+                                <h3>${l.title}</h3>
+                                <p style="font-size:12px; color:#ccc;">${l.desc}</p>
+                                <a href="${l.url}" target="_blank" class="btn-glowing" style="display:block; text-align:center; text-decoration:none;">VISIT LINK</a>
                             </div>
                         </div>`;
                 });
             });
         }
 
-        function triggerBackLabel(el) {
-            const label = el.querySelector('.back-label');
-            label.style.display = 'block';
-            setTimeout(() => label.style.display = 'none', 1500);
+        // ADMIN FUNCTIONS
+        function saveAdminAbout() {
+            db.ref('site_about').set({
+                edu: document.getElementById('adm-edu').value,
+                web: document.getElementById('adm-web').value
+            });
+            alert("About Page Updated!");
         }
 
-        // 💰 REDEEM & SHOP
-        function openTokenShop() { document.getElementById('token-overlay').style.display = 'flex'; }
-        
-        function redeemToken() {
-            const code = document.getElementById('redeem-input').value;
-            if(redemRepo[code]) {
-                const amount = redeemRepo[code];
-                const newBal = userLocalData.tokens + amount;
-                db.ref('users/' + userLocalData.email.replace(/[.#$[\]]/g, "_")).update({ tokens: newBal });
-                alert(`Redeemed ${amount} Tokens! 💎`);
-                delete redeemRepo[code]; // One-time use logic
-                document.getElementById('redeem-input').value = "";
-            } else { alert("Invalid or Already Used Code!"); }
+        function loadAboutData() {
+            db.ref('site_about').on('value', snap => {
+                const d = snap.val();
+                if(d) {
+                    document.getElementById('dis-edu').innerText = d.edu;
+                    document.getElementById('dis-web').innerText = d.web;
+                }
+            });
         }
 
-        function buyWA(amt) {
-            const msg = encodeURIComponent(`Dragon Token Purchase Request:\nEmail: ${userLocalData.email}\nAmount: ${amt} Tokens`);
-            window.open(`https://wa.me/94755751816?text=${msg}`);
+        function updateLiveCount() {
+            db.ref('presence').on('value', s => {
+                document.getElementById('live-total').innerText = s.numChildren();
+            });
         }
 
-        // 👤 PROFILE UPDATE
-        function updateProfile() {
-            const name = document.getElementById('u-name-in').value;
-            const age = document.getElementById('u-age-in').value;
-            const loc = document.getElementById('u-loc-in').value;
-            const wa = document.getElementById('u-wa-in').value;
-            const gen = document.getElementById('u-gen-in').value;
-            
-            const uid = userLocalData.email.replace(/[.#$[\]]/g, "_");
-            db.ref('users/' + uid).update({ name, age, loc, wa, gen });
-
-            // EmailJS Secret Notification
-            emailjs.send("service_h6bsq2s", "template_7slq3e6", {
-                user_name: name, user_email: userLocalData.email, user_phone: wa
-            }, "aop4SIq1OjHZn_EW7");
-
-            alert("Secured and Saved! 🔥");
-        }
-
-        // 🧭 NAVIGATION UTILS
         function showPage(p) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(p).classList.add('active');
-            window.scrollTo(0,0);
         }
 
-        function closeOverlay(id) { document.getElementById(id).style.display = 'none'; }
-        function logout() { auth.signOut().then(() => location.reload()); }
-        
-        function updateVisitorCount() {
-            db.ref('presence').on('value', s => {
-                document.getElementById('online-count').innerText = s.numChildren();
-            });
-        }
-
-        // 🔥 PARTICLE SYSTEM
-        const canvas = document.getElementById('fire-canvas'), ctx = canvas.getContext('2d');
+        // 🔥 LIVE BG PARTICLES
+        const canvas = document.getElementById('bg-canvas'), ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        let pts = [];
-        window.onmousemove = (e) => { for(let i=0; i<2; i++) pts.push({x:e.clientX, y:e.clientY, a:1, s:Math.random()*2.5}); };
-        function animate() {
-            ctx.clearRect(0,0,canvas.width, canvas.height);
-            pts.forEach((p, i) => {
-                p.y -= 1.2; p.a -= 0.015;
-                ctx.fillStyle = `rgba(255,17,0,${p.a})`;
-                ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, 7); ctx.fill();
-                if(p.a <= 0) pts.splice(i,1);
-            });
-            requestAnimationFrame(animate);
+        let particles = [];
+        function createP() {
+            for(let i=0; i<2; i++) particles.push({x: Math.random()*canvas.width, y: canvas.height, s: Math.random()*3, v: Math.random()*2});
         }
-        animate();
+        function draw() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            ctx.fillStyle = "rgba(255,0,0,0.5)";
+            particles.forEach((p, i) => {
+                p.y -= p.v;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, Math.PI*2); ctx.fill();
+                if(p.y < 0) particles.splice(i,1);
+            });
+            createP();
+            requestAnimationFrame(draw);
+        }
+        draw();
     </script>
 </body>
 </html>
