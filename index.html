@@ -1,272 +1,245 @@
 <!DOCTYPE html>
-<html lang="si">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>𝐀𝐊𝐈𝐘𝐀 龍 | MASTER ULTIMATE 2026</title>
-    
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
-
+    <title>AKIYA REALM 2026 | THE DRAGON DOMAIN</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --red: #ff0000; --gold: #ffd700; --black: #050505; }
-        * { box-sizing: border-box; transition: 0.3s; }
-        body { margin: 0; background: var(--black); color: white; font-family: 'Poppins', sans-serif; overflow-x: hidden; }
-        
-        /* 🌌 BACKGROUND EFFECTS */
-        #bg-canvas { position: fixed; top:0; left:0; width:100%; height:100%; z-index:-2; }
-        .spider-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: url('https://www.transparenttextures.com/patterns/spider-web.png'); opacity: 0.15; z-index:-1; pointer-events: none; }
-
-        /* 🧭 DYNAMIC NAVBAR */
-        nav { 
-            position: fixed; top: 0; width: 100%; background: rgba(0,0,0,0.9); 
-            backdrop-filter: blur(15px); display: flex; justify-content: space-between; 
-            align-items: center; padding: 10px 20px; z-index: 1000; border-bottom: 2px solid var(--red);
+        :root {
+            --primary: #ff0000;
+            --secondary: #1a1a1a;
+            --accent: #8b0000;
+            --text: #ffffff;
         }
-        .nav-brand { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-        .akiya-logo { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--red); box-shadow: 0 0 10px red; object-fit: cover; }
-        .nav-links { display: flex; gap: 15px; overflow-x: auto; padding: 0 10px; }
-        .nav-item { cursor: pointer; font-family: 'Orbitron'; font-size: 12px; white-space: nowrap; color: gray; }
-        .nav-item.active-tab { color: var(--red); border-bottom: 1px solid var(--red); }
 
-        /* 📱 CONTAINER */
-        .container { max-width: 1200px; margin: 90px auto 20px; padding: 0 15px; min-height: 80vh; }
-        .section { display: none; animation: fadeIn 0.5s ease; }
-        .active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        /* 💎 COMPONENTS */
-        .btn-dragon { 
-            background: linear-gradient(45deg, #8b0000, #ff0000); border: none; color: white; 
-            padding: 10px 20px; border-radius: 8px; font-weight: bold; font-family: 'Orbitron'; cursor: pointer;
+        body {
+            margin: 0;
+            background: black;
+            color: var(--text);
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
         }
-        .btn-dragon:hover { letter-spacing: 2px; box-shadow: 0 0 15px red; }
-        .card { background: #0d0d0d; border: 1px solid #222; border-radius: 15px; overflow: hidden; margin-bottom: 20px; }
-        .ad-banner { width: 100%; height: 100px; background: #111; border: 1px dashed var(--gold); border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
 
-        /* 🛡️ ADMIN STYLES */
-        .admin-panel { background: #111; border: 1px solid var(--gold); padding: 20px; border-radius: 15px; }
-        .input-dragon { background: #000; border: 1px solid #333; color: white; padding: 12px; border-radius: 8px; width: 100%; margin-bottom: 10px; }
-        
-        footer { text-align: center; padding: 40px; border-top: 1px solid #222; margin-top: 50px; }
+        /* --- SPIDER WEB BACKGROUND --- */
+        #web-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            opacity: 0.4;
+        }
+
+        /* --- NAVBAR --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            background: rgba(0, 0, 0, 0.8);
+            border-bottom: 2px solid var(--primary);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--primary);
+            text-shadow: 0 0 10px var(--primary);
+        }
+
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+        }
+
+        /* --- DRAGON MASK SECTION --- */
+        .dragon-rite {
+            padding: 50px;
+            text-align: center;
+            background: linear-gradient(to bottom, transparent, var(--secondary));
+        }
+
+        #camera-feed {
+            width: 100%;
+            max-width: 500px;
+            border: 3px solid var(--primary);
+            border-radius: 15px;
+            box-shadow: 0 0 20px var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .btn-dragon {
+            background: var(--primary);
+            color: white;
+            padding: 12px 30px;
+            font-family: 'Orbitron', sans-serif;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+        }
+
+        .btn-dragon:hover {
+            letter-spacing: 3px;
+            background: white;
+            color: black;
+        }
+
+        /* --- LIVE GUARDIANS GALLERY --- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .guardian-card {
+            border: 1px solid var(--primary);
+            padding: 5px;
+            background: #000;
+            transition: transform 0.3s;
+        }
+
+        .guardian-card:hover { transform: scale(1.05); }
+
+        /* --- FOOTER --- */
+        footer {
+            text-align: center;
+            padding: 30px;
+            font-size: 0.8rem;
+            border-top: 1px solid #333;
+            letter-spacing: 2px;
+        }
     </style>
 </head>
 <body>
 
-    <canvas id="bg-canvas"></canvas>
-    <div class="spider-overlay"></div>
+    <canvas id="web-canvas"></canvas>
 
     <nav>
-        <div class="nav-brand" onclick="location.reload()">
-            <img id="akiya-logo-img" class="akiya-logo" src="">
-            <span style="font-family:'Orbitron'; color:red; font-weight:900;">AKIYA</span>
-        </div>
-        <div class="nav-links" id="dynamic-tabs">
-            </div>
-        <div style="display:flex; gap:10px; align-items:center;">
-            <div id="admin-icon" style="display:none; color:var(--gold);" onclick="showPage('admin')"><i class="fas fa-crown"></i></div>
-            <div style="color:var(--gold); font-weight:bold; font-size:12px;"><i class="fas fa-coins"></i> <span id="u-tokens">0</span></div>
-            <img id="u-pfp" onclick="showPage('profile')" style="width:35px; height:35px; border-radius:50%; border:1px solid white; cursor:pointer;">
+        <div class="logo">AKIYA REALM 2026</div>
+        <div id="live-visitors">LIVE: 1</div>
+        <div class="user-profile" id="user-display">
+            <button class="btn-dragon" onclick="login()">LOGIN WITH GOOGLE</button>
         </div>
     </nav>
 
-    <div class="container">
+    <section class="dragon-rite">
+        <h2 style="font-family: 'Orbitron';">THE DRAGON RITE</h2>
+        <p>Become a Guardian of the Realm. Access your camera to receive the mask.</p>
         
-        <div id="top-ad" class="ad-banner" style="display:none;"></div>
+        <video id="camera-feed" autoplay playsinline></video>
+        <canvas id="mask-overlay" style="display:none;"></canvas>
+        <br>
+        <button class="btn-dragon" onclick="captureGuardian()">CAPTURE & JOIN</button>
+    </section>
 
-        <div id="home" class="section active">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                <h2 style="font-family:'Orbitron';">REALM <span style="color:red;">FEED</span></h2>
-                <button class="btn-dragon" onclick="showPage('add-post')">POST +</button>
-            </div>
-            <div id="feed-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:20px;"></div>
+    <section id="gallery-section">
+        <h3 style="text-align:center; font-family: 'Orbitron';">LIVE GUARDIANS</h3>
+        <div class="gallery-grid" id="guardian-gallery">
+            <!-- Photos will appear here -->
         </div>
-
-        <div id="admin" class="section">
-            <button class="btn-dragon" style="background:#222; margin-bottom:15px;" onclick="showPage('home')">BACK</button>
-            <div class="admin-panel">
-                <h2 style="font-family:'Orbitron'; color:var(--gold);">MASTER CONTROL</h2>
-                
-                <div style="margin-bottom:25px; border-bottom:1px solid #333; padding-bottom:15px;">
-                    <h4>DYNAMIC TAB MANAGER</h4>
-                    <input type="text" id="new-tab-name" class="input-dragon" placeholder="Tab Name (e.g., Movies)">
-                    <button class="btn-dragon" style="width:100%;" onclick="addTab()">ADD NEW TAB</button>
-                    <div id="tab-list" style="margin-top:10px; font-size:12px;"></div>
-                </div>
-
-                <div style="margin-bottom:25px; border-bottom:1px solid #333; padding-bottom:15px;">
-                    <h4>ADS MANAGER</h4>
-                    <input type="text" id="ad-img-url" class="input-dragon" placeholder="Ad Banner Image URL">
-                    <input type="text" id="ad-link-url" class="input-dragon" placeholder="Ad Destination Link">
-                    <button class="btn-dragon" style="width:100%; background:var(--gold); color:black;" onclick="updateAd()">UPDATE GLOBAL AD</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="profile" class="section">
-            <button class="btn-dragon" style="background:#222; margin-bottom:15px;" onclick="showPage('home')">BACK</button>
-            <div style="max-width:500px; margin:auto; text-align:center;">
-                <img id="p-img" style="width:150px; height:150px; border-radius:50%; border:3px solid red; object-fit:cover;">
-                <h2 id="p-name" style="font-family:'Orbitron'; margin:15px 0;">USER</h2>
-                <input type="text" id="in-name" class="input-dragon" placeholder="Name">
-                <input type="text" id="in-edu" class="input-dragon" placeholder="Education">
-                <input type="text" id="in-loc" class="input-dragon" placeholder="Location">
-                <button class="btn-dragon" style="width:100%" onclick="saveProfile()">SAVE CHANGES</button>
-            </div>
-        </div>
-
-        <div id="add-post" class="section">
-            <button class="btn-dragon" style="background:#222; margin-bottom:15px;" onclick="showPage('home')">CLOSE</button>
-            <div style="max-width:500px; margin:auto; background:#0d0d0d; padding:25px; border-radius:15px; border:1px solid red;">
-                <h3 style="font-family:'Orbitron';">PUBLISH TO REALM</h3>
-                <input type="text" id="post-title" class="input-dragon" placeholder="Title">
-                <input type="text" id="post-url" class="input-dragon" placeholder="URL">
-                <input type="file" id="post-file" class="input-dragon" accept="image/*">
-                <button class="btn-dragon" style="width:100%" id="pub-btn" onclick="publish()">IGNITE</button>
-            </div>
-        </div>
-
-    </div>
+    </section>
 
     <footer>
-        <p style="font-family:'Orbitron'; font-size:14px; letter-spacing:2px; color:var(--gold);">
-            POWERED BY <span style="color:var(--red); font-weight:900;">AKIYA</span>
-        </p>
-        <p style="font-size:10px; color:gray; margin-top:5px;">ALL RIGHTS RESERVED © 2026</p>
+        POWERED BY AKIYA | ALL RIGHTS RESERVED 2026
     </footer>
 
+    <!-- Firebase & Custom Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+
     <script>
-        // --- FIREBASE CONFIG ---
-        const firebaseConfig = { 
-            apiKey: "AIzaSyDEmPDHu3jybcYu-nKl5cCHyyWNnerex-w",
-            authDomain: "akiya-communitiy-official-lk.firebaseapp.com",
-            databaseURL: "https://akiya-communitiy-official-lk-default-rtdb.firebaseio.com/",
-            projectId: "akiya-communitiy-official-lk"
+        // Firebase Config (Replace with your actual Firebase config)
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            databaseURL: "YOUR_DATABASE_URL",
+            projectId: "YOUR_PROJECT_ID",
+            authDomain: "YOUR_AUTH_DOMAIN"
         };
         firebase.initializeApp(firebaseConfig);
-        const db = firebase.database(), auth = firebase.auth();
-        let currentU = null;
+        const db = firebase.database();
+        const auth = firebase.auth();
 
-        // --- AUTH & REFRESH FIX ---
-        auth.onAuthStateChanged(user => {
-            if(user) {
-                const uid = user.email.replace(/[.#$[\]]/g, "_");
-                // 'once' use කිරීමෙන් refresh loop එක නවතියි
-                db.ref('users/' + uid).once('value', snap => {
-                    currentU = snap.val() || { name: user.displayName, pfp: user.photoURL, tokens: 100, email: user.email };
-                    if(!snap.val()) db.ref('users/' + uid).set(currentU);
-                    
-                    if(user.email === "kaviakiya@gmail.com") {
-                        document.getElementById('admin-icon').style.display = 'block';
-                        currentU.tokens = "∞";
-                    }
-                    syncUI();
-                });
-            } else { auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()); }
-        });
-
-        function syncUI() {
-            document.getElementById('u-pfp').src = currentU.pfp;
-            document.getElementById('p-img').src = currentU.pfp;
-            document.getElementById('p-name').innerText = currentU.name;
-            document.getElementById('u-tokens').innerText = currentU.tokens;
-            
-            // Founder Data Sync for Logo
-            db.ref('users/kaviakiya@gmail_com').once('value', s => {
-                if(s.val()) document.getElementById('akiya-logo-img').src = s.val().pfp;
-            });
-
-            loadTabs(); loadAds(); loadFeed();
-        }
-
-        // --- DYNAMIC TABS SYSTEM ---
-        function loadTabs() {
-            db.ref('site_settings/tabs').on('value', snap => {
-                const nav = document.getElementById('dynamic-tabs');
-                const list = document.getElementById('tab-list');
-                nav.innerHTML = '<div class="nav-item active-tab" onclick="showPage(\'home\')">HOME</div>';
-                list.innerHTML = "";
-                snap.forEach(c => {
-                    const tab = c.val().name;
-                    nav.innerHTML += `<div class="nav-item" onclick="alert('Welcome to ${tab}')">${tab.toUpperCase()}</div>`;
-                    list.innerHTML += `<span style="color:red; margin-right:10px;">${tab} <i class="fas fa-trash" onclick="deleteTab('${c.key}')"></i></span>`;
-                });
-            });
-        }
-        function addTab() {
-            const name = document.getElementById('new-tab-name').value;
-            if(name) db.ref('site_settings/tabs').push({ name }).then(() => {
-                document.getElementById('new-tab-name').value = "";
-            });
-        }
-        function deleteTab(key) { db.ref('site_settings/tabs/' + key).remove(); }
-
-        // --- ADS SYSTEM ---
-        function loadAds() {
-            db.ref('site_settings/ad').on('value', snap => {
-                const data = snap.val();
-                const box = document.getElementById('top-ad');
-                if(data && data.img) {
-                    box.style.display = 'flex';
-                    box.innerHTML = `<a href="${data.url}" target="_blank"><img src="${data.img}" style="width:100%; height:100%; object-fit:cover;"></a>`;
+        // 1. Google Login
+        function login() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider).then(result => {
+                const user = result.user;
+                document.getElementById('user-display').innerHTML = `<img src="${user.photoURL}" title="${user.displayName}">`;
+                if(user.email === 'kaviakiya@gmail.com') {
+                    alert("Welcome Founder Akiya!");
                 }
             });
         }
-        function updateAd() {
-            const img = document.getElementById('ad-img-url').value;
-            const url = document.getElementById('ad-link-url').value;
-            db.ref('site_settings/ad').set({ img, url }).then(() => alert("Ads Updated!"));
-        }
 
-        // --- FEED & POSTING ---
-        function publish() {
-            const title = document.getElementById('post-title').value;
-            const url = document.getElementById('post-url').value;
-            const file = document.getElementById('post-file').files[0];
-            if(!title || !url || !file) return alert("All fields required!");
+        // 2. Camera Access
+        const video = document.getElementById('camera-feed');
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => video.srcObject = stream)
+            .catch(err => console.error("Camera access denied", err));
 
-            document.getElementById('pub-btn').innerText = "IGNITING...";
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => {
-                db.ref('links').push({ title, url, img: reader.result, owner: currentU.name, pfp: currentU.pfp }).then(() => {
-                    showPage('home'); alert("Published!");
-                    document.getElementById('pub-btn').innerText = "IGNITE";
-                });
-            };
-        }
+        // 3. Capture & Save Guardian
+        function captureGuardian() {
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0);
+            
+            // Simulating a Dragon Mask Overlay
+            ctx.fillStyle = "rgba(255, 0, 0, 0.3)";
+            ctx.font = "30px Orbitron";
+            ctx.fillText("GUARDIAN", 50, 50);
 
-        function loadFeed() {
-            db.ref('links').on('value', snap => {
-                const grid = document.getElementById('feed-grid'); grid.innerHTML = "";
-                snap.forEach(c => {
-                    const l = c.val();
-                    grid.innerHTML += `<div class="card"><img src="${l.img}" style="width:100%;height:160px;object-fit:cover;border-bottom:2px solid red;"><div style="padding:12px;"><h4 style="margin:0;color:red;font-family:Orbitron;">${l.title}</h4><p style="font-size:10px;color:gray;">By ${l.owner}</p><a href="${l.url}" target="_blank" class="btn-dragon" style="display:block;text-align:center;text-decoration:none;margin-top:10px;font-size:11px;">ENTER</a></div></div>`;
-                });
+            const dataUrl = canvas.toDataURL('image/png');
+            const newGuardianRef = db.ref('guardians').push();
+            newGuardianRef.set({
+                image: dataUrl,
+                timestamp: Date.now()
             });
         }
 
-        function showPage(id) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            window.scrollTo(0,0);
-        }
+        // 4. Live Visitor Counter
+        db.ref('presence').on('value', snap => {
+            document.getElementById('live-visitors').innerText = `LIVE: ${snap.numChildren() || 1}`;
+        });
 
-        // --- MAGIC BACKGROUND ---
-        const canvas = document.getElementById('bg-canvas'), ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        let pts = [];
-        for(let i=0; i<60; i++) pts.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, s:Math.random()*1.5});
-        function draw() {
-            ctx.clearRect(0,0,canvas.width,canvas.height);
-            ctx.fillStyle = "rgba(255,0,0,0.4)";
-            pts.forEach(p => { ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, Math.PI*2); ctx.fill(); p.y-=0.4; if(p.y<0) p.y=canvas.height; });
-            requestAnimationFrame(draw);
+        // 5. Real-time Gallery Update
+        db.ref('guardians').limitToLast(10).on('value', snap => {
+            const gallery = document.getElementById('guardian-gallery');
+            gallery.innerHTML = '';
+            snap.forEach(child => {
+                const img = child.val().image;
+                gallery.innerHTML += `<div class="guardian-card"><img src="${img}" width="100%"></div>`;
+            });
+        });
+
+        // --- SPIDER WEB EFFECT ---
+        const canvas = document.getElementById('web-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // (Spider web logic would go here - simplified for length)
+        function drawWeb() {
+            ctx.clearRect(0,0, canvas.width, canvas.height);
+            ctx.strokeStyle = '#ff0000';
+            ctx.lineWidth = 0.5;
+            // Simple grid/lines for effect
+            for(let i=0; i<canvas.width; i+=50) {
+                ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(canvas.width-i, canvas.height); ctx.stroke();
+            }
         }
-        draw();
+        setInterval(drawWeb, 100);
+
     </script>
 </body>
 </html>
