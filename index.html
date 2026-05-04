@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AKIYA REALM 2026 | THE DRAGON DOMAIN</title>
+    <title>AKIYA REALM 2026 | THE DRAGON </title>
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
@@ -151,40 +151,55 @@
         POWERED BY AKIYA | ALL RIGHTS RESERVED 2026
     </footer>
 
-    <!-- Firebase & Custom Scripts -->
+    <!-- Firebase SDKs (v9 Compat Mode) -->
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
 
     <script>
-        // Firebase Config (Replace with your actual Firebase config)
+        // පින්තූරවල තිබුණු උඹේම Original Config එක
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            databaseURL: "YOUR_DATABASE_URL",
-            projectId: "YOUR_PROJECT_ID",
-            authDomain: "YOUR_AUTH_DOMAIN"
+            apiKey: "AIzaSyDEmPDHu3jybcYu-nKl5cCHyyWNnerex-w",
+            authDomain: "akiya-communitiy-official-lk.firebaseapp.com",
+            databaseURL: "https://akiya-communitiy-official-lk-default-rtdb.firebaseio.com",
+            projectId: "akiya-communitiy-official-lk",
+            storageBucket: "akiya-communitiy-official-lk.firebasestorage.app",
+            messagingSenderId: "180586817754",
+            appId: "1:180586817754:web:c505feb010c7c67c15dde3"
         };
+
+        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
         const auth = firebase.auth();
 
-        // 1. Google Login
+        // 1. Google Login (Fixed Function)
         function login() {
             const provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithPopup(provider).then(result => {
-                const user = result.user;
-                document.getElementById('user-display').innerHTML = `<img src="${user.photoURL}" title="${user.displayName}">`;
-                if(user.email === 'kaviakiya@gmail.com') {
-                    alert("Welcome Founder Akiya!");
-                }
-            });
+            // මේකෙන් තමයි Google Popup එක එන්නේ
+            auth.signInWithPopup(provider)
+                .then(result => {
+                    const user = result.user;
+                    console.log("Logged in as:", user.displayName);
+                    document.getElementById('user-display').innerHTML = `<img src="${user.photoURL}" title="${user.displayName}">`;
+                    
+                    if(user.email === 'kaviakiya@gmail.com') {
+                        alert("Welcome Founder Akiya! Access Granted.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Login Error:", error.message);
+                    alert("අවුලක් වුණා බොක්ක: " + error.message);
+                });
         }
 
         // 2. Camera Access
         const video = document.getElementById('camera-feed');
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(stream => video.srcObject = stream)
-            .catch(err => console.error("Camera access denied", err));
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => video.srcObject = stream)
+                .catch(err => console.error("Camera access denied", err));
+        }
 
         // 3. Capture & Save Guardian
         function captureGuardian() {
@@ -194,14 +209,12 @@
             const ctx = canvas.getContext('2d');
             ctx.drawImage(video, 0, 0);
             
-            // Simulating a Dragon Mask Overlay
-            ctx.fillStyle = "rgba(255, 0, 0, 0.3)";
-            ctx.font = "30px Orbitron";
-            ctx.fillText("GUARDIAN", 50, 50);
+            ctx.fillStyle = "rgba(255, 0, 0, 0.4)";
+            ctx.font = "bold 30px Orbitron";
+            ctx.fillText("AKIYA GUARDIAN", 20, 50);
 
             const dataUrl = canvas.toDataURL('image/png');
-            const newGuardianRef = db.ref('guardians').push();
-            newGuardianRef.set({
+            db.ref('guardians').push({
                 image: dataUrl,
                 timestamp: Date.now()
             });
@@ -223,22 +236,25 @@
         });
 
         // --- SPIDER WEB EFFECT ---
-        const canvas = document.getElementById('web-canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        const webCanvas = document.getElementById('web-canvas');
+        const webCtx = webCanvas.getContext('2d');
+        webCanvas.width = window.innerWidth;
+        webCanvas.height = window.innerHeight;
 
-        // (Spider web logic would go here - simplified for length)
         function drawWeb() {
-            ctx.clearRect(0,0, canvas.width, canvas.height);
-            ctx.strokeStyle = '#ff0000';
-            ctx.lineWidth = 0.5;
-            // Simple grid/lines for effect
-            for(let i=0; i<canvas.width; i+=50) {
-                ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(canvas.width-i, canvas.height); ctx.stroke();
+            webCtx.clearRect(0,0, webCanvas.width, webCanvas.height);
+            webCtx.strokeStyle = '#ff0000';
+            webCtx.lineWidth = 0.5;
+            for(let i=0; i<webCanvas.width; i+=60) {
+                webCtx.beginPath(); webCtx.moveTo(i,0); webCtx.lineTo(webCanvas.width-i, webCanvas.height); webCtx.stroke();
             }
         }
-        setInterval(drawWeb, 100);
+        setInterval(drawWeb, 150);
+
+        window.addEventListener('resize', () => {
+            webCanvas.width = window.innerWidth;
+            webCanvas.height = window.innerHeight;
+        });
 
     </script>
 </body>
