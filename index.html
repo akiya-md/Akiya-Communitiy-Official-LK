@@ -47,7 +47,7 @@
 
         @keyframes blink { 50% { opacity: 0.5; } }
 
-        /* --- NEW: MASTER UPDATES SECTION --- */
+        /* --- MASTER UPDATES SECTION --- */
         .master-updates {
             width: 90%; max-width: 1200px; margin: 30px auto;
             background: linear-gradient(90deg, #1a0000, #000);
@@ -94,6 +94,13 @@
         }
         .ad-video { width: 300px; border-radius: 8px; }
 
+        /* --- SECRET ADMIN PANEL --- */
+        #admin-vault {
+            display: none; background: #1a0000; border: 2px solid var(--gold);
+            margin: 40px auto; width: 85%; padding: 30px; border-radius: 15px;
+        }
+        .admin-input { background: #222; border: 1px solid #444; color: white; padding: 10px; width: 90%; margin-bottom: 10px; }
+
         footer { padding: 40px; text-align: center; border-top: 1px solid #222; font-size: 0.8rem; opacity: 0.6; }
     </style>
 </head>
@@ -109,7 +116,7 @@
         </div>
     </nav>
 
-    <!-- [1] ADMIN UPDATES & POSTER -->
+    <!-- [1] MASTER UPDATES -->
     <section class="master-updates">
         <div class="poster-container">
             <img src="https://via.placeholder.com/1920x1080/200000/ffffff?text=NEW+REALM+UPDATE" class="poster-img" id="admin-poster">
@@ -121,7 +128,7 @@
         </div>
     </section>
 
-    <!-- [2] DRAGON RITE (CAMERA SECTION) -->
+    <!-- [2] DRAGON RITE -->
     <section class="dragon-rite">
         <h2 style="font-family: 'Orbitron'; letter-spacing: 4px;">THE DRAGON RITE</h2>
         <p style="opacity: 0.7;">Upload your aura to become a Legend in the Realm.</p>
@@ -130,15 +137,13 @@
         <button class="btn-dragon" onclick="captureGuardian()">CAPTURE & ENTER CONTEST</button>
     </section>
 
-    <!-- [3] DAILY FAMOUS CONTEST -->
+    <!-- [3] CONTEST -->
     <section class="contest-section">
         <h2 style="font-family: 'Orbitron';">TOP 3 GUARDIANS OF THE DAY</h2>
-        <div class="winners-grid" id="contest-winners">
-            <!-- Winners will load here from Firebase -->
-        </div>
+        <div class="winners-grid" id="contest-winners"></div>
     </section>
 
-    <!-- [4] COMPANY ADS SECTION -->
+    <!-- [4] ADS -->
     <div class="ad-banner" id="company-ad">
         <video class="ad-video" autoplay muted loop id="ad-vid">
             <source src="" type="video/mp4">
@@ -151,18 +156,34 @@
         </div>
     </div>
 
+    <!-- [5] SECRET ADMIN PANEL -->
+    <div id="admin-vault">
+        <h2 style="color: var(--gold); font-family: 'Orbitron';">🐉 FOUNDER'S CONTROL VAULT</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div>
+                <h4>UPDATE POSTER</h4>
+                <input type="text" id="adm-post-url" class="admin-input" placeholder="Poster Image URL"><br>
+                <input type="text" id="adm-post-title" class="admin-input" placeholder="Update Title"><br>
+                <button class="btn-dragon" onclick="saveAdminPoster()" style="background:var(--gold); color:black;">UPDATE POSTER</button>
+            </div>
+            <div>
+                <h4>UPDATE AD VIDEO</h4>
+                <input type="text" id="adm-ad-vid" class="admin-input" placeholder="Ad Video URL (Direct MP4)"><br>
+                <input type="text" id="adm-ad-title" class="admin-input" placeholder="Ad Headline"><br>
+                <button class="btn-dragon" onclick="saveAdminAd()" style="background:var(--gold); color:black;">UPDATE AD</button>
+            </div>
+        </div>
+    </div>
+
     <footer>
         DESIGNED BY AKIYA | THE DRAGON REALM &copy; 2026
-        ALL RIGHT RESEVED ©2026| SECURITY | FAST | STABALE &copy; BEST SOCIAL LINK SHERE PLATFORM 
     </footer>
 
-    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
 
     <script>
-        // පින්තූරවල තිබුණු උඹේම Original Config එක
         const firebaseConfig = {
             apiKey: "AIzaSyDEmPDHu3jybcYu-nKl5cCHyyWNnerex-w",
             authDomain: "akiya-communitiy-official-lk.firebaseapp.com",
@@ -177,94 +198,109 @@
         const db = firebase.database();
         const auth = firebase.auth();
 
-        // 1. Google Login
+        // 1. Google Login & Admin Check
         function login() {
             const provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithPopup(provider).then(result => {
-                const user = result.user;
-                document.getElementById('user-display').innerHTML = `<img src="${user.photoURL}" style="width:40px; border-radius:50%; border:2px solid red;">`;
-            });
+            auth.signInWithPopup(provider);
         }
+
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                document.getElementById('user-display').innerHTML = `<img src="${user.photoURL}" style="width:40px; border-radius:50%; border:2px solid red;">`;
+                if(user.email === 'kaviakiya@gmail.com') {
+                    document.getElementById('admin-vault').style.display = 'block';
+                    console.log("Welcome Master Akiya.");
+                }
+            }
+        });
 
         // 2. Camera Logic
         const video = document.getElementById('camera-feed');
         if (navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ video: true })
-                .then(stream => video.srcObject = stream);
+            navigator.mediaDevices.getUserMedia({ video: true }).then(stream => video.srcObject = stream);
         }
 
-        // 3. Capture & Contest Entry
+        // 3. Capture Logic
         function captureGuardian() {
             const canvas = document.createElement('canvas');
             canvas.width = video.videoWidth; canvas.height = video.videoHeight;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(video, 0, 0);
+            canvas.getContext('2d').drawImage(video, 0, 0);
             const dataUrl = canvas.toDataURL('image/webp', 0.6);
-            
             const user = auth.currentUser;
             const uid = user ? user.uid : "guest_" + Date.now();
-            
             db.ref('guardians/' + uid).set({
                 name: user ? user.displayName : "Anonymous",
                 image: dataUrl,
                 likes: 0,
                 timestamp: Date.now()
             });
-            alert("Entry Submitted to Contest!");
+            alert("Success!");
         }
 
         // 4. Like System
-        function likeUser(uid) {
-            db.ref('guardians/' + uid + '/likes').transaction(l => (l || 0) + 1);
-        }
+        function likeUser(uid) { db.ref('guardians/' + uid + '/likes').transaction(l => (l || 0) + 1); }
 
-        // 5. Load Contest Winners (Top 3)
+        // 5. Real-time Contest Sync
         db.ref('guardians').orderByChild('likes').limitToLast(3).on('value', snap => {
             const container = document.getElementById('contest-winners');
             container.innerHTML = '';
             let place = 3;
             snap.forEach(child => {
                 const v = child.val();
-                const card = `
+                container.innerHTML = `
                     <div class="winner-card ${place === 1 ? 'place-1' : ''}">
                         <div style="color:var(--gold); font-weight:bold;">#${place} RANK</div>
                         <img src="${v.image}" width="100%" style="border-radius:10px; margin:10px 0;">
                         <div style="font-size:0.8rem;">${v.name}</div>
                         <div class="like-badge" onclick="likeUser('${child.key}')">❤️ ${v.likes || 0}</div>
-                    </div>
-                `;
-                container.innerHTML = card + container.innerHTML;
+                    </div>` + container.innerHTML;
                 place--;
             });
         });
 
-        // 6. Admin Data Sync
+        // 6. ADMIN SYNC (Poster & Ads)
         db.ref('admin_settings/poster').on('value', snap => {
             const d = snap.val();
             if(d) {
                 document.getElementById('admin-poster').src = d.url;
                 document.getElementById('update-title').innerText = d.title;
-                document.getElementById('res-tag').innerText = "RESOLUTION: " + (d.res || "1920x1080");
             }
         });
 
-        // 7. Live Visitors
-        db.ref('presence').on('value', snap => {
-            document.getElementById('live-visitors').innerText = `LIVE: ${snap.numChildren() || 1}`;
+        db.ref('admin_settings/ads').on('value', snap => {
+            const d = snap.val();
+            if(d) {
+                document.getElementById('ad-vid').src = d.video;
+                document.getElementById('ad-title').innerText = d.title;
+            }
         });
 
-        // --- BACKGROUND EFFECT ---
+        function saveAdminPoster() {
+            db.ref('admin_settings/poster').update({
+                url: document.getElementById('adm-post-url').value,
+                title: document.getElementById('adm-post-title').value
+            }).then(() => alert("Poster Updated!"));
+        }
+
+        function saveAdminAd() {
+            db.ref('admin_settings/ads').update({
+                video: document.getElementById('adm-ad-vid').value,
+                title: document.getElementById('adm-ad-title').value
+            }).then(() => alert("Ad Updated!"));
+        }
+
+        // 7. Counter & Web Effect
+        db.ref('presence').on('value', snap => { document.getElementById('live-visitors').innerText = `LIVE: ${snap.numChildren() || 1}`; });
         const webCanvas = document.getElementById('web-canvas');
         const webCtx = webCanvas.getContext('2d');
         webCanvas.width = window.innerWidth; webCanvas.height = window.innerHeight;
-        function drawWeb() {
+        setInterval(() => {
             webCtx.clearRect(0,0, webCanvas.width, webCanvas.height);
             webCtx.strokeStyle = '#ff0000'; webCtx.lineWidth = 0.3;
             for(let i=0; i<webCanvas.width; i+=80) {
                 webCtx.beginPath(); webCtx.moveTo(i,0); webCtx.lineTo(webCanvas.width-i, webCanvas.height); webCtx.stroke();
             }
-        }
-        setInterval(drawWeb, 100);
+        }, 100);
     </script>
 </body>
 </html>
